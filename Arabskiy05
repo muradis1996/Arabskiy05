@@ -1,0 +1,1082 @@
+<!doctype html>
+<html lang="ru" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Арабский для Корана</title>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+        body {
+            box-sizing: border-box;
+        }
+        
+        .arabic-text {
+            font-family: 'Amiri', 'Traditional Arabic', serif;
+            font-size: 1.5rem;
+            direction: rtl;
+            text-align: right;
+        }
+        
+        .progress-bar {
+            transition: width 0.2s ease;
+            background: linear-gradient(90deg, #00ff88, #00ccff);
+            box-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+        }
+        
+        .task-card {
+            transition: all 0.2s ease;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            border: 1px solid #00ff88;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.1);
+        }
+        
+        .correct-answer {
+            background: linear-gradient(135deg, #00ff88, #00cc66) !important;
+            color: #000 !important;
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.6);
+            font-weight: bold;
+        }
+        
+        .incorrect-answer {
+            background: linear-gradient(135deg, #ff0066, #cc0044) !important;
+            color: white !important;
+            box-shadow: 0 0 15px rgba(255, 0, 102, 0.6);
+        }
+        
+        .option-button {
+            transition: all 0.15s ease;
+            background: linear-gradient(135deg, #2a2a4a, #1e1e3f);
+            border: 1px solid #444;
+            color: #fff;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+        
+        @media (hover: hover) {
+            .option-button:hover:not(:disabled) {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 15px rgba(0, 255, 136, 0.3);
+                border-color: #00ff88;
+                background: linear-gradient(135deg, #3a3a5a, #2e2e4f);
+            }
+        }
+        
+        .lesson-card {
+            background: linear-gradient(135deg, #2a2a4a, #1e1e3f);
+            border: 1px solid #444;
+            transition: all 0.15s ease;
+        }
+        
+        @media (hover: hover) {
+            .lesson-card:hover {
+                border-color: #00ff88;
+                box-shadow: 0 4px 15px rgba(0, 255, 136, 0.2);
+                transform: translateY(-2px);
+            }
+        }
+        
+        .lesson-card.completed {
+            border-color: #00ff88;
+            background: linear-gradient(135deg, #1a4a2a, #1e3f1e);
+        }
+        
+        .lesson-card.locked {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .exam-card {
+            background: linear-gradient(135deg, #4a2a2a, #3f1e1e);
+            border: 2px solid #ff6600;
+            box-shadow: 0 0 20px rgba(255, 102, 0, 0.3);
+        }
+        
+        .exam-card.completed {
+            border-color: #00ff88;
+            background: linear-gradient(135deg, #2a4a2a, #1e3f1e);
+        }
+        
+        .word-button {
+            transition: all 0.15s ease;
+            cursor: pointer;
+            background: linear-gradient(135deg, #2a2a4a, #1e1e3f);
+            border: 1px solid #444;
+            color: #fff;
+        }
+        
+        @media (hover: hover) {
+            .word-button:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(0, 204, 255, 0.4);
+                border-color: #00ccff;
+            }
+        }
+        
+        .selected-word {
+            background: linear-gradient(135deg, #00ccff, #0099cc) !important;
+            color: #000 !important;
+            box-shadow: 0 0 12px rgba(0, 204, 255, 0.6);
+            font-weight: bold;
+        }
+        
+        .neon-text {
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.8);
+        }
+        
+        .neon-border {
+            border: 1px solid #00ff88;
+            box-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.3s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .dictionary-card {
+            perspective: 1000px;
+            height: 120px;
+            cursor: pointer;
+        }
+        
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        
+        .dictionary-card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+        
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 16px;
+        }
+        
+        .card-front {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            border: 1px solid #00ff88;
+        }
+        
+        .card-back {
+            background: linear-gradient(135deg, #2a2a4a, #1e1e3f);
+            border: 1px solid #00ccff;
+            transform: rotateY(180deg);
+        }
+        
+        .glow-button {
+            background: linear-gradient(135deg, #00ff88, #00cc66);
+            color: #000;
+            font-weight: bold;
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.4);
+            transition: all 0.15s ease;
+        }
+        
+        @media (hover: hover) {
+            .glow-button:hover {
+                box-shadow: 0 0 25px rgba(0, 255, 136, 0.6);
+                transform: translateY(-1px);
+            }
+        }
+        
+        .exam-button {
+            background: linear-gradient(135deg, #ff6600, #cc4400);
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 0 15px rgba(255, 102, 0, 0.4);
+        }
+        
+        @media (hover: hover) {
+            .exam-button:hover {
+                box-shadow: 0 0 25px rgba(255, 102, 0, 0.6);
+                transform: translateY(-1px);
+            }
+        }
+    </style>
+  <style>@view-transition { navigation: auto; }</style>
+ </head>
+ <body class="h-full bg-gradient-to-br from-gray-900 via-purple-900 to-black font-sans">
+  <div class="min-h-full flex flex-col"><!-- Header -->
+   <header class="bg-gradient-to-r from-gray-800 to-gray-900 shadow-lg border-b border-green-400 neon-border">
+    <div class="max-w-6xl mx-auto px-4 py-4">
+     <div class="flex items-center justify-between">
+      <div>
+       <h1 id="course-title" class="text-2xl font-bold text-white neon-text">Арабский для Корана</h1>
+       <p class="text-green-300">100 уроков коранической лексики</p>
+      </div>
+      <div class="text-right">
+       <div class="text-sm text-green-300 mb-1">
+        Прогресс: <span id="overall-progress">0/100</span>
+       </div>
+       <div class="w-48 bg-gray-700 rounded-full h-3 border border-gray-600">
+        <div id="overall-progress-bar" class="progress-bar h-3 rounded-full" style="width: 0%"></div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </header><!-- Main Content -->
+   <main class="flex-1 p-4"><!-- Home Screen -->
+    <div id="home-screen" class="max-w-4xl mx-auto text-center">
+     <div class="mb-12">
+      <h1 class="text-4xl font-bold text-white neon-text mb-4" id="main-title">Арабский для Корана</h1>
+      <p class="text-green-300 text-lg mb-8">Изучайте священный язык Корана пошагово</p><!-- Motivational Ayah -->
+      <div class="bg-gradient-to-r from-gray-800 to-gray-700 border border-green-400 rounded-xl p-8 mb-12 neon-border cursor-pointer" onclick="changeAyah()">
+       <div class="text-2xl arabic-text text-white mb-4" id="ayah-arabic">
+        وَقُل رَّبِّ زِدْنِي عِلْمًا
+       </div>
+       <div class="text-green-300 mb-2" id="ayah-translation">
+        "И говори: Господи мой! Умножь мои знания!"
+       </div>
+       <div class="text-sm text-gray-400" id="ayah-reference">
+        Коран 20:114
+       </div>
+       <div class="text-xs text-cyan-300 mt-3">
+        Нажмите для смены аята
+       </div>
+      </div><!-- Main Menu Buttons -->
+      <div class="grid grid-cols-1 gap-4"><button class="bg-gradient-to-br from-purple-600 to-purple-800 text-white rounded-xl p-6 text-left transition-all hover:from-purple-500 hover:to-purple-700" onclick="showLessons()">
+        <div class="text-3xl mb-3">
+         📚
+        </div><h3 class="text-lg font-bold mb-2">Уроки</h3><p class="text-sm text-purple-200">100 структурированных уроков коранической лексики</p>
+        <div class="mt-3 text-sm text-purple-300">
+         Прогресс: <span id="home-progress">0/100</span>
+        </div></button> <button class="bg-gradient-to-br from-purple-600 to-purple-800 text-white rounded-xl p-6 text-left transition-all hover:from-purple-500 hover:to-purple-700" onclick="showDictionary()">
+        <div class="text-3xl mb-3">
+         📖
+        </div><h3 class="text-lg font-bold mb-2">Словарь</h3><p class="text-sm text-purple-200">Все изученные слова с переводами и корнями</p>
+        <div class="mt-3 text-sm text-purple-300">
+         Слов изучено: <span id="words-learned">0</span>
+        </div></button>
+      </div>
+     </div>
+    </div><!-- Lesson Selection Screen -->
+    <div id="lesson-selection" class="hidden max-w-6xl mx-auto">
+     <div class="flex items-center justify-between mb-6"><button class="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors flex items-center gap-2" onclick="showHome()"> ← Главная </button>
+      <h2 class="text-2xl font-bold text-white neon-text">Выберите урок</h2>
+      <div></div>
+     </div>
+     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3" id="lessons-grid"><!-- Lessons will be generated here -->
+     </div>
+    </div><!-- Dictionary Screen -->
+    <div id="dictionary-screen" class="hidden max-w-4xl mx-auto">
+     <div class="flex items-center justify-between mb-6"><button class="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors flex items-center gap-2" onclick="showHome()"> ← Главная </button>
+      <h2 class="text-2xl font-bold text-white neon-text">Словарь</h2>
+      <div class="text-sm text-green-300"><span id="dict-word-count">0</span> слов
+      </div>
+     </div><!-- Search and Filter -->
+     <div class="bg-gradient-to-r from-gray-800 to-gray-700 border border-green-400 rounded-lg p-4 mb-6">
+      <div class="flex flex-col md:flex-row gap-4"><input type="text" id="search-input" placeholder="Поиск по арабскому тексту или переводу..." class="flex-1 bg-gray-900 border border-gray-600 rounded-lg px-4 py-2 text-white placeholder-gray-400 focus:border-green-400 focus:outline-none"> <select id="type-filter" class="bg-gray-900 border border-gray-600 rounded-lg px-4 py-2 text-white focus:border-green-400 focus:outline-none"> <option value="">Все типы</option> <option value="noun">Существительные</option> <option value="verb">Глаголы</option> <option value="adjective">Прилагательные</option> <option value="preposition">Предлоги</option> <option value="pronoun">Местоимения</option> </select>
+      </div>
+     </div><!-- Dictionary Content -->
+     <div id="dictionary-content" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"><!-- Dictionary words will be generated here -->
+     </div>
+    </div><!-- Lesson/Exam Screen -->
+    <div id="lesson-screen" class="hidden max-w-2xl mx-auto"><!-- Back Button -->
+     <div class="flex items-center justify-between mb-6"><button class="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors flex items-center gap-2" onclick="backToLessons()"> ← К урокам </button>
+      <div class="text-white text-sm"><span id="lesson-title-header">Урок 1</span>
+      </div>
+      <div></div>
+     </div><!-- Task Container -->
+     <div id="task-container" class="task-card bg-white rounded-xl shadow-lg p-8 fade-in"><!-- Task content will be inserted here -->
+     </div><!-- Lesson Results -->
+     <div id="results-container" class="hidden">
+      <div class="task-card rounded-xl shadow-lg p-8 text-center">
+       <div class="text-6xl mb-4">
+        🎉
+       </div>
+       <h2 id="results-title" class="text-2xl font-bold text-white neon-text mb-4">Урок завершён!</h2>
+       <div id="results-stats" class="text-green-300 mb-6">
+        <p>Правильных ответов: <span id="correct-answers" class="font-semibold text-white">0</span> из <span id="total-tasks" class="font-semibold text-white">8</span></p>
+       </div>
+       <div class="bg-gray-800 border border-cyan-400 rounded-lg p-4 mb-6">
+        <h3 class="font-semibold text-cyan-300 mb-2">Повторить:</h3>
+        <div id="review-words" class="text-sm text-gray-300 arabic-text"><!-- Review words will be inserted here -->
+        </div>
+       </div><button id="back-to-lessons" class="glow-button px-8 py-3 rounded-lg font-semibold transition-all" onclick="backToLessons()"> К урокам </button>
+      </div>
+     </div>
+    </div>
+   </main>
+  </div>
+  <script>
+        // Configuration
+        const defaultConfig = {
+            course_title: "Арабский для Корана",
+            success_message: "Машаллах!",
+            primary_color: "#00ff88",
+            surface_color: "#1a1a2e",
+            text_color: "#ffffff"
+        };
+
+        // Motivational Ayahs
+        const motivationalAyahs = [
+            {
+                arabic: "وَقُل رَّبِّ زِدْنِي عِلْمًا",
+                translation: "И говори: Господи мой! Умножь мои знания!",
+                reference: "Коран 20:114"
+            },
+            {
+                arabic: "اقْرَأْ بِاسْمِ رَبِّكَ الَّذِي خَلَقَ",
+                translation: "Читай во имя Господа твоего, Который сотворил!",
+                reference: "Коран 96:1"
+            },
+            {
+                arabic: "وَمَا أُوتِيتُم مِّنَ الْعِلْمِ إِلَّا قَلِيلًا",
+                translation: "А дано вам знания только немного",
+                reference: "Коран 17:85"
+            },
+            {
+                arabic: "يَرْفَعِ اللَّهُ الَّذِينَ آمَنُوا مِنكُمْ وَالَّذِينَ أُوتُوا الْعِلْمَ دَرَجَاتٍ",
+                translation: "Аллах возвышает тех из вас, которые уверовали, и тех, кому дано знание, на степени",
+                reference: "Коран 58:11"
+            },
+            {
+                arabic: "وَعَلَّمَ آدَمَ الْأَسْمَاءَ كُلَّهَا",
+                translation: "И научил Он Адама всем именам",
+                reference: "Коран 2:31"
+            }
+        ];
+
+        let currentAyahIndex = 0;
+
+        // Vocabulary data for lessons
+        const vocabularyData = {
+            1: [
+                {arabic: "اللَّهُ", translation: "Аллах", type: "noun", root: "ا-ل-ه"},
+                {arabic: "هُوَ", translation: "он", type: "pronoun", root: "ه-و"},
+                {arabic: "فِي", translation: "в", type: "preposition", root: "ف-ي"},
+                {arabic: "مِنْ", translation: "из, от", type: "preposition", root: "م-ن"},
+                {arabic: "إِلَى", translation: "к", type: "preposition", root: "ا-ل-ي"},
+                {arabic: "عَلَى", translation: "на", type: "preposition", root: "ع-ل-ي"},
+                {arabic: "مَعَ", translation: "с", type: "preposition", root: "م-ع"},
+                {arabic: "لَا", translation: "не", type: "particle", root: "ل-ا"},
+                {arabic: "نَعَمْ", translation: "да", type: "particle", root: "ن-ع-م"},
+                {arabic: "كَيْفَ", translation: "как", type: "interrogative", root: "ك-ي-ف"},
+                {arabic: "أَيْنَ", translation: "где", type: "interrogative", root: "ا-ي-ن"},
+                {arabic: "مَتَى", translation: "когда", type: "interrogative", root: "م-ت-ي"}
+            ],
+            2: [
+                {arabic: "بَيْتٌ", translation: "дом", type: "noun", root: "ب-ي-ت"},
+                {arabic: "كِتَابٌ", translation: "книга", type: "noun", root: "ك-ت-ب"},
+                {arabic: "قَلَمٌ", translation: "ручка", type: "noun", root: "ق-ل-م"},
+                {arabic: "مَاءٌ", translation: "вода", type: "noun", root: "م-ا"},
+                {arabic: "خُبْزٌ", translation: "хлеб", type: "noun", root: "خ-ب-ز"},
+                {arabic: "بَابٌ", translation: "дверь", type: "noun", root: "ب-و-ب"},
+                {arabic: "نُورٌ", translation: "свет", type: "noun", root: "ن-و-ر"},
+                {arabic: "يَوْمٌ", translation: "день", type: "noun", root: "ي-و-م"},
+                {arabic: "لَيْلَةٌ", translation: "ночь", type: "noun", root: "ل-ي-ل"},
+                {arabic: "شَمْسٌ", translation: "солнце", type: "noun", root: "ش-م-س"},
+                {arabic: "قَمَرٌ", translation: "луна", type: "noun", root: "ق-م-ر"},
+                {arabic: "سَمَاءٌ", translation: "небо", type: "noun", root: "س-م-و"}
+            ],
+            3: [
+                {arabic: "كَتَبَ", translation: "писал", type: "verb", root: "ك-ت-ب"},
+                {arabic: "قَرَأَ", translation: "читал", type: "verb", root: "ق-ر-ا"},
+                {arabic: "ذَهَبَ", translation: "пошёл", type: "verb", root: "ذ-ه-ب"},
+                {arabic: "جَاءَ", translation: "пришёл", type: "verb", root: "ج-ي-ا"},
+                {arabic: "أَكَلَ", translation: "ел", type: "verb", root: "ا-ك-ل"},
+                {arabic: "شَرِبَ", translation: "пил", type: "verb", root: "ش-ر-ب"},
+                {arabic: "نَامَ", translation: "спал", type: "verb", root: "ن-و-م"},
+                {arabic: "قَامَ", translation: "встал", type: "verb", root: "ق-و-م"},
+                {arabic: "جَلَسَ", translation: "сел", type: "verb", root: "ج-ل-س"},
+                {arabic: "فَتَحَ", translation: "открыл", type: "verb", root: "ف-ت-ح"},
+                {arabic: "أَغْلَقَ", translation: "закрыл", type: "verb", root: "غ-ل-ق"},
+                {arabic: "نَظَرَ", translation: "посмотрел", type: "verb", root: "ن-ظ-ر"}
+            ]
+        };
+
+        // State
+        let currentLesson = null;
+        let currentTaskIndex = 0;
+        let correctAnswers = 0;
+        let userAnswers = [];
+        let currentAnswer = null;
+        let userProgress = {
+            completedLessons: new Set(),
+            passedExams: new Set(),
+            currentLesson: 1
+        };
+        let learnedWordsPerLesson = new Map();
+
+        // Data SDK handler
+        const dataHandler = {
+            onDataChanged(data) {
+                const completedLessons = data.filter(d => d.lesson_completed === true || d.lesson_completed === "true");
+                const passedExams = data.filter(d => d.exam_passed === true || d.exam_passed === "true");
+                
+                userProgress.completedLessons = new Set(completedLessons.map(d => parseInt(d.lesson_id)));
+                userProgress.passedExams = new Set(passedExams.map(d => parseInt(d.lesson_id)));
+                
+                const wordData = data.filter(d => d.word_learned === true || d.word_learned === "true");
+                learnedWordsPerLesson.clear();
+                wordData.forEach(d => {
+                    const lessonId = parseInt(d.lesson_id);
+                    if (!learnedWordsPerLesson.has(lessonId)) {
+                        learnedWordsPerLesson.set(lessonId, new Set());
+                    }
+                    learnedWordsPerLesson.get(lessonId).add(d.word_arabic);
+                });
+                
+                if (userProgress.completedLessons.size > 0) {
+                    userProgress.currentLesson = Math.max(...userProgress.completedLessons) + 1;
+                } else {
+                    userProgress.currentLesson = 1;
+                }
+                
+                updateLessonsDisplay();
+                updateOverallProgress();
+                updateHomeProgress();
+            }
+        };
+
+        // Element SDK configuration
+        async function onConfigChange(config) {
+            const courseTitle = document.getElementById('course-title');
+            if (courseTitle) courseTitle.textContent = config.course_title || defaultConfig.course_title;
+            
+            const mainTitle = document.getElementById('main-title');
+            if (mainTitle) mainTitle.textContent = config.course_title || defaultConfig.course_title;
+        }
+
+        function mapToCapabilities(config) {
+            return {
+                recolorables: [
+                    {
+                        get: () => config.primary_color || defaultConfig.primary_color,
+                        set: (value) => {
+                            config.primary_color = value;
+                            window.elementSdk.setConfig({ primary_color: value });
+                        }
+                    },
+                    {
+                        get: () => config.surface_color || defaultConfig.surface_color,
+                        set: (value) => {
+                            config.surface_color = value;
+                            window.elementSdk.setConfig({ surface_color: value });
+                        }
+                    },
+                    {
+                        get: () => config.text_color || defaultConfig.text_color,
+                        set: (value) => {
+                            config.text_color = value;
+                            window.elementSdk.setConfig({ text_color: value });
+                        }
+                    }
+                ],
+                borderables: [],
+                fontEditable: undefined,
+                fontSizeable: undefined
+            };
+        }
+
+        function mapToEditPanelValues(config) {
+            return new Map([
+                ["course_title", config.course_title || defaultConfig.course_title],
+                ["success_message", config.success_message || defaultConfig.success_message]
+            ]);
+        }
+
+        // Initialize SDKs
+        async function initializeApp() {
+            if (window.dataSdk) {
+                const initResult = await window.dataSdk.init(dataHandler);
+                if (!initResult.isOk) {
+                    console.error("Failed to initialize data SDK");
+                }
+            }
+
+            if (window.elementSdk) {
+                await window.elementSdk.init({
+                    defaultConfig,
+                    onConfigChange,
+                    mapToCapabilities,
+                    mapToEditPanelValues
+                });
+            }
+
+            updateOverallProgress();
+            updateHomeProgress();
+            generateLessonsGrid();
+        }
+
+        // Generate lessons grid
+        function generateLessonsGrid() {
+            const grid = document.getElementById('lessons-grid');
+            if (!grid) return;
+            
+            grid.innerHTML = '';
+
+            for (let i = 1; i <= 20; i++) {
+                const isExam = i % 10 === 0;
+                const isUnlocked = i === 1 || userProgress.completedLessons.has(i - 1) || userProgress.passedExams.has(i - 1);
+                const isCompleted = userProgress.completedLessons.has(i);
+                const isPassed = userProgress.passedExams.has(i);
+                
+                const card = document.createElement('div');
+                card.className = `lesson-card rounded-lg p-4 cursor-pointer ${
+                    isCompleted || isPassed ? 'completed' : ''
+                } ${!isUnlocked ? 'locked' : ''}`;
+                
+                if (isExam) {
+                    card.classList.add('exam-card');
+                }
+                
+                const title = isExam ? `Экзамен ${i / 10}` : `Урок ${i}`;
+                const description = isExam ? `Проверка знаний уроков ${i - 9}-${i - 1}` : `12 новых слов`;
+                
+                card.innerHTML = `
+                    <div class="text-center">
+                        <div class="text-2xl mb-2">
+                            ${isExam ? '📋' : '📖'}
+                            ${isCompleted || isPassed ? '✅' : ''}
+                            ${!isUnlocked ? '🔒' : ''}
+                        </div>
+                        <h3 class="font-bold text-white mb-1">${title}</h3>
+                        <p class="text-sm text-gray-300">${description}</p>
+                        ${isExam ? '<div class="text-xs text-orange-300 mt-2">Требуется 70% для прохождения</div>' : ''}
+                    </div>
+                `;
+                
+                if (isUnlocked) {
+                    card.addEventListener('click', () => {
+                        startLesson(i, isExam);
+                    });
+                }
+                
+                grid.appendChild(card);
+            }
+        }
+
+        // Start lesson
+        function startLesson(lessonId, isExam) {
+            const lessonWords = vocabularyData[lessonId] || generateExtendedVocabulary(lessonId);
+            
+            currentLesson = {
+                id: lessonId,
+                type: isExam ? 'exam' : 'lesson',
+                title: isExam ? `Экзамен ${lessonId / 10}` : `Урок ${lessonId}`,
+                description: isExam ? `Проверка знаний уроков ${lessonId - 9}-${lessonId - 1}` : `${lessonWords.length} новых слов`,
+                newWords: lessonWords,
+                tasks: isExam ? generateExamTasks(lessonId) : generateLessonTasks(lessonId, lessonWords)
+            };
+            
+            currentTaskIndex = 0;
+            correctAnswers = 0;
+            userAnswers = [];
+            
+            document.getElementById('lesson-selection').classList.add('hidden');
+            document.getElementById('lesson-screen').classList.remove('hidden');
+            
+            document.getElementById('lesson-title-header').textContent = currentLesson.title;
+            
+            renderCurrentTask();
+        }
+
+        // Generate extended vocabulary for lessons beyond predefined ones
+        function generateExtendedVocabulary(lessonId) {
+            const baseWords = [
+                {arabic: "رَجُلٌ", translation: "мужчина", type: "noun", root: "ر-ج-ل"},
+                {arabic: "امْرَأَةٌ", translation: "женщина", type: "noun", root: "م-ر-ا"},
+                {arabic: "وَلَدٌ", translation: "мальчик", type: "noun", root: "و-ل-د"},
+                {arabic: "بِنْتٌ", translation: "девочка", type: "noun", root: "ب-ن-ت"},
+                {arabic: "أَبٌ", translation: "отец", type: "noun", root: "ا-ب"},
+                {arabic: "أُمٌّ", translation: "мать", type: "noun", root: "ا-م"},
+                {arabic: "أَخٌ", translation: "брат", type: "noun", root: "ا-خ"},
+                {arabic: "أُخْتٌ", translation: "сестра", type: "noun", root: "ا-خ-ت"},
+                {arabic: "كَبِيرٌ", translation: "большой", type: "adjective", root: "ك-ب-ر"},
+                {arabic: "صَغِيرٌ", translation: "маленький", type: "adjective", root: "ص-غ-ر"},
+                {arabic: "جَمِيلٌ", translation: "красивый", type: "adjective", root: "ج-م-ل"},
+                {arabic: "طَوِيلٌ", translation: "длинный", type: "adjective", root: "ط-و-ل"}
+            ];
+            
+            return baseWords.slice(0, 12);
+        }
+
+        // Generate lesson tasks
+        function generateLessonTasks(lessonId, newWords) {
+            const tasks = [];
+            
+            // Word introduction tasks
+            newWords.forEach((word, index) => {
+                tasks.push({
+                    id: tasks.length + 1,
+                    type: "word_introduction",
+                    question: "Новое слово:",
+                    word: word,
+                    explanation: "Запомните это слово"
+                });
+            });
+            
+            // Translation tasks
+            newWords.forEach((word, index) => {
+                const otherWords = newWords.filter(w => w.arabic !== word.arabic).slice(0, 3);
+                const allOptions = [word, ...otherWords];
+                const shuffledOptions = [...allOptions].sort(() => Math.random() - 0.5);
+                const correctIndex = shuffledOptions.findIndex(w => w.arabic === word.arabic);
+                
+                tasks.push({
+                    id: tasks.length + 1,
+                    type: "translation",
+                    question: "Переведите:",
+                    arabic: word.arabic,
+                    options: shuffledOptions.map(w => w.translation),
+                    correct: correctIndex,
+                    explanation: `${word.arabic} - ${word.translation}`
+                });
+            });
+            
+            return tasks;
+        }
+
+        // Generate exam tasks
+        function generateExamTasks(examId) {
+            const startLesson = examId - 9;
+            const endLesson = examId - 1;
+            const allWords = [];
+            
+            for (let i = startLesson; i <= endLesson; i++) {
+                const lessonWords = vocabularyData[i] || generateExtendedVocabulary(i);
+                allWords.push(...lessonWords);
+            }
+            
+            const tasks = [];
+            
+            for (let i = 0; i < 15; i++) {
+                const word = allWords[i % allWords.length];
+                const otherWords = allWords.filter(w => w.arabic !== word.arabic && w.type === word.type).slice(0, 3);
+                const allOptions = [word, ...otherWords];
+                const shuffledOptions = [...allOptions].sort(() => Math.random() - 0.5);
+                const correctIndex = shuffledOptions.findIndex(w => w.arabic === word.arabic);
+                
+                tasks.push({
+                    id: i + 1,
+                    type: "translation",
+                    question: "Переведите:",
+                    arabic: word.arabic,
+                    options: shuffledOptions.map(w => w.translation),
+                    correct: correctIndex,
+                    explanation: `${word.arabic} - ${word.translation}`
+                });
+            }
+            
+            return tasks;
+        }
+
+        // Render current task
+        function renderCurrentTask() {
+            const task = currentLesson.tasks[currentTaskIndex];
+            const container = document.getElementById('task-container');
+            
+            container.innerHTML = '';
+            container.className = 'task-card bg-white rounded-xl shadow-lg p-8 fade-in';
+            
+            if (task.type === 'word_introduction') {
+                renderWordIntroduction(task, container);
+            } else if (task.type === 'translation') {
+                renderTranslationTask(task, container);
+            }
+        }
+
+        function renderWordIntroduction(task, container) {
+            container.innerHTML = `
+                <div class="text-center">
+                    <div class="mb-4">
+                        <span class="text-sm text-green-300">${currentLesson.title}</span>
+                        <div class="text-xs text-gray-400">${currentTaskIndex + 1} / ${currentLesson.tasks.length}</div>
+                    </div>
+                    <h2 class="text-xl font-semibold text-white mb-6">Новое слово:</h2>
+                    
+                    <div class="bg-gradient-to-r from-gray-800 to-gray-700 border border-green-400 rounded-xl p-6 mb-6 max-w-md mx-auto">
+                        <div class="arabic-text text-4xl text-white mb-3">${task.word.arabic}</div>
+                        <div class="text-2xl text-green-300 mb-2">${task.word.translation}</div>
+                        <div class="text-sm text-gray-400">${getTypeTranslation(task.word.type)}</div>
+                        <div class="text-xs text-cyan-300 mt-2">Корень: ${task.word.root}</div>
+                    </div>
+                    
+                    <button class="glow-button px-8 py-3 rounded-lg font-semibold transition-all" onclick="continueToNext()">
+                        Продолжить
+                    </button>
+                </div>
+            `;
+        }
+
+        function renderTranslationTask(task, container) {
+            container.innerHTML = `
+                <div class="text-center">
+                    <div class="mb-4">
+                        <span class="text-sm text-green-300">${currentLesson.title}</span>
+                        <div class="text-xs text-gray-400">${currentTaskIndex + 1} / ${currentLesson.tasks.length}</div>
+                    </div>
+                    <h2 class="text-xl font-semibold text-white mb-6">${task.question}</h2>
+                    <div class="arabic-text bg-gradient-to-r from-gray-800 to-gray-700 border border-green-400 rounded-lg p-6 mb-8 text-center text-white text-2xl">
+                        ${task.arabic}
+                    </div>
+                    <div class="grid grid-cols-1 gap-3">
+                        ${task.options.map((option, index) => `
+                            <button class="option-button rounded-lg p-4 text-left transition-all" 
+                                    onclick="selectAnswer(${index})">
+                                ${option}
+                            </button>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function getTypeTranslation(type) {
+            const translations = {
+                'noun': 'Существительное',
+                'verb': 'Глагол',
+                'adjective': 'Прилагательное',
+                'preposition': 'Предлог',
+                'pronoun': 'Местоимение',
+                'particle': 'Частица',
+                'interrogative': 'Вопросительное'
+            };
+            return translations[type] || type;
+        }
+
+        // Answer handling
+        function selectAnswer(answerIndex) {
+            currentAnswer = answerIndex;
+            const task = currentLesson.tasks[currentTaskIndex];
+            
+            const buttons = document.querySelectorAll('.option-button');
+            buttons.forEach((btn, index) => {
+                btn.classList.remove('correct-answer', 'incorrect-answer');
+                if (index === answerIndex) {
+                    if (index === task.correct) {
+                        btn.classList.add('correct-answer');
+                    } else {
+                        btn.classList.add('incorrect-answer');
+                    }
+                }
+                if (index === task.correct && index !== answerIndex) {
+                    btn.classList.add('correct-answer');
+                }
+                btn.disabled = true;
+            });
+
+            storeAnswer(task, answerIndex);
+            showFeedback(answerIndex === task.correct, task.explanation);
+        }
+
+        async function storeAnswer(task, answer) {
+            const isCorrect = answer === task.correct;
+            
+            if (isCorrect) {
+                correctAnswers++;
+            }
+            
+            userAnswers.push({
+                taskId: task.id,
+                userAnswer: answer,
+                correctAnswer: task.correct,
+                isCorrect: isCorrect
+            });
+
+            if (window.dataSdk) {
+                const result = await window.dataSdk.create({
+                    lesson_id: currentLesson.id.toString(),
+                    task_id: task.id.toString(),
+                    user_answer: answer.toString(),
+                    correct_answer: task.correct.toString(),
+                    is_correct: isCorrect,
+                    timestamp: new Date().toISOString(),
+                    lesson_completed: false,
+                    exam_passed: false,
+                    current_lesson: currentLesson.id,
+                    unlocked_lessons: Array.from(userProgress.completedLessons).join(',')
+                });
+                
+                if (!result.isOk) {
+                    console.error("Failed to store answer");
+                }
+            }
+        }
+
+        function showFeedback(isCorrect, explanation) {
+            const config = window.elementSdk ? window.elementSdk.config : defaultConfig;
+            
+            const container = document.getElementById('task-container');
+            const feedbackDiv = document.createElement('div');
+            feedbackDiv.className = 'mt-6 p-4 rounded-lg text-center';
+            
+            if (isCorrect) {
+                feedbackDiv.className += ' bg-green-900 border border-green-400';
+                feedbackDiv.innerHTML = `
+                    <div class="text-green-400 mb-2 text-lg neon-text">✓ ${config.success_message || defaultConfig.success_message}</div>
+                    <div class="text-sm text-green-300">${explanation}</div>
+                `;
+            } else {
+                feedbackDiv.className += ' bg-red-900 border border-red-400';
+                feedbackDiv.innerHTML = `
+                    <div class="text-red-400 mb-2 text-lg">✗ Неправильно</div>
+                    <div class="text-sm text-red-300">${explanation}</div>
+                `;
+            }
+            
+            container.appendChild(feedbackDiv);
+            
+            setTimeout(() => {
+                continueToNext();
+            }, 2000);
+        }
+
+        function continueToNext() {
+            currentTaskIndex++;
+            
+            if (currentTaskIndex >= currentLesson.tasks.length) {
+                completeLesson();
+            } else {
+                renderCurrentTask();
+            }
+        }
+
+        async function completeLesson() {
+            const isExam = currentLesson.type === 'exam';
+            const passingScore = isExam ? 0.7 : 0.5;
+            const score = correctAnswers / currentLesson.tasks.length;
+            const passed = score >= passingScore;
+            
+            if (passed) {
+                if (isExam) {
+                    userProgress.passedExams.add(currentLesson.id);
+                } else {
+                    userProgress.completedLessons.add(currentLesson.id);
+                }
+                
+                if (window.dataSdk) {
+                    await window.dataSdk.create({
+                        lesson_id: currentLesson.id.toString(),
+                        task_id: "completion",
+                        user_answer: score.toString(),
+                        correct_answer: passingScore.toString(),
+                        is_correct: passed,
+                        timestamp: new Date().toISOString(),
+                        lesson_completed: !isExam,
+                        exam_passed: isExam,
+                        current_lesson: currentLesson.id,
+                        unlocked_lessons: Array.from(userProgress.completedLessons).join(',')
+                    });
+                }
+            }
+            
+            showResults(passed, isExam);
+        }
+
+        function showResults(passed, isExam) {
+            document.getElementById('task-container').classList.add('hidden');
+            document.getElementById('results-container').classList.remove('hidden');
+            
+            const resultsTitle = document.getElementById('results-title');
+            
+            if (isExam) {
+                resultsTitle.textContent = passed ? 'Экзамен сдан!' : 'Экзамен не сдан';
+                resultsTitle.className = passed ? 'text-2xl font-bold text-green-400 neon-text mb-4' : 'text-2xl font-bold text-red-400 mb-4';
+            } else {
+                resultsTitle.textContent = passed ? 'Урок завершён!' : 'Урок не пройден';
+                resultsTitle.className = passed ? 'text-2xl font-bold text-green-400 neon-text mb-4' : 'text-2xl font-bold text-red-400 mb-4';
+            }
+            
+            document.getElementById('correct-answers').textContent = correctAnswers;
+            document.getElementById('total-tasks').textContent = currentLesson.tasks.length;
+            
+            const reviewWords = document.getElementById('review-words');
+            const incorrectAnswers = userAnswers.filter(answer => !answer.isCorrect);
+            
+            if (incorrectAnswers.length === 0) {
+                reviewWords.textContent = 'Все ответы правильные! Отличная работа!';
+            } else {
+                reviewWords.textContent = 'Повторите слова из неправильных ответов';
+            }
+            
+            updateOverallProgress();
+            updateHomeProgress();
+        }
+
+        // Navigation functions
+        function showHome() {
+            document.getElementById('home-screen').classList.remove('hidden');
+            document.getElementById('lesson-selection').classList.add('hidden');
+            document.getElementById('dictionary-screen').classList.add('hidden');
+            document.getElementById('lesson-screen').classList.add('hidden');
+            document.getElementById('results-container').classList.add('hidden');
+            
+            updateHomeProgress();
+        }
+
+        function showLessons() {
+            document.getElementById('home-screen').classList.add('hidden');
+            document.getElementById('lesson-selection').classList.remove('hidden');
+            document.getElementById('dictionary-screen').classList.add('hidden');
+            
+            generateLessonsGrid();
+        }
+
+        function showDictionary() {
+            document.getElementById('home-screen').classList.add('hidden');
+            document.getElementById('lesson-selection').classList.add('hidden');
+            document.getElementById('dictionary-screen').classList.remove('hidden');
+            
+            generateDictionary();
+        }
+
+        function generateDictionary() {
+            const learnedWords = [];
+            
+            userProgress.completedLessons.forEach(lessonId => {
+                if (lessonId % 10 !== 0) {
+                    const lessonWords = vocabularyData[lessonId] || generateExtendedVocabulary(lessonId);
+                    learnedWords.push(...lessonWords.map(word => ({...word, lessonId})));
+                }
+            });
+            
+            document.getElementById('dict-word-count').textContent = learnedWords.length;
+            renderDictionary(learnedWords);
+            setupDictionaryFilters(learnedWords);
+        }
+
+        function renderDictionary(words) {
+            const container = document.getElementById('dictionary-content');
+            
+            if (words.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-full text-center py-12">
+                        <div class="text-6xl mb-4">📚</div>
+                        <h3 class="text-xl text-white mb-2">Словарь пуст</h3>
+                        <p class="text-gray-400 mb-6">Пройдите несколько уроков, чтобы пополнить словарь</p>
+                        <button class="glow-button px-6 py-3 rounded-lg font-semibold" onclick="showLessons()">
+                            Начать изучение
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = words.map((word, index) => `
+                <div class="dictionary-card" onclick="flipCard(${index})">
+                    <div class="card-inner" id="card-${index}">
+                        <div class="card-front">
+                            <div class="arabic-text text-2xl text-white mb-2">${word.arabic}</div>
+                            <div class="text-xs text-gray-400">${getTypeTranslation(word.type)}</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="text-lg text-white mb-2">${word.translation}</div>
+                            <div class="text-xs text-cyan-400">Корень: ${word.root}</div>
+                            <div class="text-xs text-gray-400 mt-1">Урок ${word.lessonId}</div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function flipCard(index) {
+            const card = document.getElementById(`card-${index}`).parentElement;
+            card.classList.toggle('flipped');
+        }
+
+        function setupDictionaryFilters(allWords) {
+            const searchInput = document.getElementById('search-input');
+            const typeFilter = document.getElementById('type-filter');
+            
+            function filterWords() {
+                const searchTerm = searchInput.value.toLowerCase();
+                const selectedType = typeFilter.value;
+                
+                let filteredWords = allWords;
+                
+                if (searchTerm) {
+                    filteredWords = filteredWords.filter(word => 
+                        word.arabic.includes(searchTerm) || 
+                        word.translation.toLowerCase().includes(searchTerm)
+                    );
+                }
+                
+                if (selectedType) {
+                    filteredWords = filteredWords.filter(word => word.type === selectedType);
+                }
+                
+                renderDictionary(filteredWords);
+            }
+            
+            searchInput.addEventListener('input', filterWords);
+            typeFilter.addEventListener('change', filterWords);
+        }
+
+        function backToLessons() {
+            document.getElementById('lesson-screen').classList.add('hidden');
+            document.getElementById('lesson-selection').classList.remove('hidden');
+            document.getElementById('results-container').classList.add('hidden');
+            document.getElementById('task-container').classList.remove('hidden');
+            
+            generateLessonsGrid();
+        }
+
+        function changeAyah() {
+            currentAyahIndex = (currentAyahIndex + 1) % motivationalAyahs.length;
+            const ayah = motivationalAyahs[currentAyahIndex];
+            
+            document.getElementById('ayah-arabic').textContent = ayah.arabic;
+            document.getElementById('ayah-translation').textContent = `"${ayah.translation}"`;
+            document.getElementById('ayah-reference').textContent = ayah.reference;
+        }
+
+        function updateLessonsDisplay() {
+            const lessonsScreen = document.getElementById('lesson-selection');
+            if (lessonsScreen && !lessonsScreen.classList.contains('hidden')) {
+                generateLessonsGrid();
+            }
+        }
+
+        function updateOverallProgress() {
+            const completed = userProgress.completedLessons.size + userProgress.passedExams.size;
+            const total = 100;
+            const percentage = (completed / total) * 100;
+            
+            document.getElementById('overall-progress').textContent = `${completed}/${total}`;
+            document.getElementById('overall-progress-bar').style.width = `${percentage}%`;
+        }
+
+        function updateHomeProgress() {
+            const completed = userProgress.completedLessons.size + userProgress.passedExams.size;
+            document.getElementById('home-progress').textContent = `${completed}/100`;
+            
+            const learnedWords = getLearnedWordsCount();
+            document.getElementById('words-learned').textContent = learnedWords;
+        }
+
+        function getLearnedWordsCount() {
+            let count = 0;
+            userProgress.completedLessons.forEach(lessonId => {
+                if (lessonId % 10 !== 0) {
+                    const lessonWords = vocabularyData[lessonId] || generateExtendedVocabulary(lessonId);
+                    count += lessonWords.length;
+                }
+            });
+            return count;
+        }
+
+        // Initialize app
+        initializeApp();
+        changeAyah();
+    </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'99ef3ea0e6bb371d',t:'MTc2MzIxNDkwOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
