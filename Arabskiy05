@@ -4,8 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Арабский для Корана</title>
-  <script src="/_sdk/element_sdk.js"></script>
-  <script src="/_sdk/data_sdk.js"></script>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='bg' x1='0%25' y1='0%25' x2='100%25' y2='100%25'><stop offset='0%25' style='stop-color:%2300ff88'/><stop offset='100%25' style='stop-color:%2300ccff'/></linearGradient></defs><rect width='100' height='100' fill='url(%23bg)' rx='20'/><text x='50' y='35' font-family='serif' font-size='24' fill='white' text-anchor='middle' font-weight='bold'>ع</text><text x='50' y='65' font-family='sans-serif' font-size='12' fill='white' text-anchor='middle'>قرآن</text></svg>" type="image/svg+xml">
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
         body {
@@ -209,8 +208,36 @@
                 transform: translateY(-1px);
             }
         }
+
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #00ff88, #00cc66);
+            color: #000;
+            padding: 12px 24px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 255, 136, 0.4);
+            z-index: 1000;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .github-info {
+            background: linear-gradient(135deg, #2a2a4a, #1e1e3f);
+            border: 1px solid #444;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 24px;
+        }
     </style>
   <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  <script src="/_sdk/element_sdk.js" type="text/javascript"></script>
  </head>
  <body class="h-full bg-gradient-to-br from-gray-900 via-purple-900 to-black font-sans">
   <div class="min-h-full flex flex-col"><!-- Header -->
@@ -233,7 +260,12 @@
     </div>
    </header><!-- Main Content -->
    <main class="flex-1 p-4"><!-- Home Screen -->
-    <div id="home-screen" class="max-w-4xl mx-auto text-center">
+    <div id="home-screen" class="max-w-4xl mx-auto text-center"><!-- GitHub Info -->
+     <div class="github-info text-left mb-8">
+      <h3 class="text-lg font-bold text-cyan-300 mb-2">📱 GitHub Pages версия</h3>
+      <p class="text-gray-300 text-sm mb-2">Данная версия использует localStorage для сохранения прогресса в браузере.</p>
+      <p class="text-gray-400 text-xs">Ваш прогресс сохраняется локально и будет доступен при следующем посещении с того же устройства.</p>
+     </div>
      <div class="mb-12">
       <h1 class="text-4xl font-bold text-white neon-text mb-4" id="main-title">Арабский для Корана</h1>
       <p class="text-green-300 text-lg mb-8">Изучайте священный язык Корана пошагово</p><!-- Motivational Ayah -->
@@ -263,7 +295,16 @@
         </div><h3 class="text-lg font-bold mb-2">Словарь</h3><p class="text-sm text-purple-200">Все изученные слова с переводами и корнями</p>
         <div class="mt-3 text-sm text-purple-300">
          Слов изучено: <span id="words-learned">0</span>
-        </div></button>
+        </div></button> <!-- Data Management -->
+       <div class="bg-gradient-to-br from-gray-600 to-gray-800 text-white rounded-xl p-6 text-left">
+        <div class="text-3xl mb-3">
+         💾
+        </div>
+        <h3 class="text-lg font-bold mb-2">Управление данными</h3>
+        <p class="text-sm text-gray-200 mb-4">Экспорт и импорт прогресса</p>
+        <div class="flex gap-2 flex-wrap"><button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm transition-colors" onclick="exportProgress()"> Экспорт </button> <button class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded text-sm transition-colors" onclick="importProgress()"> Импорт </button> <button class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded text-sm transition-colors" onclick="resetProgress()"> Сброс </button>
+        </div>
+       </div>
       </div>
      </div>
     </div><!-- Lesson Selection Screen -->
@@ -313,18 +354,9 @@
       </div>
      </div>
     </div>
-   </main>
+   </main><!-- Hidden file input for import --> <input type="file" id="import-file" accept=".json" style="display: none;" onchange="handleFileImport(event)">
   </div>
   <script>
-        // Configuration
-        const defaultConfig = {
-            course_title: "Арабский для Корана",
-            success_message: "Машаллах!",
-            primary_color: "#00ff88",
-            surface_color: "#1a1a2e",
-            text_color: "#ffffff"
-        };
-
         // Motivational Ayahs
         const motivationalAyahs = [
             {
@@ -415,105 +447,144 @@
         };
         let learnedWordsPerLesson = new Map();
 
-        // Data SDK handler
-        const dataHandler = {
-            onDataChanged(data) {
-                const completedLessons = data.filter(d => d.lesson_completed === true || d.lesson_completed === "true");
-                const passedExams = data.filter(d => d.exam_passed === true || d.exam_passed === "true");
-                
-                userProgress.completedLessons = new Set(completedLessons.map(d => parseInt(d.lesson_id)));
-                userProgress.passedExams = new Set(passedExams.map(d => parseInt(d.lesson_id)));
-                
-                const wordData = data.filter(d => d.word_learned === true || d.word_learned === "true");
-                learnedWordsPerLesson.clear();
-                wordData.forEach(d => {
-                    const lessonId = parseInt(d.lesson_id);
-                    if (!learnedWordsPerLesson.has(lessonId)) {
-                        learnedWordsPerLesson.set(lessonId, new Set());
+        // Local Storage functions
+        function saveProgress() {
+            const progressData = {
+                completedLessons: Array.from(userProgress.completedLessons),
+                passedExams: Array.from(userProgress.passedExams),
+                currentLesson: userProgress.currentLesson,
+                learnedWords: Array.from(learnedWordsPerLesson.entries()).map(([key, value]) => [key, Array.from(value)]),
+                timestamp: new Date().toISOString()
+            };
+            
+            try {
+                localStorage.setItem('arabic-quran-progress', JSON.stringify(progressData));
+            } catch (error) {
+                showToast('Ошибка сохранения прогресса', 'error');
+            }
+        }
+
+        function loadProgress() {
+            try {
+                const saved = localStorage.getItem('arabic-quran-progress');
+                if (saved) {
+                    const progressData = JSON.parse(saved);
+                    userProgress.completedLessons = new Set(progressData.completedLessons || []);
+                    userProgress.passedExams = new Set(progressData.passedExams || []);
+                    userProgress.currentLesson = progressData.currentLesson || 1;
+                    
+                    learnedWordsPerLesson.clear();
+                    if (progressData.learnedWords) {
+                        progressData.learnedWords.forEach(([key, value]) => {
+                            learnedWordsPerLesson.set(key, new Set(value));
+                        });
                     }
-                    learnedWordsPerLesson.get(lessonId).add(d.word_arabic);
-                });
-                
-                if (userProgress.completedLessons.size > 0) {
-                    userProgress.currentLesson = Math.max(...userProgress.completedLessons) + 1;
-                } else {
-                    userProgress.currentLesson = 1;
+                    
+                    updateLessonsDisplay();
+                    updateOverallProgress();
+                    updateHomeProgress();
                 }
+            } catch (error) {
+                showToast('Ошибка загрузки прогресса', 'error');
+            }
+        }
+
+        function exportProgress() {
+            const progressData = {
+                completedLessons: Array.from(userProgress.completedLessons),
+                passedExams: Array.from(userProgress.passedExams),
+                currentLesson: userProgress.currentLesson,
+                learnedWords: Array.from(learnedWordsPerLesson.entries()).map(([key, value]) => [key, Array.from(value)]),
+                timestamp: new Date().toISOString(),
+                version: "1.0"
+            };
+            
+            const dataStr = JSON.stringify(progressData, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(dataBlob);
+            link.download = `arabic-quran-progress-${new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+            
+            showToast('Прогресс экспортирован!');
+        }
+
+        function importProgress() {
+            document.getElementById('import-file').click();
+        }
+
+        function handleFileImport(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const progressData = JSON.parse(e.target.result);
+                    
+                    if (progressData.version && progressData.completedLessons !== undefined) {
+                        userProgress.completedLessons = new Set(progressData.completedLessons || []);
+                        userProgress.passedExams = new Set(progressData.passedExams || []);
+                        userProgress.currentLesson = progressData.currentLesson || 1;
+                        
+                        learnedWordsPerLesson.clear();
+                        if (progressData.learnedWords) {
+                            progressData.learnedWords.forEach(([key, value]) => {
+                                learnedWordsPerLesson.set(key, new Set(value));
+                            });
+                        }
+                        
+                        saveProgress();
+                        updateLessonsDisplay();
+                        updateOverallProgress();
+                        updateHomeProgress();
+                        
+                        showToast('Прогресс импортирован!');
+                    } else {
+                        showToast('Неверный формат файла', 'error');
+                    }
+                } catch (error) {
+                    showToast('Ошибка чтения файла', 'error');
+                }
+            };
+            reader.readAsText(file);
+            
+            // Reset file input
+            event.target.value = '';
+        }
+
+        function resetProgress() {
+            if (confirm('Вы уверены, что хотите сбросить весь прогресс? Это действие нельзя отменить.')) {
+                localStorage.removeItem('arabic-quran-progress');
+                userProgress = {
+                    completedLessons: new Set(),
+                    passedExams: new Set(),
+                    currentLesson: 1
+                };
+                learnedWordsPerLesson.clear();
                 
                 updateLessonsDisplay();
                 updateOverallProgress();
                 updateHomeProgress();
+                
+                showToast('Прогресс сброшен');
             }
-        };
+        }
 
-        // Element SDK configuration
-        async function onConfigChange(config) {
-            const courseTitle = document.getElementById('course-title');
-            if (courseTitle) courseTitle.textContent = config.course_title || defaultConfig.course_title;
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.className = `toast ${type === 'error' ? 'bg-red-600' : ''}`;
+            toast.textContent = message;
             
-            const mainTitle = document.getElementById('main-title');
-            if (mainTitle) mainTitle.textContent = config.course_title || defaultConfig.course_title;
-        }
-
-        function mapToCapabilities(config) {
-            return {
-                recolorables: [
-                    {
-                        get: () => config.primary_color || defaultConfig.primary_color,
-                        set: (value) => {
-                            config.primary_color = value;
-                            window.elementSdk.setConfig({ primary_color: value });
-                        }
-                    },
-                    {
-                        get: () => config.surface_color || defaultConfig.surface_color,
-                        set: (value) => {
-                            config.surface_color = value;
-                            window.elementSdk.setConfig({ surface_color: value });
-                        }
-                    },
-                    {
-                        get: () => config.text_color || defaultConfig.text_color,
-                        set: (value) => {
-                            config.text_color = value;
-                            window.elementSdk.setConfig({ text_color: value });
-                        }
-                    }
-                ],
-                borderables: [],
-                fontEditable: undefined,
-                fontSizeable: undefined
-            };
-        }
-
-        function mapToEditPanelValues(config) {
-            return new Map([
-                ["course_title", config.course_title || defaultConfig.course_title],
-                ["success_message", config.success_message || defaultConfig.success_message]
-            ]);
-        }
-
-        // Initialize SDKs
-        async function initializeApp() {
-            if (window.dataSdk) {
-                const initResult = await window.dataSdk.init(dataHandler);
-                if (!initResult.isOk) {
-                    console.error("Failed to initialize data SDK");
-                }
-            }
-
-            if (window.elementSdk) {
-                await window.elementSdk.init({
-                    defaultConfig,
-                    onConfigChange,
-                    mapToCapabilities,
-                    mapToEditPanelValues
-                });
-            }
-
-            updateOverallProgress();
-            updateHomeProgress();
-            generateLessonsGrid();
+            document.body.appendChild(toast);
+            
+            setTimeout(() => toast.classList.add('show'), 100);
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => document.body.removeChild(toast), 300);
+            }, 3000);
         }
 
         // Generate lessons grid
@@ -778,7 +849,7 @@
             showFeedback(answerIndex === task.correct, task.explanation);
         }
 
-        async function storeAnswer(task, answer) {
+        function storeAnswer(task, answer) {
             const isCorrect = answer === task.correct;
             
             if (isCorrect) {
@@ -791,30 +862,9 @@
                 correctAnswer: task.correct,
                 isCorrect: isCorrect
             });
-
-            if (window.dataSdk) {
-                const result = await window.dataSdk.create({
-                    lesson_id: currentLesson.id.toString(),
-                    task_id: task.id.toString(),
-                    user_answer: answer.toString(),
-                    correct_answer: task.correct.toString(),
-                    is_correct: isCorrect,
-                    timestamp: new Date().toISOString(),
-                    lesson_completed: false,
-                    exam_passed: false,
-                    current_lesson: currentLesson.id,
-                    unlocked_lessons: Array.from(userProgress.completedLessons).join(',')
-                });
-                
-                if (!result.isOk) {
-                    console.error("Failed to store answer");
-                }
-            }
         }
 
         function showFeedback(isCorrect, explanation) {
-            const config = window.elementSdk ? window.elementSdk.config : defaultConfig;
-            
             const container = document.getElementById('task-container');
             const feedbackDiv = document.createElement('div');
             feedbackDiv.className = 'mt-6 p-4 rounded-lg text-center';
@@ -822,7 +872,7 @@
             if (isCorrect) {
                 feedbackDiv.className += ' bg-green-900 border border-green-400';
                 feedbackDiv.innerHTML = `
-                    <div class="text-green-400 mb-2 text-lg neon-text">✓ ${config.success_message || defaultConfig.success_message}</div>
+                    <div class="text-green-400 mb-2 text-lg neon-text">✓ Машаллах!</div>
                     <div class="text-sm text-green-300">${explanation}</div>
                 `;
             } else {
@@ -850,7 +900,7 @@
             }
         }
 
-        async function completeLesson() {
+        function completeLesson() {
             const isExam = currentLesson.type === 'exam';
             const passingScore = isExam ? 0.7 : 0.5;
             const score = correctAnswers / currentLesson.tasks.length;
@@ -861,22 +911,17 @@
                     userProgress.passedExams.add(currentLesson.id);
                 } else {
                     userProgress.completedLessons.add(currentLesson.id);
-                }
-                
-                if (window.dataSdk) {
-                    await window.dataSdk.create({
-                        lesson_id: currentLesson.id.toString(),
-                        task_id: "completion",
-                        user_answer: score.toString(),
-                        correct_answer: passingScore.toString(),
-                        is_correct: passed,
-                        timestamp: new Date().toISOString(),
-                        lesson_completed: !isExam,
-                        exam_passed: isExam,
-                        current_lesson: currentLesson.id,
-                        unlocked_lessons: Array.from(userProgress.completedLessons).join(',')
+                    
+                    // Mark words as learned
+                    if (!learnedWordsPerLesson.has(currentLesson.id)) {
+                        learnedWordsPerLesson.set(currentLesson.id, new Set());
+                    }
+                    currentLesson.newWords.forEach(word => {
+                        learnedWordsPerLesson.get(currentLesson.id).add(word.arabic);
                     });
                 }
+                
+                saveProgress();
             }
             
             showResults(passed, isExam);
@@ -1075,8 +1120,16 @@
         }
 
         // Initialize app
+        function initializeApp() {
+            loadProgress();
+            updateOverallProgress();
+            updateHomeProgress();
+            generateLessonsGrid();
+            changeAyah();
+        }
+
+        // Initialize app when page loads
         initializeApp();
-        changeAyah();
     </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'99ef3ea0e6bb371d',t:'MTc2MzIxNDkwOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'99ef4b6f408b3aa0',t:'MTc2MzIxNTQzNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
