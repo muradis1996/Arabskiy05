@@ -658,7 +658,7 @@
    <header class="header">
     <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
      <h1 class="header-title" id="appTitle" style="flex: 1; min-width: 200px;">☪ Арабский для Корана</h1>
-     <div style="display: flex; gap: 0.5rem;"><button class="export-btn" id="exportBtn" title="Экспорт прогресса">📤</button> <button class="import-btn" id="importBtn" title="Импорт прогресса">📥</button>
+     <div style="display: flex; gap: 0.5rem;"><button class="export-btn" id="exportBtn" title="Эк���порт прогресса">📤</button> <button class="import-btn" id="importBtn" title="Импорт прогресса">📥</button>
      </div>
     </div><input type="file" id="importFile" accept=".json" style="display: none;">
    </header>
@@ -711,7 +711,7 @@
           { arabic: "كِتَاب", translation: "книга" },
           { arabic: "نَفْس", translation: "душа" },
           { arabic: "يَوْم", translation: "день" },
-          { arabic: "حَقّ", translation: "истина" },
+          { arabic: "��َقّ", translation: "истина" },
           { arabic: "عِلْم", translation: "знание" },
           { arabic: "أَرْض", translation: "земля" },
           { arabic: "سَبِيل", translation: "путь" }
@@ -753,8 +753,8 @@
 
     const VERB_EXERCISES = [
       {
-        sentence: "Они идут в школу",
-        arabic: "... إلى المدرسة",
+        sentence: "Они идут �� школу",
+        arabic: "... ��لى المدرسة",
         correctVerb: "يذهبون",
         options: ["يذهب", "يذهبون", "ذهب"],
         translations: ["он идёт", "они идут", "он пошёл"]
@@ -779,7 +779,7 @@
       {
         sentence: "Аллах — Господь миров",
         words: ["اللَّهُ", "رَبّ", "العالمين"],
-        correct: ["اللَّهُ", "رَبّ", "العالمين"],
+        correct: ["ا��لَّهُ", "رَبّ", "العالمين"],
         lessonId: 1
       },
       {
@@ -844,7 +844,7 @@
       },
       {
         sentence: "Мольба — причина милости",
-        words: ["الدُعَاء", "سَبَب", "الرَحْمَة"],
+        words: ["الدُعَاء", "��َبَب", "الرَحْمَة"],
         correct: ["الدُعَاء", "سَبَب", "الرَحْمَة"],
         lessonId: 3
       },
@@ -865,7 +865,7 @@
     const defaultConfig = {
       app_title: "☪ Арабский для Корана",
       motivation_1: "Продолжай, ты ближе к пониманию Корана",
-      motivation_2: "Ещё одно слово — ещё один шаг к знанию",
+      motivation_2: "Ещё одно слово — ещё ��дин шаг к знанию",
       motivation_3: "Не останавливайся!",
       primary_color: "#00d4ff",
       secondary_color: "#7b2ff7",
@@ -887,7 +887,7 @@
       onDataChanged(data) {
         learnedWords = data;
         
-        // Обновляем список завершенных уроков
+        // Обновляем список завершен��ых уроков
         const lessonIds = [...new Set(data.map(w => w.lesson_id))];
         completedLessons = new Set(lessonIds);
         
@@ -912,6 +912,12 @@
     };
 
     async function initApp() {
+      // Сначала показываем уроки
+      renderLessons();
+      setupNavigation();
+      setupExportImport();
+
+      // Потом инициализируем SDK
       const initResult = await window.dataSdk.init(dataHandler);
       if (!initResult.isOk) {
         console.error("Failed to initialize data SDK");
@@ -1022,10 +1028,6 @@
           ["motivation_3", config.motivation_3 || defaultConfig.motivation_3]
         ])
       });
-
-      setupNavigation();
-      setupExportImport();
-      renderLessons();
     }
 
     function setupExportImport() {
@@ -1156,6 +1158,16 @@
         return;
       }
 
+      if (!LESSONS_DATA || LESSONS_DATA.length === 0) {
+        content.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-icon">📚</div>
+            <div class="empty-text">Загрузка уроков...</div>
+          </div>
+        `;
+        return;
+      }
+
       const lessonsHTML = LESSONS_DATA.map((lesson, index) => {
         const isCompleted = completedLessons.has(lesson.id);
         
@@ -1177,13 +1189,18 @@
         </div>
       `;
 
-      document.querySelectorAll('.lesson-card').forEach(card => {
-        card.addEventListener('click', () => {
-          const lessonId = parseInt(card.dataset.lessonId);
-          currentLesson = LESSONS_DATA.find(l => l.id === lessonId);
-          renderLessonDetail(currentLesson);
+      // Небольшая задержка для DOM
+      setTimeout(() => {
+        document.querySelectorAll('.lesson-card').forEach(card => {
+          card.addEventListener('click', () => {
+            const lessonId = parseInt(card.dataset.lessonId);
+            currentLesson = LESSONS_DATA.find(l => l.id === lessonId);
+            if (currentLesson) {
+              renderLessonDetail(currentLesson);
+            }
+          });
         });
-      });
+      }, 0);
     }
 
     function renderLessonDetail(lesson) {
@@ -1266,10 +1283,10 @@
 
       content.innerHTML = `
         <div class="training-container">
-          <button class="back-button">← Завершить</button>
+          <button class="back-button">← ��авершить</button>
           
           <div class="training-progress">
-            <div class="progress-text">Вопрос ${currentTraining.currentQuestion + 1} из ${currentTraining.questions.length}</div>
+            <div class="progress-text">��опрос ${currentTraining.currentQuestion + 1} из ${currentTraining.questions.length}</div>
             <div class="progress-bar">
               <div class="progress-fill" style="width: ${progress}%"></div>
             </div>
@@ -1348,7 +1365,7 @@
       
       const buttonsHTML = score >= 70 ? `
         <button class="start-training-btn" id="homeBtn" style="margin-bottom: 1rem;">🏠 Главная</button>
-        <button class="start-training-btn" id="repeatBtn" style="margin-bottom: 1rem; background: linear-gradient(135deg, #7b2ff7, #b794f6);">🔄 Повторить</button>
+        <button class="start-training-btn" id="repeatBtn" style="margin-bottom: 1rem; background: linear-gradient(135deg, #7b2ff7, #b794f6);">�� Повторить</button>
         ${nextLesson ? `<button class="start-training-btn" id="nextBtn">➡️ Следующий урок</button>` : ''}
       ` : `
         <button class="start-training-btn" id="repeatBtn" style="margin-bottom: 1rem;">🔄 Повторить</button>
@@ -1362,7 +1379,7 @@
               ${score >= 70 ? '🎉' : '💪'}
             </div>
             <h2 style="color: #00d4ff; margin-bottom: 1rem;">
-              ${score >= 70 ? 'Отлично!' : 'Попробуйте ещё раз'}
+              ${score >= 70 ? 'Отличн��!' : 'Попробуйте ещё раз'}
             </h2>
             <div style="font-size: 2rem; color: #e0e6ed; margin-bottom: 2rem;">
               ${currentTraining.correctAnswers} из ${currentTraining.questions.length}
@@ -1447,7 +1464,7 @@
       if (learnedWords.length === 0) {
         content.innerHTML = `
           <div class="empty-state">
-            <div class="empty-icon">✍️</div>
+            <div class="empty-icon">✍��</div>
             <div class="empty-text">Сначала изучите слова в уроках</div>
           </div>
         `;
@@ -1521,7 +1538,7 @@
         return;
       }
 
-      // Приоритет новым урокам (последние изученные)
+      // Пр��оритет новым урокам (последние изученные)
       const sortedExercises = availableExercises.sort((a, b) => b.lessonId - a.lessonId);
       const exercise = sortedExercises[Math.floor(Math.random() * Math.min(5, sortedExercises.length))];
       const shuffledWords = [...exercise.words].sort(() => Math.random() - 0.5);
@@ -1612,7 +1629,7 @@
         } else {
           dropZone.style.borderColor = '#ff4444';
           dropZone.style.background = 'rgba(255, 68, 68, 0.1)';
-          checkBtn.textContent = '✗ Попробуйте ещё раз';
+          checkBtn.textContent = '�� Попробуйте ещё раз';
           checkBtn.style.background = 'linear-gradient(135deg, #ff4444, #ff6b6b)';
         }
 
@@ -1622,5 +1639,5 @@
 
     initApp();
   </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a0719fbd0294860',t:'MTc2MzQ2NTA2Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a0ad3f6022c4d61',t:'MTc2MzUwNDE0Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
