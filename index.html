@@ -1,1643 +1,1139 @@
 <!doctype html>
-<html lang="ru">
+<html lang="ru" class="h-full">
  <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Арабский для Корана</title>
-  <script src="/_sdk/data_sdk.js"></script>
-  <script src="/_sdk/element_sdk.js"></script>
+  <title>Арабский для Корана</title><!-- PWA Meta Tags для iPhone -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Арабский"><!-- Иконка для iPhone (180x180) -->
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Cdefs%3E%3ClinearGradient id='bg' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%2300ff88'/%3E%3Cstop offset='100%25' style='stop-color:%2300ccff'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='180' height='180' fill='url(%23bg)' rx='40'/%3E%3Ctext x='90' y='75' font-family='serif' font-size='48' fill='white' text-anchor='middle' font-weight='bold'%3Eع%3C/text%3E%3Ctext x='90' y='125' font-family='sans-serif' font-size='24' fill='white' text-anchor='middle'%3Eقرآن%3C/text%3E%3C/svg%3E"><!-- Обычная иконка -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='bg' x1='0%25' y1='0%25' x2='100%25' y2='100%25'><stop offset='0%25' style='stop-color:%2300ff88'/><stop offset='100%25' style='stop-color:%2300ccff'/></linearGradient></defs><rect width='100' height='100' fill='url(%23bg)' rx='20'/><text x='50' y='35' font-family='serif' font-size='24' fill='white' text-anchor='middle' font-weight='bold'>ع</text><text x='50' y='65' font-family='sans-serif' font-size='12' fill='white' text-anchor='middle'>قرآن</text></svg>" type="image/svg+xml">
+  <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      box-sizing: border-box;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
-      color: #e0e6ed;
-      min-height: 100%;
-      overflow-x: hidden;
-    }
-
-    html, body {
-      height: 100%;
-    }
-
-    .app-container {
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-      max-width: 100%;
-      margin: 0 auto;
-    }
-
-    /* Splash Screen - removed */
-
-    /* Header */
-    .header {
-      background: rgba(26, 31, 58, 0.8);
-      backdrop-filter: blur(10px);
-      padding: 1.2rem 1.5rem;
-      border-bottom: 2px solid rgba(0, 212, 255, 0.3);
-      box-shadow: 0 4px 20px rgba(0, 212, 255, 0.1);
-    }
-
-    .header-title {
-      font-size: 1.8rem;
-      font-weight: bold;
-      background: linear-gradient(135deg, #00d4ff, #7b2ff7);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      text-align: center;
-    }
-
-    .export-btn, .import-btn {
-      background: rgba(0, 212, 255, 0.1);
-      border: 2px solid rgba(0, 212, 255, 0.3);
-      color: #00d4ff;
-      padding: 0.6rem 1rem;
-      border-radius: 10px;
-      font-size: 1.2rem;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .export-btn:hover, .import-btn:hover {
-      transform: scale(1.1);
-      background: rgba(0, 212, 255, 0.2);
-      border-color: rgba(0, 212, 255, 0.8);
-      box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
-    }
-
-    /* Main Content */
-    .main-content {
-      flex: 1;
-      overflow-y: auto;
-      padding: 1.5rem;
-      padding-bottom: 5rem;
-    }
-
-    /* Lessons Section */
-    .lessons-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 1.5rem;
-      margin-bottom: 2rem;
-    }
-
-    .lesson-card {
-      background: linear-gradient(135deg, rgba(26, 31, 58, 0.9), rgba(42, 47, 78, 0.9));
-      border: 2px solid rgba(0, 212, 255, 0.3);
-      border-radius: 16px;
-      padding: 1.5rem;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .lesson-card:hover {
-      border-color: rgba(0, 212, 255, 0.8);
-      box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
-    }
-
-    .lesson-number {
-      font-size: 2.5rem;
-      font-weight: bold;
-      background: linear-gradient(135deg, #00d4ff, #7b2ff7);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin-bottom: 0.5rem;
-    }
-
-    .lesson-title {
-      font-size: 1.2rem;
-      margin-bottom: 0.5rem;
-      color: #e0e6ed;
-    }
-
-    .lesson-progress {
-      font-size: 0.9rem;
-      color: #8b92a8;
-      margin-bottom: 1rem;
-    }
-
-    .lesson-status {
-      display: inline-block;
-      padding: 0.4rem 1rem;
-      border-radius: 20px;
-      font-size: 0.85rem;
-      font-weight: 600;
-    }
-
-    .status-new {
-      background: rgba(123, 47, 247, 0.2);
-      color: #b794f6;
-      border: 1px solid rgba(123, 47, 247, 0.5);
-    }
-
-    .status-completed {
-      background: rgba(0, 212, 255, 0.2);
-      color: #00d4ff;
-      border: 1px solid rgba(0, 212, 255, 0.5);
-    }
-
-    /* Lesson Detail View */
-    .lesson-detail {
-      opacity: 1;
-    }
-
-    .back-button {
-      background: rgba(26, 31, 58, 0.8);
-      border: 2px solid rgba(0, 212, 255, 0.3);
-      color: #00d4ff;
-      padding: 0.8rem 1.5rem;
-      border-radius: 12px;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      margin-bottom: 1.5rem;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .back-button:hover {
-      transform: scale(1.05);
-      background: rgba(0, 212, 255, 0.1);
-      border-color: rgba(0, 212, 255, 0.8);
-      box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
-    }
-
-    .words-list {
-      display: grid;
-      gap: 1rem;
-      margin-bottom: 2rem;
-    }
-
-    .word-card {
-      background: linear-gradient(135deg, rgba(26, 31, 58, 0.9), rgba(42, 47, 78, 0.9));
-      border: 2px solid rgba(123, 47, 247, 0.3);
-      border-radius: 12px;
-      padding: 1.5rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      transition: all 0.3s ease;
-      cursor: pointer;
-    }
-
-    .word-card:hover {
-      transform: translateX(8px);
-      border-color: rgba(123, 47, 247, 0.8);
-      box-shadow: 0 4px 20px rgba(123, 47, 247, 0.3);
-    }
-
-    .word-arabic {
-      font-size: 2rem;
-      font-weight: bold;
-      color: #00d4ff;
-      direction: rtl;
-    }
-
-    .word-translation {
-      font-size: 1.2rem;
-      color: #e0e6ed;
-    }
-
-    .start-training-btn {
-      width: 100%;
-      background: linear-gradient(135deg, #00d4ff, #7b2ff7);
-      border: none;
-      color: white;
-      padding: 1.2rem;
-      border-radius: 12px;
-      font-size: 1.2rem;
-      font-weight: bold;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 20px rgba(0, 212, 255, 0.4);
-    }
-
-    .start-training-btn:hover {
-      transform: scale(1.05);
-      box-shadow: 0 6px 30px rgba(0, 212, 255, 0.6);
-    }
-
-    /* Training View */
-    .training-container {
-      max-width: 600px;
-      margin: 0 auto;
-    }
-
-    .training-progress {
-      background: rgba(26, 31, 58, 0.8);
-      border-radius: 12px;
-      padding: 1rem;
-      margin-bottom: 2rem;
-      text-align: center;
-    }
-
-    .progress-text {
-      font-size: 1.1rem;
-      color: #8b92a8;
-      margin-bottom: 0.5rem;
-    }
-
-    .progress-bar {
-      width: 100%;
-      height: 8px;
-      background: rgba(123, 47, 247, 0.2);
-      border-radius: 4px;
-      overflow: hidden;
-    }
-
-    .progress-fill {
-      height: 100%;
-      background: linear-gradient(90deg, #00d4ff, #7b2ff7);
-      transition: width 0.3s ease;
-      box-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
-    }
-
-    .question-card {
-      background: linear-gradient(135deg, rgba(26, 31, 58, 0.9), rgba(42, 47, 78, 0.9));
-      border: 2px solid rgba(0, 212, 255, 0.3);
-      border-radius: 16px;
-      padding: 2rem;
-      margin-bottom: 2rem;
-    }
-
-    .question-text {
-      font-size: 1.3rem;
-      color: #e0e6ed;
-      margin-bottom: 1.5rem;
-      text-align: center;
-    }
-
-    .question-arabic {
-      font-size: 3rem;
-      font-weight: bold;
-      color: #00d4ff;
-      text-align: center;
-      margin: 2rem 0;
-      direction: rtl;
-    }
-
-    .options-grid {
-      display: grid;
-      gap: 1rem;
-    }
-
-    .option-btn {
-      background: rgba(26, 31, 58, 0.8);
-      border: 2px solid rgba(123, 47, 247, 0.3);
-      color: #e0e6ed;
-      padding: 1.2rem;
-      border-radius: 12px;
-      font-size: 1.1rem;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      text-align: left;
-    }
-
-    .option-btn:hover {
-      transform: scale(1.02);
-      border-color: rgba(123, 47, 247, 0.8);
-      background: rgba(123, 47, 247, 0.1);
-    }
-
-    .option-btn.correct {
-      background: rgba(0, 255, 136, 0.2);
-      border-color: #00ff88;
-      color: #00ff88;
-    }
-
-    .option-btn.incorrect {
-      background: rgba(255, 68, 68, 0.2);
-      border-color: #ff4444;
-      color: #ff4444;
-    }
-
-    .motivation-message {
-      background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(123, 47, 247, 0.1));
-      border: 2px solid rgba(0, 212, 255, 0.3);
-      border-radius: 12px;
-      padding: 1.5rem;
-      text-align: center;
-      font-size: 1.1rem;
-      color: #00d4ff;
-      margin-top: 1rem;
-    }
-
-
-
-    /* Dictionary Section */
-    .dictionary-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-      gap: 1.5rem;
-    }
-
-    .dict-card {
-      background: linear-gradient(135deg, rgba(26, 31, 58, 0.9), rgba(42, 47, 78, 0.9));
-      border: 2px solid rgba(0, 212, 255, 0.3);
-      border-radius: 16px;
-      padding: 2rem;
-      cursor: pointer;
-      transition: all 0.6s ease;
-      transform-style: preserve-3d;
-      min-height: 180px;
-      position: relative;
-    }
-
-    .dict-card:hover {
-      border-color: rgba(123, 47, 247, 0.8);
-    }
-
-    .dict-card.flipped .dict-card-front {
-      transform: rotateY(180deg);
-    }
-
-    .dict-card.flipped .dict-card-back {
-      transform: rotateY(0deg);
-    }
-
-    .dict-card-front, .dict-card-back {
-      backface-visibility: hidden;
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      padding: 2rem;
-      transition: transform 0.6s ease;
-      top: 0;
-      left: 0;
-      border-radius: 16px;
-    }
-
-    .dict-card-back {
-      transform: rotateY(-180deg);
-    }
-
-    /* Verbs Section */
-    .verb-exercise {
-      max-width: 700px;
-      margin: 0 auto;
-    }
-
-    /* Sentence Training */
-    .sentence-builder {
-      background: linear-gradient(135deg, rgba(26, 31, 58, 0.9), rgba(42, 47, 78, 0.9));
-      border: 2px solid rgba(0, 212, 255, 0.3);
-      border-radius: 16px;
-      padding: 2rem;
-      margin-bottom: 2rem;
-    }
-
-    .drop-zone {
-      min-height: 100px;
-      background: rgba(123, 47, 247, 0.1);
-      border: 2px dashed rgba(123, 47, 247, 0.5);
-      border-radius: 12px;
-      padding: 1rem;
-      margin-bottom: 2rem;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .word-chip {
-      background: linear-gradient(135deg, #00d4ff, #7b2ff7);
-      color: white;
-      padding: 0.8rem 1.5rem;
-      border-radius: 25px;
-      cursor: move;
-      transition: all 0.2s ease;
-      font-size: 1.1rem;
-      user-select: none;
-    }
-
-    .word-chip:hover {
-      transform: scale(1.1);
-      box-shadow: 0 4px 15px rgba(0, 212, 255, 0.5);
-    }
-
-    .word-chip.dragging {
-      opacity: 0.5;
-    }
-
-    .words-pool {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      justify-content: center;
-    }
-
-    .check-btn {
-      width: 100%;
-      background: linear-gradient(135deg, #00d4ff, #7b2ff7);
-      border: none;
-      color: white;
-      padding: 1rem;
-      border-radius: 12px;
-      font-size: 1.1rem;
-      font-weight: bold;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      margin-top: 1rem;
-    }
-
-    .check-btn:hover {
-      transform: scale(1.05);
-      box-shadow: 0 6px 25px rgba(0, 212, 255, 0.5);
-    }
-
-    /* Bottom Navigation */
-    .bottom-nav {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: rgba(26, 31, 58, 0.95);
-      backdrop-filter: blur(10px);
-      border-top: 2px solid rgba(0, 212, 255, 0.3);
-      display: flex;
-      justify-content: space-around;
-      padding: 1rem 0;
-      box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
-    }
-
-    .nav-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.3rem;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      padding: 0.5rem 1rem;
-      border-radius: 12px;
-      color: #8b92a8;
-    }
-
-    .nav-item:hover {
-      transform: scale(1.1);
-    }
-
-    .nav-item.active {
-      color: #00d4ff;
-      background: rgba(0, 212, 255, 0.1);
-      box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
-    }
-
-    .nav-icon {
-      font-size: 1.5rem;
-    }
-
-    .nav-label {
-      font-size: 0.75rem;
-      font-weight: 600;
-    }
-
-    /* Empty State */
-    .empty-state {
-      text-align: center;
-      padding: 3rem 1rem;
-      color: #8b92a8;
-    }
-
-    .empty-icon {
-      font-size: 4rem;
-      margin-bottom: 1rem;
-      opacity: 0.5;
-    }
-
-    .empty-text {
-      font-size: 1.2rem;
-    }
-
-    /* Responsive */
-    @media (max-width: 768px) {
-      .header {
-        padding: 1rem;
-      }
-
-      .header-title {
-        font-size: 1.3rem;
-      }
-
-      .export-btn, .import-btn {
-        padding: 0.5rem 0.8rem;
-        font-size: 1rem;
-      }
-
-      .main-content {
-        padding: 1rem;
-        padding-bottom: 5rem;
-      }
-
-      .lessons-grid {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-      }
-
-      .lesson-card {
-        padding: 1.2rem;
-      }
-
-      .lesson-number {
-        font-size: 2rem;
-      }
-
-      .dictionary-grid {
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-        gap: 1rem;
-      }
-
-      .dict-card {
-        min-height: 150px;
-        padding: 1.5rem;
-      }
-
-      .word-arabic {
-        font-size: 1.5rem;
-      }
-
-      .word-translation {
-        font-size: 1rem;
-      }
-
-      .question-arabic {
-        font-size: 2rem;
-        margin: 1.5rem 0;
-      }
-
-      .question-card {
-        padding: 1.5rem;
-      }
-
-      .option-btn {
-        padding: 1rem;
-        font-size: 1rem;
-      }
-
-      .word-chip {
-        padding: 0.6rem 1.2rem;
-        font-size: 1rem;
-      }
-
-      .bottom-nav {
-        padding: 0.8rem 0;
-      }
-
-      .nav-icon {
-        font-size: 1.3rem;
-      }
-
-      .nav-label {
-        font-size: 0.7rem;
-      }
-
-      .splash-logo {
-        font-size: 2rem;
-      }
-
-      .training-container {
-        padding: 0;
-      }
-
-      .sentence-builder {
-        padding: 1.5rem;
-      }
-
-      .drop-zone {
-        min-height: 80px;
-        padding: 0.8rem;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .header-title {
-        font-size: 1.1rem;
-      }
-
-      .lesson-number {
-        font-size: 1.8rem;
-      }
-
-      .lesson-title {
-        font-size: 1rem;
-      }
-
-      .question-arabic {
-        font-size: 1.5rem;
-      }
-
-      .word-chip {
-        padding: 0.5rem 1rem;
-        font-size: 0.9rem;
-      }
-
-      .dict-card {
-        min-height: 120px;
-      }
-    }
-  </style>
+        body {
+            box-sizing: border-box;
+        }
+        
+        .arabic-text {
+            font-family: 'Amiri', 'Traditional Arabic', serif;
+            font-size: 2.5rem;
+            direction: rtl;
+            text-align: right;
+        }
+        
+        .progress-bar {
+            transition: width 0.2s ease;
+            background: linear-gradient(90deg, #00ff88, #00ccff);
+            box-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+        }
+        
+        .task-card {
+            transition: all 0.2s ease;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            border: 1px solid #00ff88;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.1);
+        }
+        
+        .correct-answer {
+            background: linear-gradient(135deg, #00ff88, #00cc66) !important;
+            color: #000 !important;
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.6);
+            font-weight: bold;
+        }
+        
+        .incorrect-answer {
+            background: linear-gradient(135deg, #ff0066, #cc0044) !important;
+            color: white !important;
+            box-shadow: 0 0 15px rgba(255, 0, 102, 0.6);
+        }
+        
+        .option-button {
+            transition: all 0.15s ease;
+            background: linear-gradient(135deg, #2a2a4a, #1e1e3f);
+            border: 1px solid #444;
+            color: #fff;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            font-size: 1.1rem;
+            padding: 1rem;
+        }
+        
+        @media (hover: hover) {
+            .option-button:hover:not(:disabled) {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 15px rgba(0, 255, 136, 0.3);
+                border-color: #00ff88;
+                background: linear-gradient(135deg, #3a3a5a, #2e2e4f);
+            }
+        }
+        
+        .word-tile {
+            background: linear-gradient(135deg, #2a2a4a, #1e1e3f);
+            border: 1px solid #444;
+            border-radius: 8px;
+            padding: 12px 20px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            user-select: none;
+        }
+        
+        @media (hover: hover) {
+            .word-tile:hover {
+                border-color: #00ff88;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 10px rgba(0, 255, 136, 0.3);
+            }
+        }
+        
+        .word-tile.selected {
+            background: linear-gradient(135deg, #00ff88, #00cc66);
+            color: #000;
+            border-color: #00ff88;
+            font-weight: bold;
+        }
+        
+        .word-tile.disabled {
+            opacity: 0.3;
+            pointer-events: none;
+        }
+        
+        .answer-slot {
+            min-height: 60px;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            border: 2px dashed #444;
+            border-radius: 8px;
+            padding: 10px;
+            min-width: 200px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .answer-slot.correct {
+            border-color: #00ff88;
+            background: linear-gradient(135deg, #1a4a2a, #1e3f1e);
+        }
+        
+        .answer-slot.incorrect {
+            border-color: #ff0066;
+            background: linear-gradient(135deg, #4a1a2a, #3f1e1e);
+        }
+        
+        .lesson-card {
+            background: linear-gradient(135deg, #2a2a4a, #1e1e3f);
+            border: 1px solid #444;
+            transition: all 0.15s ease;
+        }
+        
+        @media (hover: hover) {
+            .lesson-card:hover {
+                border-color: #00ff88;
+                box-shadow: 0 4px 15px rgba(0, 255, 136, 0.2);
+                transform: translateY(-2px);
+            }
+        }
+        
+        .lesson-card.completed {
+            border-color: #00ff88;
+            background: linear-gradient(135deg, #1a4a2a, #1e3f1e);
+        }
+        
+        .neon-text {
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.8);
+        }
+        
+        .neon-border {
+            border: 1px solid #00ff88;
+            box-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.3s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .dictionary-card {
+            perspective: 1000px;
+            height: 120px;
+            cursor: pointer;
+        }
+        
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        
+        .dictionary-card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+        
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 16px;
+        }
+        
+        .card-front {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            border: 1px solid #00ff88;
+        }
+        
+        .card-back {
+            background: linear-gradient(135deg, #2a2a4a, #1e1e3f);
+            border: 1px solid #00ccff;
+            transform: rotateY(180deg);
+        }
+        
+        .glow-button {
+            background: linear-gradient(135deg, #00ff88, #00cc66);
+            color: #000;
+            font-weight: bold;
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.4);
+            transition: all 0.15s ease;
+        }
+        
+        @media (hover: hover) {
+            .glow-button:hover {
+                box-shadow: 0 0 25px rgba(0, 255, 136, 0.6);
+                transform: translateY(-1px);
+            }
+        }
+
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #00ff88, #00cc66);
+            color: #000;
+            padding: 12px 24px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 255, 136, 0.4);
+            z-index: 1000;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .github-info {
+            background: linear-gradient(135deg, #2a2a4a, #1e1e3f);
+            border: 1px solid #444;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 24px;
+        }
+    </style>
   <style>@view-transition { navigation: auto; }</style>
-  <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  <script src="/_sdk/element_sdk.js" type="text/javascript"></script>
  </head>
- <body>
-  <div class="app-container">
-   <header class="header">
-    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
-     <h1 class="header-title" id="appTitle" style="flex: 1; min-width: 200px;">☪ Арабский для Корана</h1>
-     <div style="display: flex; gap: 0.5rem;"><button class="export-btn" id="exportBtn" title="Эк���порт прогресса">📤</button> <button class="import-btn" id="importBtn" title="Импорт прогресса">📥</button>
-     </div>
-    </div><input type="file" id="importFile" accept=".json" style="display: none;">
-   </header>
-   <main class="main-content" id="mainContent"><!-- Content will be dynamically loaded here -->
-   </main>
-   <nav class="bottom-nav">
-    <div class="nav-item active" data-section="lessons">
-     <div class="nav-icon">
-      📚
-     </div>
-     <div class="nav-label">
-      Уроки
-     </div>
-    </div>
-    <div class="nav-item" data-section="dictionary">
-     <div class="nav-icon">
-      📖
-     </div>
-     <div class="nav-label">
-      Словарь
+ <body class="h-full bg-gradient-to-br from-gray-900 via-purple-900 to-black font-sans">
+  <div class="min-h-full flex flex-col"><!-- Header -->
+   <header class="bg-gradient-to-r from-gray-800 to-gray-900 shadow-lg border-b border-green-400 neon-border">
+    <div class="max-w-6xl mx-auto px-4 py-4">
+     <div class="flex items-center justify-between">
+      <div>
+       <h1 id="course-title" class="text-2xl font-bold text-white neon-text">Арабский для Корана</h1>
+       <p class="text-green-300">Изучайте коранический арабский</p>
+      </div>
+      <div class="text-right">
+       <div class="text-sm text-green-300 mb-1">
+        Прогресс: <span id="overall-progress">0/1</span>
+       </div>
+       <div class="w-48 bg-gray-700 rounded-full h-3 border border-gray-600">
+        <div id="overall-progress-bar" class="progress-bar h-3 rounded-full" style="width: 0%"></div>
+       </div>
+      </div>
      </div>
     </div>
-    <div class="nav-item" data-section="verbs">
-     <div class="nav-icon">
-      ✍️
+   </header><!-- Main Content -->
+   <main class="flex-1 p-4"><!-- Home Screen -->
+    <div id="home-screen" class="max-w-4xl mx-auto text-center"><!-- GitHub Info -->
+     <div class="github-info text-left mb-8">
+      <h3 class="text-lg font-bold text-cyan-300 mb-2">📱 Добавьте на домашний экран</h3>
+      <p class="text-gray-300 text-sm mb-2"><strong>iPhone:</strong> Откройте в Safari → Нажмите <span class="inline-block">⎙</span> → "На экран «Домой»"</p>
+      <p class="text-gray-400 text-xs">Ваш прогресс сохраняется автоматически в браузере</p>
      </div>
-     <div class="nav-label">
-      Глаголы
+     <div class="mb-12">
+      <h1 class="text-4xl font-bold text-white neon-text mb-4" id="main-title">Арабский для Корана</h1>
+      <p class="text-green-300 text-lg mb-8">Изучайте священный язык Корана пошагово</p><!-- Main Menu Buttons -->
+      <div class="grid grid-cols-1 gap-4"><button class="bg-gradient-to-br from-purple-600 to-purple-800 text-white rounded-xl p-6 text-left transition-all hover:from-purple-500 hover:to-purple-700" onclick="showLessons()">
+        <div class="text-3xl mb-3">
+         📚
+        </div><h3 class="text-lg font-bold mb-2">Урок 1</h3><p class="text-sm text-purple-200">12 базовых слов коранической лексики</p>
+        <div class="mt-3 text-sm text-purple-300">
+         Прогресс: <span id="home-progress">0/1</span>
+        </div></button> <button class="bg-gradient-to-br from-cyan-600 to-cyan-800 text-white rounded-xl p-6 text-left transition-all hover:from-cyan-500 hover:to-cyan-700" onclick="showPractice()">
+        <div class="text-3xl mb-3">
+         🎮
+        </div><h3 class="text-lg font-bold mb-2">Практика</h3><p class="text-sm text-cyan-200">Собирайте предложения на арабском</p>
+        <div class="mt-3 text-sm text-cyan-300">
+         10 предложений для практики
+        </div></button> <button class="bg-gradient-to-br from-purple-600 to-purple-800 text-white rounded-xl p-6 text-left transition-all hover:from-purple-500 hover:to-purple-700" onclick="showDictionary()">
+        <div class="text-3xl mb-3">
+         📖
+        </div><h3 class="text-lg font-bold mb-2">Словарь</h3><p class="text-sm text-purple-200">Все изученные слова с переводами</p>
+        <div class="mt-3 text-sm text-purple-300">
+         Слов изучено: <span id="words-learned">0</span>
+        </div></button> <!-- Data Management -->
+       <div class="bg-gradient-to-br from-gray-600 to-gray-800 text-white rounded-xl p-6 text-left">
+        <div class="text-3xl mb-3">
+         💾
+        </div>
+        <h3 class="text-lg font-bold mb-2">Управление данными</h3>
+        <p class="text-sm text-gray-200 mb-4">Экспорт и импорт прогресса</p>
+        <div class="flex gap-2 flex-wrap"><button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm transition-colors" onclick="exportProgress()"> Экспорт </button> <button class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded text-sm transition-colors" onclick="importProgress()"> Импорт </button>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div><!-- Lesson Selection Screen -->
+    <div id="lesson-selection" class="hidden max-w-6xl mx-auto">
+     <div class="flex items-center justify-between mb-6"><button class="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors flex items-center gap-2" onclick="showHome()"> ← Главная </button>
+      <h2 class="text-2xl font-bold text-white neon-text">Урок 1</h2>
+      <div></div>
+     </div>
+     <div class="grid grid-cols-1 gap-3 max-w-md mx-auto">
+      <div class="lesson-card rounded-lg p-6 cursor-pointer" onclick="startLesson(1)">
+       <div class="text-center">
+        <div class="text-3xl mb-3">
+         📖
+        </div>
+        <h3 class="font-bold text-white mb-2">Начать урок</h3>
+        <p class="text-sm text-gray-300">12 новых слов</p>
+       </div>
+      </div>
+     </div>
+    </div><!-- Practice Screen -->
+    <div id="practice-screen" class="hidden max-w-4xl mx-auto">
+     <div class="flex items-center justify-between mb-6"><button class="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors flex items-center gap-2" onclick="showHome()"> ← Главная </button>
+      <h2 class="text-2xl font-bold text-white neon-text">Практика</h2>
+      <div class="text-sm text-green-300"><span id="practice-progress">0/10</span>
+      </div>
+     </div>
+     <div id="practice-task" class="task-card rounded-xl shadow-lg p-8"><!-- Practice task will be rendered here -->
+     </div>
+    </div><!-- Dictionary Screen -->
+    <div id="dictionary-screen" class="hidden max-w-4xl mx-auto">
+     <div class="flex items-center justify-between mb-6"><button class="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors flex items-center gap-2" onclick="showHome()"> ← Главная </button>
+      <h2 class="text-2xl font-bold text-white neon-text">Словарь</h2>
+      <div class="text-sm text-green-300"><span id="dict-word-count">0</span> слов
+      </div>
+     </div><!-- Search and Filter -->
+     <div class="bg-gradient-to-r from-gray-800 to-gray-700 border border-green-400 rounded-lg p-4 mb-6">
+      <div class="flex flex-col md:flex-row gap-4"><input type="text" id="search-input" placeholder="Поиск по арабскому тексту или переводу..." class="flex-1 bg-gray-900 border border-gray-600 rounded-lg px-4 py-2 text-white placeholder-gray-400 focus:border-green-400 focus:outline-none"> <select id="type-filter" class="bg-gray-900 border border-gray-600 rounded-lg px-4 py-2 text-white focus:border-green-400 focus:outline-none"> <option value="">Все типы</option> <option value="noun">Существительные</option> <option value="verb">Глаголы</option> <option value="preposition">Предлоги</option> <option value="pronoun">Местоимения</option> <option value="particle">Частицы</option> <option value="interrogative">Вопросительные</option> </select>
+      </div>
+     </div><!-- Dictionary Content -->
+     <div id="dictionary-content" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"><!-- Dictionary words will be generated here -->
+     </div>
+    </div><!-- Lesson Screen -->
+    <div id="lesson-screen" class="hidden max-w-2xl mx-auto"><!-- Back Button -->
+     <div class="flex items-center justify-between mb-6"><button class="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors flex items-center gap-2" onclick="backToLessons()"> ← К урокам </button>
+      <div class="text-white text-sm"><span id="lesson-title-header">Урок 1</span>
+      </div>
+      <div></div>
+     </div><!-- Task Container -->
+     <div id="task-container" class="task-card bg-white rounded-xl shadow-lg p-8 fade-in"><!-- Task content will be inserted here -->
+     </div><!-- Lesson Results -->
+     <div id="results-container" class="hidden">
+      <div class="task-card rounded-xl shadow-lg p-8 text-center">
+       <div class="text-6xl mb-4">
+        🎉
+       </div>
+       <h2 id="results-title" class="text-2xl font-bold text-white neon-text mb-4">Урок завершён!</h2>
+       <div id="results-stats" class="text-green-300 mb-6">
+        <p>Правильных ответов: <span id="correct-answers" class="font-semibold text-white">0</span> из <span id="total-tasks" class="font-semibold text-white">24</span></p>
+       </div>
+       <div class="bg-gray-800 border border-cyan-400 rounded-lg p-4 mb-6">
+        <h3 class="font-semibold text-cyan-300 mb-2">Отличная работа!</h3>
+        <div class="text-sm text-gray-300">
+         Вы изучили 12 новых слов
+        </div>
+       </div><button id="back-to-lessons" class="glow-button px-8 py-3 rounded-lg font-semibold transition-all" onclick="backToLessons()"> К урокам </button>
+      </div>
      </div>
     </div>
-    <div class="nav-item" data-section="training">
-     <div class="nav-icon">
-      🎯
-     </div>
-     <div class="nav-label">
-      Тренировка
-     </div>
-    </div>
-   </nav>
+   </main><!-- Hidden file input for import --> <input type="file" id="import-file" accept=".json" style="display: none;" onchange="handleFileImport(event)">
   </div>
   <script>
-    const LESSONS_DATA = [
-      {
-        id: 1,
-        title: "Основы веры",
-        words: [
-          { arabic: "اللَّهُ", translation: "Всевышний Аллах" },
-          { arabic: "رَبّ", translation: "Господь" },
-          { arabic: "قَالَ", translation: "сказал" },
-          { arabic: "كِتَاب", translation: "книга" },
-          { arabic: "نَفْس", translation: "душа" },
-          { arabic: "يَوْم", translation: "день" },
-          { arabic: "��َقّ", translation: "истина" },
-          { arabic: "عِلْم", translation: "знание" },
-          { arabic: "أَرْض", translation: "земля" },
-          { arabic: "سَبِيل", translation: "путь" }
-        ]
-      },
-      {
-        id: 2,
-        title: "Вера и неверие",
-        words: [
-          { arabic: "مُؤْمِن", translation: "верующий" },
-          { arabic: "كَافِر", translation: "неверующий" },
-          { arabic: "هُدًى", translation: "руководство" },
-          { arabic: "رَحْمَة", translation: "милость" },
-          { arabic: "نُور", translation: "свет" },
-          { arabic: "قُوَّة", translation: "сила" },
-          { arabic: "آيَة", translation: "знамение" },
-          { arabic: "سَمَاء", translation: "небо" },
-          { arabic: "مَاء", translation: "вода" },
-          { arabic: "جَنَّة", translation: "рай" }
-        ]
-      },
-      {
-        id: 3,
-        title: "Мир и вечность",
-        words: [
-          { arabic: "نَار", translation: "огонь" },
-          { arabic: "قَوْم", translation: "народ" },
-          { arabic: "سَبَب", translation: "причина" },
-          { arabic: "بَاب", translation: "дверь" },
-          { arabic: "طَرِيق", translation: "дорога" },
-          { arabic: "دُنْيَا", translation: "мир" },
-          { arabic: "أَخِيرَة", translation: "вечность" },
-          { arabic: "دُعَاء", translation: "мольба" },
-          { arabic: "حُكْم", translation: "решение" },
-          { arabic: "رَسُول", translation: "посланник" }
-        ]
-      }
-    ];
-
-    const VERB_EXERCISES = [
-      {
-        sentence: "Они идут �� школу",
-        arabic: "... ��لى المدرسة",
-        correctVerb: "يذهبون",
-        options: ["يذهب", "يذهبون", "ذهب"],
-        translations: ["он идёт", "они идут", "он пошёл"]
-      },
-      {
-        sentence: "Он сказал истину",
-        arabic: "... الحَقّ",
-        correctVerb: "قَالَ",
-        options: ["قَالَ", "يَقُول", "قَالُوا"],
-        translations: ["он сказал", "он говорит", "они сказали"]
-      },
-      {
-        sentence: "Мы знаем путь",
-        arabic: "... السَبِيل",
-        correctVerb: "نَعْلَم",
-        options: ["يَعْلَم", "نَعْلَم", "عَلِمَ"],
-        translations: ["он знает", "мы знаем", "он узнал"]
-      }
-    ];
-
-    const SENTENCE_EXERCISES = [
-      {
-        sentence: "Аллах — Господь миров",
-        words: ["اللَّهُ", "رَبّ", "العالمين"],
-        correct: ["ا��لَّهُ", "رَبّ", "العالمين"],
-        lessonId: 1
-      },
-      {
-        sentence: "Это книга истины",
-        words: ["هذا", "كِتَاب", "الحَقّ"],
-        correct: ["هذا", "كِتَاب", "الحَقّ"],
-        lessonId: 1
-      },
-      {
-        sentence: "Знание — это путь",
-        words: ["العِلْم", "هو", "السَبِيل"],
-        correct: ["العِلْم", "هو", "السَبِيل"],
-        lessonId: 1
-      },
-      {
-        sentence: "День суда на земле",
-        words: ["يَوْم", "الحساب", "في", "الأَرْض"],
-        correct: ["يَوْم", "الحساب", "في", "الأَرْض"],
-        lessonId: 1
-      },
-      {
-        sentence: "Верующий идет по пути света",
-        words: ["المُؤْمِن", "يمشي", "في", "طريق", "النُور"],
-        correct: ["المُؤْمِن", "يمشي", "في", "طريق", "النُور"],
-        lessonId: 2
-      },
-      {
-        sentence: "Милость Аллаха велика",
-        words: ["رَحْمَة", "اللَّهُ", "كبيرة"],
-        correct: ["رَحْمَة", "اللَّهُ", "كبيرة"],
-        lessonId: 2
-      },
-      {
-        sentence: "Это знамение с небес",
-        words: ["هذه", "آيَة", "من", "السَمَاء"],
-        correct: ["هذه", "آيَة", "من", "السَمَاء"],
-        lessonId: 2
-      },
-      {
-        sentence: "Вода — это милость для народа",
-        words: ["المَاء", "رَحْمَة", "للقَوْم"],
-        correct: ["المَاء", "رَحْمَة", "للقَوْم"],
-        lessonId: 2
-      },
-      {
-        sentence: "Рай — награда верующим",
-        words: ["الجَنَّة", "جزاء", "للمُؤْمِنين"],
-        correct: ["الجَنَّة", "جزاء", "للمُؤْمِنين"],
-        lessonId: 2
-      },
-      {
-        sentence: "Посланник открыл дверь знания",
-        words: ["الرَسُول", "فتح", "بَاب", "العِلْم"],
-        correct: ["الرَسُول", "فتح", "بَاب", "العِلْم"],
-        lessonId: 3
-      },
-      {
-        sentence: "Мир — это дорога к вечности",
-        words: ["الدُنْيَا", "طَرِيق", "إلى", "الأَخِيرَة"],
-        correct: ["الدُنْيَا", "طَرِيق", "إلى", "الأَخِيرَة"],
-        lessonId: 3
-      },
-      {
-        sentence: "Мольба — причина милости",
-        words: ["الدُعَاء", "��َبَب", "الرَحْمَة"],
-        correct: ["الدُعَاء", "سَبَب", "الرَحْمَة"],
-        lessonId: 3
-      },
-      {
-        sentence: "Решение Господа справедливо",
-        words: ["حُكْم", "الرَبّ", "عادل"],
-        correct: ["حُكْم", "الرَبّ", "عادل"],
-        lessonId: 3
-      },
-      {
-        sentence: "Огонь для неверующих",
-        words: ["النَار", "للكَافِرين"],
-        correct: ["النَار", "للكَافِرين"],
-        lessonId: 3
-      }
-    ];
-
-    const defaultConfig = {
-      app_title: "☪ Арабский для Корана",
-      motivation_1: "Продолжай, ты ближе к пониманию Корана",
-      motivation_2: "Ещё одно слово — ещё ��дин шаг к знанию",
-      motivation_3: "Не останавливайся!",
-      primary_color: "#00d4ff",
-      secondary_color: "#7b2ff7",
-      background_color: "#0a0e27",
-      surface_color: "#1a1f3a",
-      text_color: "#e0e6ed",
-      font_family: "Segoe UI",
-      font_size: 16
-    };
-
-    let currentSection = 'lessons';
-    let currentLesson = null;
-    let currentTraining = null;
-    let trainingProgress = 0;
-    let completedLessons = new Set();
-    let learnedWords = [];
-
-    const dataHandler = {
-      onDataChanged(data) {
-        learnedWords = data;
-        
-        // Обновляем список завершен��ых уроков
-        const lessonIds = [...new Set(data.map(w => w.lesson_id))];
-        completedLessons = new Set(lessonIds);
-        
-        // Перерисовываем текущий раздел
-        switch(currentSection) {
-          case 'lessons':
-            if (!currentLesson && !currentTraining) {
-              renderLessons();
-            }
-            break;
-          case 'dictionary':
-            renderDictionary();
-            break;
-          case 'verbs':
-            renderVerbs();
-            break;
-          case 'training':
-            renderSentenceTraining();
-            break;
-        }
-      }
-    };
-
-    async function initApp() {
-      // Сначала показываем уроки
-      renderLessons();
-      setupNavigation();
-      setupExportImport();
-
-      // Потом инициализируем SDK
-      const initResult = await window.dataSdk.init(dataHandler);
-      if (!initResult.isOk) {
-        console.error("Failed to initialize data SDK");
-      }
-
-      await window.elementSdk.init({
-        defaultConfig,
-        onConfigChange: async (config) => {
-          const appTitle = document.getElementById('appTitle');
-          if (appTitle) {
-            appTitle.textContent = config.app_title || defaultConfig.app_title;
-          }
-
-          const customFont = config.font_family || defaultConfig.font_family;
-          const baseSize = config.font_size || defaultConfig.font_size;
-          const baseFontStack = 'Tahoma, Geneva, Verdana, sans-serif';
-
-          document.body.style.fontFamily = `${customFont}, ${baseFontStack}`;
-          document.body.style.fontSize = `${baseSize}px`;
-
-          const root = document.documentElement;
-          root.style.setProperty('--primary-color', config.primary_color || defaultConfig.primary_color);
-          root.style.setProperty('--secondary-color', config.secondary_color || defaultConfig.secondary_color);
-          root.style.setProperty('--background-color', config.background_color || defaultConfig.background_color);
-          root.style.setProperty('--surface-color', config.surface_color || defaultConfig.surface_color);
-          root.style.setProperty('--text-color', config.text_color || defaultConfig.text_color);
-
-          document.querySelectorAll('.header-title, .splash-logo, .lesson-number').forEach(el => {
-            el.style.background = `linear-gradient(135deg, ${config.primary_color || defaultConfig.primary_color}, ${config.secondary_color || defaultConfig.secondary_color})`;
-            el.style.webkitBackgroundClip = 'text';
-            el.style.webkitTextFillColor = 'transparent';
-            el.style.backgroundClip = 'text';
-          });
-
-          document.querySelectorAll('.word-arabic, .question-arabic').forEach(el => {
-            el.style.color = config.primary_color || defaultConfig.primary_color;
-          });
-
-          document.querySelectorAll('.start-training-btn, .check-btn, .word-chip').forEach(el => {
-            el.style.background = `linear-gradient(135deg, ${config.primary_color || defaultConfig.primary_color}, ${config.secondary_color || defaultConfig.secondary_color})`;
-          });
-
-          document.querySelectorAll('.lesson-card, .word-card, .dict-card, .question-card, .sentence-builder').forEach(el => {
-            el.style.background = `linear-gradient(135deg, ${config.surface_color || defaultConfig.surface_color}, rgba(42, 47, 78, 0.9))`;
-            el.style.borderColor = `${config.primary_color || defaultConfig.primary_color}50`;
-          });
-
-          document.body.style.background = `linear-gradient(135deg, ${config.background_color || defaultConfig.background_color}, ${config.surface_color || defaultConfig.surface_color})`;
-        },
-        mapToCapabilities: (config) => ({
-          recolorables: [
-            {
-              get: () => config.background_color || defaultConfig.background_color,
-              set: (value) => {
-                window.elementSdk.config.background_color = value;
-                window.elementSdk.setConfig({ background_color: value });
-              }
-            },
-            {
-              get: () => config.surface_color || defaultConfig.surface_color,
-              set: (value) => {
-                window.elementSdk.config.surface_color = value;
-                window.elementSdk.setConfig({ surface_color: value });
-              }
-            },
-            {
-              get: () => config.text_color || defaultConfig.text_color,
-              set: (value) => {
-                window.elementSdk.config.text_color = value;
-                window.elementSdk.setConfig({ text_color: value });
-              }
-            },
-            {
-              get: () => config.primary_color || defaultConfig.primary_color,
-              set: (value) => {
-                window.elementSdk.config.primary_color = value;
-                window.elementSdk.setConfig({ primary_color: value });
-              }
-            },
-            {
-              get: () => config.secondary_color || defaultConfig.secondary_color,
-              set: (value) => {
-                window.elementSdk.config.secondary_color = value;
-                window.elementSdk.setConfig({ secondary_color: value });
-              }
-            }
-          ],
-          borderables: [],
-          fontEditable: {
-            get: () => config.font_family || defaultConfig.font_family,
-            set: (value) => {
-              window.elementSdk.config.font_family = value;
-              window.elementSdk.setConfig({ font_family: value });
-            }
-          },
-          fontSizeable: {
-            get: () => config.font_size || defaultConfig.font_size,
-            set: (value) => {
-              window.elementSdk.config.font_size = value;
-              window.elementSdk.setConfig({ font_size: value });
-            }
-          }
-        }),
-        mapToEditPanelValues: (config) => new Map([
-          ["app_title", config.app_title || defaultConfig.app_title],
-          ["motivation_1", config.motivation_1 || defaultConfig.motivation_1],
-          ["motivation_2", config.motivation_2 || defaultConfig.motivation_2],
-          ["motivation_3", config.motivation_3 || defaultConfig.motivation_3]
-        ])
-      });
-    }
-
-    function setupExportImport() {
-      const exportBtn = document.getElementById('exportBtn');
-      const importBtn = document.getElementById('importBtn');
-      const importFile = document.getElementById('importFile');
-
-      exportBtn.addEventListener('click', () => {
-        const exportData = {
-          version: 1,
-          timestamp: new Date().toISOString(),
-          words: learnedWords,
-          completedLessons: Array.from(completedLessons)
+        // Vocabulary data - только урок 1
+        const vocabularyData = {
+            1: [
+                {arabic: "كِتَابٌ", translation: "книга", type: "noun", root: "ك-ت-ب"},
+                {arabic: "بَيْتٌ", translation: "дом", type: "noun", root: "ب-ي-ت"},
+                {arabic: "مَدْرَسَةٌ", translation: "школа", type: "noun", root: "د-ر-س"},
+                {arabic: "صَدِيقٌ", translation: "друг", type: "noun", root: "ص-د-ق"},
+                {arabic: "طَعَامٌ", translation: "еда", type: "noun", root: "ط-ع-م"},
+                {arabic: "أَنَا", translation: "я", type: "pronoun", root: "ا-ن-ا"},
+                {arabic: "هُوَ", translation: "он", type: "pronoun", root: "ه-و"},
+                {arabic: "هِيَ", translation: "она", type: "pronoun", root: "ه-ي"},
+                {arabic: "فِي", translation: "в", type: "preposition", root: "ف-ي"},
+                {arabic: "مَعَ", translation: "с", type: "preposition", root: "م-ع"},
+                {arabic: "الْيَوْمَ", translation: "сегодня", type: "noun", root: "ي-و-م"},
+                {arabic: "أَكَلْتُ", translation: "я ел", type: "verb", root: "ا-ك-ل"}
+            ]
         };
 
-        const dataStr = JSON.stringify(exportData, null, 2);
-        const dataBlob = new Blob([dataStr], { type: 'application/json' });
-        const url = URL.createObjectURL(dataBlob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = `arabic-progress-${new Date().toISOString().split('T')[0]}.json`;
-        link.click();
-        URL.revokeObjectURL(url);
-
-        showNotification('✓ Прогресс экспортирован!');
-      });
-
-      importBtn.addEventListener('click', () => {
-        importFile.click();
-      });
-
-      importFile.addEventListener('change', async (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
-
-        try {
-          const text = await file.text();
-          const importData = JSON.parse(text);
-
-          if (!importData.words || !Array.isArray(importData.words)) {
-            showNotification('✗ Неверный формат файла', true);
-            return;
-          }
-
-          // Удаляем все существующие слова
-          for (const word of learnedWords) {
-            await window.dataSdk.delete(word);
-          }
-
-          // Добавляем импортированные слова
-          for (const word of importData.words) {
-            const createResult = await window.dataSdk.create({
-              lesson_id: word.lesson_id,
-              word: word.word,
-              translation: word.translation,
-              completed: word.completed
-            });
-
-            if (!createResult.isOk) {
-              console.error("Failed to import word");
+        // Practice sentences data
+        const practiceSentences = [
+            {
+                russian: "Я обедал сегодня с моим другом в школе",
+                arabic: ["أَنَا", "أَكَلْتُ", "الْيَوْمَ", "مَعَ", "صَدِيقٌ", "فِي", "مَدْرَسَةٌ"],
+                correctOrder: ["أَنَا", "أَكَلْتُ", "الْيَوْمَ", "مَعَ", "صَدِيقٌ", "فِي", "مَدْرَسَةٌ"]
+            },
+            {
+                russian: "Книга в доме",
+                arabic: ["كِتَابٌ", "فِي", "بَيْتٌ"],
+                correctOrder: ["كِتَابٌ", "فِي", "بَيْتٌ"]
+            },
+            {
+                russian: "Он с другом",
+                arabic: ["هُوَ", "مَعَ", "صَدِيقٌ"],
+                correctOrder: ["هُوَ", "مَعَ", "صَدِيقٌ"]
+            },
+            {
+                russian: "Она в школе",
+                arabic: ["هِيَ", "فِي", "مَدْرَسَةٌ"],
+                correctOrder: ["هِيَ", "فِي", "مَدْرَسَةٌ"]
+            },
+            {
+                russian: "Еда в доме",
+                arabic: ["طَعَامٌ", "فِي", "بَيْتٌ"],
+                correctOrder: ["طَعَامٌ", "فِي", "بَيْتٌ"]
+            },
+            {
+                russian: "Я с другом сегодня",
+                arabic: ["أَنَا", "مَعَ", "صَدِيقٌ", "الْيَوْمَ"],
+                correctOrder: ["أَنَا", "مَعَ", "صَدِيقٌ", "الْيَوْمَ"]
+            },
+            {
+                russian: "Книга с другом",
+                arabic: ["كِتَابٌ", "مَعَ", "صَدِيقٌ"],
+                correctOrder: ["كِتَابٌ", "مَعَ", "صَدِيقٌ"]
+            },
+            {
+                russian: "Он в доме сегодня",
+                arabic: ["هُوَ", "فِي", "بَيْتٌ", "الْيَوْمَ"],
+                correctOrder: ["هُوَ", "فِي", "بَيْتٌ", "الْيَوْمَ"]
+            },
+            {
+                russian: "Она с едой",
+                arabic: ["هِيَ", "مَعَ", "طَعَامٌ"],
+                correctOrder: ["هِيَ", "مَعَ", "طَعَامٌ"]
+            },
+            {
+                russian: "Я ел в школе",
+                arabic: ["أَنَا", "أَكَلْتُ", "فِي", "مَدْرَسَةٌ"],
+                correctOrder: ["أَنَا", "أَكَلْتُ", "فِي", "مَدْرَسَةٌ"]
             }
-          }
+        ];
 
-          showNotification('✓ Прогресс импортирован!');
-          importFile.value = '';
-        } catch (error) {
-          showNotification('✗ Ошибка при импорте', true);
-          console.error(error);
-        }
-      });
-    }
+        // State
+        let currentLesson = null;
+        let currentTaskIndex = 0;
+        let correctAnswers = 0;
+        let userAnswers = [];
+        let currentAnswer = null;
+        let userProgress = {
+            completedLessons: new Set(),
+            currentLesson: 1
+        };
+        let learnedWordsPerLesson = new Map();
+        let incorrectTasks = [];
+        let isReviewMode = false;
 
-    function showNotification(message, isError = false) {
-      const notification = document.createElement('div');
-      notification.style.cssText = `
-        position: fixed;
-        top: 5rem;
-        left: 50%;
-        transform: translateX(-50%);
-        background: ${isError ? 'rgba(255, 68, 68, 0.95)' : 'rgba(0, 212, 255, 0.95)'};
-        color: white;
-        padding: 1rem 2rem;
-        border-radius: 12px;
-        font-size: 1rem;
-        font-weight: 600;
-        z-index: 10000;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-      `;
-      notification.textContent = message;
-      document.body.appendChild(notification);
+        // Practice state
+        let currentPracticeSentence = 0;
+        let practiceCorrectAnswers = 0;
+        let selectedWords = [];
+        let availableWords = [];
 
-      setTimeout(() => {
-        notification.remove();
-      }, 2000);
-    }
-
-    function setupNavigation() {
-      document.querySelectorAll('.nav-item').forEach(item => {
-        item.addEventListener('click', () => {
-          document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-          item.classList.add('active');
-          
-          currentSection = item.dataset.section;
-          
-          switch(currentSection) {
-            case 'lessons':
-              renderLessons();
-              break;
-            case 'dictionary':
-              renderDictionary();
-              break;
-            case 'verbs':
-              renderVerbs();
-              break;
-            case 'training':
-              renderSentenceTraining();
-              break;
-          }
-        });
-      });
-    }
-
-    function renderLessons() {
-      const content = document.getElementById('mainContent');
-      
-      if (currentLesson) {
-        renderLessonDetail(currentLesson);
-        return;
-      }
-
-      if (!LESSONS_DATA || LESSONS_DATA.length === 0) {
-        content.innerHTML = `
-          <div class="empty-state">
-            <div class="empty-icon">📚</div>
-            <div class="empty-text">Загрузка уроков...</div>
-          </div>
-        `;
-        return;
-      }
-
-      const lessonsHTML = LESSONS_DATA.map((lesson, index) => {
-        const isCompleted = completedLessons.has(lesson.id);
-        
-        return `
-          <div class="lesson-card" data-lesson-id="${lesson.id}">
-            <div class="lesson-number">${lesson.id}</div>
-            <div class="lesson-title">${lesson.title}</div>
-            <div class="lesson-progress">${lesson.words.length} слов</div>
-            <div class="lesson-status ${isCompleted ? 'status-completed' : 'status-new'}">
-              ${isCompleted ? '✓ Завершён' : 'Новый'}
-            </div>
-          </div>
-        `;
-      }).join('');
-
-      content.innerHTML = `
-        <div class="lessons-grid">
-          ${lessonsHTML}
-        </div>
-      `;
-
-      // Небольшая задержка для DOM
-      setTimeout(() => {
-        document.querySelectorAll('.lesson-card').forEach(card => {
-          card.addEventListener('click', () => {
-            const lessonId = parseInt(card.dataset.lessonId);
-            currentLesson = LESSONS_DATA.find(l => l.id === lessonId);
-            if (currentLesson) {
-              renderLessonDetail(currentLesson);
-            }
-          });
-        });
-      }, 0);
-    }
-
-    function renderLessonDetail(lesson) {
-      const content = document.getElementById('mainContent');
-      
-      const wordsHTML = lesson.words.map(word => `
-        <div class="word-card">
-          <div class="word-arabic">${word.arabic}</div>
-          <div class="word-translation">${word.translation}</div>
-        </div>
-      `).join('');
-
-      content.innerHTML = `
-        <div class="lesson-detail">
-          <button class="back-button">← Назад</button>
-          <h2 style="color: #00d4ff; margin-bottom: 1.5rem; font-size: 1.8rem;">Урок ${lesson.id}: ${lesson.title}</h2>
-          <div class="words-list">
-            ${wordsHTML}
-          </div>
-          <button class="start-training-btn">Начать тренировку</button>
-        </div>
-      `;
-
-      document.querySelector('.back-button').addEventListener('click', () => {
-        currentLesson = null;
-        renderLessons();
-      });
-
-      document.querySelector('.start-training-btn').addEventListener('click', () => {
-        startTraining(lesson);
-      });
-    }
-
-    async function startTraining(lesson) {
-      currentTraining = {
-        lesson: lesson,
-        questions: generateQuestions(lesson),
-        currentQuestion: 0,
-        correctAnswers: 0
-      };
-
-      renderTrainingQuestion();
-    }
-
-    function generateQuestions(lesson) {
-      const questions = [];
-      
-      lesson.words.forEach(word => {
-        const otherWords = lesson.words.filter(w => w.arabic !== word.arabic);
-        const wrongOptions = otherWords.sort(() => Math.random() - 0.5).slice(0, 2);
-        const options = [word.translation, ...wrongOptions.map(w => w.translation)].sort(() => Math.random() - 0.5);
-        
-        questions.push({
-          type: 'translation',
-          arabic: word.arabic,
-          correct: word.translation,
-          options: options
-        });
-      });
-
-      return questions.sort(() => Math.random() - 0.5);
-    }
-
-    function renderTrainingQuestion() {
-      const content = document.getElementById('mainContent');
-      const question = currentTraining.questions[currentTraining.currentQuestion];
-      const progress = ((currentTraining.currentQuestion + 1) / currentTraining.questions.length) * 100;
-
-      const optionsHTML = question.options.map(option => `
-        <button class="option-btn" data-answer="${option}">${option}</button>
-      `).join('');
-
-      const config = window.elementSdk?.config || defaultConfig;
-      const motivations = [
-        config.motivation_1 || defaultConfig.motivation_1,
-        config.motivation_2 || defaultConfig.motivation_2,
-        config.motivation_3 || defaultConfig.motivation_3
-      ];
-      const randomMotivation = motivations[Math.floor(Math.random() * motivations.length)];
-
-      content.innerHTML = `
-        <div class="training-container">
-          <button class="back-button">← ��авершить</button>
-          
-          <div class="training-progress">
-            <div class="progress-text">��опрос ${currentTraining.currentQuestion + 1} из ${currentTraining.questions.length}</div>
-            <div class="progress-bar">
-              <div class="progress-fill" style="width: ${progress}%"></div>
-            </div>
-          </div>
-
-          <div class="question-card">
-            <div class="question-text">Выберите правильный перевод:</div>
-            <div class="question-arabic">${question.arabic}</div>
-            <div class="options-grid">
-              ${optionsHTML}
-            </div>
-          </div>
-
-          <div class="motivation-message">${randomMotivation}</div>
-        </div>
-      `;
-
-      document.querySelector('.back-button').addEventListener('click', () => {
-        currentTraining = null;
-        currentLesson = null;
-        renderLessons();
-      });
-
-      document.querySelectorAll('.option-btn').forEach(btn => {
-        btn.addEventListener('click', async () => {
-          const answer = btn.dataset.answer;
-          const isCorrect = answer === question.correct;
-
-          btn.classList.add(isCorrect ? 'correct' : 'incorrect');
-          
-          if (isCorrect) {
-            currentTraining.correctAnswers++;
-          }
-
-          document.querySelectorAll('.option-btn').forEach(b => b.disabled = true);
-
-          setTimeout(async () => {
-            currentTraining.currentQuestion++;
+        // Local Storage functions
+        function saveProgress() {
+            const progressData = {
+                completedLessons: Array.from(userProgress.completedLessons),
+                currentLesson: userProgress.currentLesson,
+                learnedWords: Array.from(learnedWordsPerLesson.entries()).map(([key, value]) => [key, Array.from(value)]),
+                timestamp: new Date().toISOString()
+            };
             
-            if (currentTraining.currentQuestion >= currentTraining.questions.length) {
-              await finishTraining();
+            try {
+                localStorage.setItem('arabic-quran-progress', JSON.stringify(progressData));
+            } catch (error) {
+                showToast('Ошибка сохранения прогресса', 'error');
+            }
+        }
+
+        function loadProgress() {
+            try {
+                const saved = localStorage.getItem('arabic-quran-progress');
+                if (saved) {
+                    const progressData = JSON.parse(saved);
+                    userProgress.completedLessons = new Set(progressData.completedLessons || []);
+                    userProgress.currentLesson = progressData.currentLesson || 1;
+                    
+                    learnedWordsPerLesson.clear();
+                    if (progressData.learnedWords) {
+                        progressData.learnedWords.forEach(([key, value]) => {
+                            learnedWordsPerLesson.set(key, new Set(value));
+                        });
+                    }
+                    
+                    updateOverallProgress();
+                    updateHomeProgress();
+                }
+            } catch (error) {
+                showToast('Ошибка загрузки прогресса', 'error');
+            }
+        }
+
+        function exportProgress() {
+            const progressData = {
+                completedLessons: Array.from(userProgress.completedLessons),
+                currentLesson: userProgress.currentLesson,
+                learnedWords: Array.from(learnedWordsPerLesson.entries()).map(([key, value]) => [key, Array.from(value)]),
+                timestamp: new Date().toISOString(),
+                version: "1.0"
+            };
+            
+            const dataStr = JSON.stringify(progressData, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(dataBlob);
+            link.download = `arabic-quran-progress-${new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+            
+            showToast('Прогресс экспортирован!');
+        }
+
+        function importProgress() {
+            document.getElementById('import-file').click();
+        }
+
+        function handleFileImport(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const progressData = JSON.parse(e.target.result);
+                    
+                    if (progressData.version && progressData.completedLessons !== undefined) {
+                        userProgress.completedLessons = new Set(progressData.completedLessons || []);
+                        userProgress.currentLesson = progressData.currentLesson || 1;
+                        
+                        learnedWordsPerLesson.clear();
+                        if (progressData.learnedWords) {
+                            progressData.learnedWords.forEach(([key, value]) => {
+                                learnedWordsPerLesson.set(key, new Set(value));
+                            });
+                        }
+                        
+                        saveProgress();
+                        updateOverallProgress();
+                        updateHomeProgress();
+                        
+                        showToast('Прогресс импортирован!');
+                    } else {
+                        showToast('Неверный формат файла', 'error');
+                    }
+                } catch (error) {
+                    showToast('Ошибка чтения файла', 'error');
+                }
+            };
+            reader.readAsText(file);
+            
+            event.target.value = '';
+        }
+
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.className = `toast ${type === 'error' ? 'bg-red-600' : ''}`;
+            toast.textContent = message;
+            
+            document.body.appendChild(toast);
+            
+            setTimeout(() => toast.classList.add('show'), 100);
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => document.body.removeChild(toast), 300);
+            }, 3000);
+        }
+
+        // Practice functions
+        function showPractice() {
+            currentPracticeSentence = 0;
+            practiceCorrectAnswers = 0;
+            
+            document.getElementById('home-screen').classList.add('hidden');
+            document.getElementById('practice-screen').classList.remove('hidden');
+            
+            renderPracticeTask();
+        }
+
+        function renderPracticeTask() {
+            if (currentPracticeSentence >= practiceSentences.length) {
+                showPracticeResults();
+                return;
+            }
+            
+            const sentence = practiceSentences[currentPracticeSentence];
+            selectedWords = [];
+            availableWords = [...sentence.arabic].sort(() => Math.random() - 0.5);
+            
+            document.getElementById('practice-progress').textContent = `${currentPracticeSentence + 1}/10`;
+            
+            const container = document.getElementById('practice-task');
+            container.innerHTML = `
+                <div class="text-center">
+                    <div class="mb-6">
+                        <h3 class="text-xl font-bold text-white mb-3">Соберите предложение:</h3>
+                        <div class="bg-gradient-to-r from-gray-800 to-gray-700 border border-cyan-400 rounded-lg p-4 text-lg text-cyan-300">
+                            ${sentence.russian}
+                        </div>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <h4 class="text-sm text-gray-400 mb-2">Ваш ответ:</h4>
+                        <div id="answer-area" class="answer-slot justify-start">
+                            <span class="text-gray-500">Выберите слова ниже...</span>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <h4 class="text-sm text-gray-400 mb-2">Доступные слова:</h4>
+                        <div id="words-area" class="flex flex-wrap gap-2 justify-center">
+                            ${availableWords.map((word, index) => `
+                                <div class="word-tile arabic-text text-xl text-white" onclick="selectWord(${index})" data-index="${index}">
+                                    ${word}
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                    
+                    <div class="flex gap-3 justify-center">
+                        <button id="check-btn" class="glow-button px-6 py-3 rounded-lg font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed" onclick="checkPracticeAnswer()" disabled>
+                            Проверить
+                        </button>
+                        <button class="bg-gray-700 hover:bg-gray-600 text-white px-6 py-3 rounded-lg transition-colors" onclick="clearPracticeAnswer()">
+                            Очистить
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function selectWord(index) {
+            const word = availableWords[index];
+            selectedWords.push(word);
+            
+            const wordTile = document.querySelector(`[data-index="${index}"]`);
+            wordTile.classList.add('disabled');
+            
+            updateAnswerArea();
+        }
+
+        function updateAnswerArea() {
+            const answerArea = document.getElementById('answer-area');
+            
+            if (selectedWords.length === 0) {
+                answerArea.innerHTML = '<span class="text-gray-500">Выберите слова ниже...</span>';
             } else {
-              renderTrainingQuestion();
+                answerArea.innerHTML = selectedWords.map((word, index) => `
+                    <div class="word-tile selected arabic-text text-xl" onclick="removeWord(${index})">
+                        ${word}
+                    </div>
+                `).join('');
             }
-          }, 1000);
-        });
-      });
-    }
+            
+            document.getElementById('check-btn').disabled = selectedWords.length === 0;
+        }
 
-    async function finishTraining() {
-      const lesson = currentTraining.lesson;
-      const score = (currentTraining.correctAnswers / currentTraining.questions.length) * 100;
+        function removeWord(index) {
+            const word = selectedWords[index];
+            selectedWords.splice(index, 1);
+            
+            const wordIndex = availableWords.indexOf(word);
+            const wordTile = document.querySelector(`[data-index="${wordIndex}"]`);
+            if (wordTile) {
+                wordTile.classList.remove('disabled');
+            }
+            
+            updateAnswerArea();
+        }
 
-      if (score >= 70) {
-        completedLessons.add(lesson.id);
-        
-        for (const word of lesson.words) {
-          const existingWord = learnedWords.find(w => w.word === word.arabic);
-          if (!existingWord) {
-            const createResult = await window.dataSdk.create({
-              lesson_id: lesson.id,
-              word: word.arabic,
-              translation: word.translation,
-              completed: true
+        function clearPracticeAnswer() {
+            selectedWords = [];
+            
+            document.querySelectorAll('.word-tile.disabled').forEach(tile => {
+                tile.classList.remove('disabled');
+            });
+            
+            updateAnswerArea();
+        }
+
+        function checkPracticeAnswer() {
+            const sentence = practiceSentences[currentPracticeSentence];
+            const isCorrect = JSON.stringify(selectedWords) === JSON.stringify(sentence.correctOrder);
+            
+            const answerArea = document.getElementById('answer-area');
+            
+            if (isCorrect) {
+                practiceCorrectAnswers++;
+                answerArea.classList.add('correct');
+                showToast('Правильно! 🎉');
+            } else {
+                answerArea.classList.add('incorrect');
+                showToast('Неправильно. Попробуйте еще раз!', 'error');
+            }
+            
+            setTimeout(() => {
+                currentPracticeSentence++;
+                renderPracticeTask();
+            }, 1500);
+        }
+
+        function showPracticeResults() {
+            const container = document.getElementById('practice-task');
+            container.innerHTML = `
+                <div class="text-center">
+                    <div class="text-6xl mb-4">🎉</div>
+                    <h2 class="text-2xl font-bold text-white neon-text mb-4">Практика завершена!</h2>
+                    <div class="text-green-300 mb-6">
+                        <p>Правильных ответов: <span class="font-semibold text-white">${practiceCorrectAnswers}</span> из <span class="font-semibold text-white">10</span></p>
+                    </div>
+                    <div class="bg-gray-800 border border-cyan-400 rounded-lg p-4 mb-6">
+                        <h3 class="font-semibold text-cyan-300 mb-2">Отличная работа!</h3>
+                        <div class="text-sm text-gray-300">
+                            Вы практиковали составление предложений на арабском
+                        </div>
+                    </div>
+                    <div class="flex gap-3 justify-center">
+                        <button class="glow-button px-8 py-3 rounded-lg font-semibold transition-all" onclick="showPractice()">
+                            Повторить
+                        </button>
+                        <button class="bg-gray-700 hover:bg-gray-600 text-white px-8 py-3 rounded-lg transition-colors" onclick="showHome()">
+                            На главную
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Start lesson
+        function startLesson(lessonId) {
+            const lessonWords = vocabularyData[lessonId];
+            
+            currentLesson = {
+                id: lessonId,
+                type: 'lesson',
+                title: `Урок ${lessonId}`,
+                description: `${lessonWords.length} новых слов`,
+                newWords: lessonWords,
+                tasks: generateLessonTasks(lessonId, lessonWords)
+            };
+            
+            currentTaskIndex = 0;
+            correctAnswers = 0;
+            userAnswers = [];
+            incorrectTasks = [];
+            isReviewMode = false;
+            
+            document.getElementById('lesson-selection').classList.add('hidden');
+            document.getElementById('lesson-screen').classList.remove('hidden');
+            
+            document.getElementById('lesson-title-header').textContent = currentLesson.title;
+            
+            renderCurrentTask();
+        }
+
+        // Generate lesson tasks
+        function generateLessonTasks(lessonId, newWords) {
+            const tasks = [];
+            
+            // Word introduction tasks
+            newWords.forEach((word, index) => {
+                tasks.push({
+                    id: tasks.length + 1,
+                    type: "word_introduction",
+                    question: "Новое слово:",
+                    word: word,
+                    explanation: "Запомните это слово"
+                });
+            });
+            
+            // Translation tasks
+            newWords.forEach((word, index) => {
+                const otherWords = newWords.filter(w => w.arabic !== word.arabic).slice(0, 3);
+                const allOptions = [word, ...otherWords];
+                const shuffledOptions = [...allOptions].sort(() => Math.random() - 0.5);
+                const correctIndex = shuffledOptions.findIndex(w => w.arabic === word.arabic);
+                
+                tasks.push({
+                    id: tasks.length + 1,
+                    type: "translation",
+                    question: "Переведите:",
+                    arabic: word.arabic,
+                    options: shuffledOptions.map(w => w.translation),
+                    correct: correctIndex,
+                    explanation: `${word.arabic} - ${word.translation}`
+                });
+            });
+            
+            return tasks;
+        }
+
+        // Render current task
+        function renderCurrentTask() {
+            const task = currentLesson.tasks[currentTaskIndex];
+            const container = document.getElementById('task-container');
+            
+            container.innerHTML = '';
+            container.className = 'task-card bg-white rounded-xl shadow-lg p-8 fade-in';
+            
+            if (task.type === 'word_introduction') {
+                renderWordIntroduction(task, container);
+            } else if (task.type === 'translation') {
+                renderTranslationTask(task, container);
+            }
+        }
+
+        function renderWordIntroduction(task, container) {
+            container.innerHTML = `
+                <div class="text-center">
+                    <div class="mb-4">
+                        <span class="text-sm text-green-300">${currentLesson.title}</span>
+                        <div class="text-xs text-gray-400">${currentTaskIndex + 1} / ${currentLesson.tasks.length}</div>
+                    </div>
+                    <h2 class="text-2xl font-semibold text-white mb-6">Новое слово:</h2>
+                    
+                    <div class="bg-gradient-to-r from-gray-800 to-gray-700 border border-green-400 rounded-xl p-6 mb-6 max-w-md mx-auto">
+                        <div class="arabic-text text-4xl text-white mb-3">${task.word.arabic}</div>
+                        <div class="text-3xl text-green-300 mb-2">${task.word.translation}</div>
+                        <div class="text-lg text-gray-400">${getTypeTranslation(task.word.type)}</div>
+                        <div class="text-sm text-cyan-300 mt-2">Корень: ${task.word.root}</div>
+                    </div>
+                    
+                    <button class="glow-button px-8 py-3 rounded-lg font-semibold transition-all text-lg" onclick="continueToNext()">
+                        Продолжить
+                    </button>
+                </div>
+            `;
+        }
+
+        function renderTranslationTask(task, container) {
+            container.innerHTML = `
+                <div class="text-center">
+                    <div class="mb-4">
+                        <span class="text-lg text-green-300">${currentLesson.title}</span>
+                        <div class="text-sm text-gray-400">${currentTaskIndex + 1} / ${currentLesson.tasks.length}</div>
+                    </div>
+                    <h2 class="text-2xl font-semibold text-white mb-6">${task.question}</h2>
+                    <div class="arabic-text bg-gradient-to-r from-gray-800 to-gray-700 border border-green-400 rounded-lg p-6 mb-8 text-center text-white text-3xl">
+                        ${task.arabic}
+                    </div>
+                    <div class="grid grid-cols-1 gap-4">
+                        ${task.options.map((option, index) => `
+                            <button class="option-button rounded-lg p-4 text-left transition-all text-lg" 
+                                    onclick="selectAnswer(${index})">
+                                ${option}
+                            </button>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function getTypeTranslation(type) {
+            const translations = {
+                'noun': 'Существительное',
+                'verb': 'Глагол',
+                'adjective': 'Прилагательное',
+                'preposition': 'Предлог',
+                'pronoun': 'Местоимение',
+                'particle': 'Частица',
+                'interrogative': 'Вопросительное'
+            };
+            return translations[type] || type;
+        }
+
+        // Answer handling
+        function selectAnswer(answerIndex) {
+            currentAnswer = answerIndex;
+            const task = currentLesson.tasks[currentTaskIndex];
+            
+            const buttons = document.querySelectorAll('.option-button');
+            buttons.forEach((btn, index) => {
+                btn.classList.remove('correct-answer', 'incorrect-answer');
+                if (index === answerIndex) {
+                    if (index === task.correct) {
+                        btn.classList.add('correct-answer');
+                    } else {
+                        btn.classList.add('incorrect-answer');
+                    }
+                }
+                if (index === task.correct && index !== answerIndex) {
+                    btn.classList.add('correct-answer');
+                }
+                btn.disabled = true;
             });
 
-            if (!createResult.isOk) {
-              console.error("Failed to save word");
-            }
-          }
-        }
-      }
-
-      const content = document.getElementById('mainContent');
-      const nextLesson = LESSONS_DATA.find(l => l.id === lesson.id + 1);
-      
-      const buttonsHTML = score >= 70 ? `
-        <button class="start-training-btn" id="homeBtn" style="margin-bottom: 1rem;">🏠 Главная</button>
-        <button class="start-training-btn" id="repeatBtn" style="margin-bottom: 1rem; background: linear-gradient(135deg, #7b2ff7, #b794f6);">�� Повторить</button>
-        ${nextLesson ? `<button class="start-training-btn" id="nextBtn">➡️ Следующий урок</button>` : ''}
-      ` : `
-        <button class="start-training-btn" id="repeatBtn" style="margin-bottom: 1rem;">🔄 Повторить</button>
-        <button class="start-training-btn" id="homeBtn" style="background: linear-gradient(135deg, #7b2ff7, #b794f6);">🏠 Главная</button>
-      `;
-
-      content.innerHTML = `
-        <div class="training-container">
-          <div class="question-card" style="text-align: center;">
-            <div style="font-size: 4rem; margin-bottom: 1rem;">
-              ${score >= 70 ? '🎉' : '💪'}
-            </div>
-            <h2 style="color: #00d4ff; margin-bottom: 1rem;">
-              ${score >= 70 ? 'Отличн��!' : 'Попробуйте ещё раз'}
-            </h2>
-            <div style="font-size: 2rem; color: #e0e6ed; margin-bottom: 2rem;">
-              ${currentTraining.correctAnswers} из ${currentTraining.questions.length}
-            </div>
-            <div style="color: #8b92a8; margin-bottom: 2rem;">
-              ${score >= 70 ? 'Слова добавлены в словарь!' : 'Нужно набрать минимум 70% для завершения урока'}
-            </div>
-            ${buttonsHTML}
-          </div>
-        </div>
-      `;
-
-      const homeBtn = document.getElementById('homeBtn');
-      const repeatBtn = document.getElementById('repeatBtn');
-      const nextBtn = document.getElementById('nextBtn');
-
-      if (homeBtn) {
-        homeBtn.addEventListener('click', () => {
-          currentTraining = null;
-          currentLesson = null;
-          renderLessons();
-        });
-      }
-
-      if (repeatBtn) {
-        repeatBtn.addEventListener('click', () => {
-          startTraining(lesson);
-        });
-      }
-
-      if (nextBtn && nextLesson) {
-        nextBtn.addEventListener('click', () => {
-          currentLesson = nextLesson;
-          renderLessonDetail(nextLesson);
-        });
-      }
-    }
-
-    function renderDictionary() {
-      const content = document.getElementById('mainContent');
-
-      if (learnedWords.length === 0) {
-        content.innerHTML = `
-          <div class="empty-state">
-            <div class="empty-icon">📖</div>
-            <div class="empty-text">Пройдите уроки, чтобы пополнить словарь</div>
-          </div>
-        `;
-        return;
-      }
-
-      const cardsHTML = learnedWords.map((word, index) => {
-        return `
-          <div class="dict-card" data-card-id="${index}">
-            <div class="dict-card-front">
-              <div class="word-arabic">${word.word}</div>
-            </div>
-            <div class="dict-card-back">
-              <div class="word-translation">${word.translation}</div>
-            </div>
-          </div>
-        `;
-      }).join('');
-
-      content.innerHTML = `
-        <h2 style="color: #00d4ff; margin-bottom: 1.5rem; font-size: 1.8rem;">Мой словарь (${learnedWords.length} слов)</h2>
-        <div class="dictionary-grid">
-          ${cardsHTML}
-        </div>
-      `;
-
-      document.querySelectorAll('.dict-card').forEach(card => {
-        card.addEventListener('click', () => {
-          card.classList.toggle('flipped');
-        });
-      });
-    }
-
-    function renderVerbs() {
-      const content = document.getElementById('mainContent');
-
-      if (learnedWords.length === 0) {
-        content.innerHTML = `
-          <div class="empty-state">
-            <div class="empty-icon">✍��</div>
-            <div class="empty-text">Сначала изучите слова в уроках</div>
-          </div>
-        `;
-        return;
-      }
-
-      const exercise = VERB_EXERCISES[Math.floor(Math.random() * VERB_EXERCISES.length)];
-      const optionsHTML = exercise.options.map((option, index) => `
-        <button class="option-btn" data-verb="${option}">
-          <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">${option}</div>
-          <div style="font-size: 0.9rem; color: #8b92a8;">${exercise.translations[index]}</div>
-        </button>
-      `).join('');
-
-      content.innerHTML = `
-        <div class="verb-exercise">
-          <h2 style="color: #00d4ff; margin-bottom: 1.5rem; font-size: 1.8rem;">Упражнение на глаголы</h2>
-          
-          <div class="question-card">
-            <div class="question-text">${exercise.sentence}</div>
-            <div class="question-arabic" style="font-size: 2.5rem; margin: 2rem 0;">${exercise.arabic}</div>
-            <div style="color: #8b92a8; margin: 1.5rem 0;">Выберите правильную форму глагола:</div>
-            <div class="options-grid">
-              ${optionsHTML}
-            </div>
-          </div>
-        </div>
-      `;
-
-      document.querySelectorAll('.option-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const verb = btn.dataset.verb;
-          const isCorrect = verb === exercise.correctVerb;
-
-          btn.classList.add(isCorrect ? 'correct' : 'incorrect');
-          document.querySelectorAll('.option-btn').forEach(b => b.disabled = true);
-
-          setTimeout(() => {
-            renderVerbs();
-          }, 1500);
-        });
-      });
-    }
-
-    function renderSentenceTraining() {
-      const content = document.getElementById('mainContent');
-
-      if (learnedWords.length === 0) {
-        content.innerHTML = `
-          <div class="empty-state">
-            <div class="empty-icon">🎯</div>
-            <div class="empty-text">Изучите слова, чтобы собирать предложения</div>
-          </div>
-        `;
-        return;
-      }
-
-      // Фильтруем упражнения по изученным урокам
-      const completedLessonIds = Array.from(completedLessons);
-      const availableExercises = SENTENCE_EXERCISES.filter(ex => 
-        completedLessonIds.includes(ex.lessonId)
-      );
-
-      if (availableExercises.length === 0) {
-        content.innerHTML = `
-          <div class="empty-state">
-            <div class="empty-icon">🎯</div>
-            <div class="empty-text">Пройдите уроки, чтобы разблокировать упражнения</div>
-          </div>
-        `;
-        return;
-      }
-
-      // Пр��оритет новым урокам (последние изученные)
-      const sortedExercises = availableExercises.sort((a, b) => b.lessonId - a.lessonId);
-      const exercise = sortedExercises[Math.floor(Math.random() * Math.min(5, sortedExercises.length))];
-      const shuffledWords = [...exercise.words].sort(() => Math.random() - 0.5);
-
-      content.innerHTML = `
-        <div class="training-container">
-          <h2 style="color: #00d4ff; margin-bottom: 1.5rem; font-size: 1.8rem;">Собери предложение</h2>
-          
-          <div class="sentence-builder">
-            <div style="color: #8b92a8; margin-bottom: 1rem; text-align: center;">
-              ${exercise.sentence}
-            </div>
+            storeAnswer(task, answerIndex);
             
-            <div class="drop-zone" id="dropZone">
-              <div style="color: #8b92a8; opacity: 0.5;">Перетащите слова сюда</div>
-            </div>
-
-            <div class="words-pool" id="wordsPool">
-              ${shuffledWords.map(word => `
-                <div class="word-chip" draggable="true" data-word="${word}">${word}</div>
-              `).join('')}
-            </div>
-
-            <button class="check-btn" id="checkBtn">Проверить</button>
-          </div>
-        </div>
-      `;
-
-      setupDragAndDrop(exercise.correct);
-    }
-
-    function setupDragAndDrop(correctOrder) {
-      const dropZone = document.getElementById('dropZone');
-      const wordsPool = document.getElementById('wordsPool');
-      const checkBtn = document.getElementById('checkBtn');
-      let draggedElement = null;
-
-      document.querySelectorAll('.word-chip').forEach(chip => {
-        chip.addEventListener('dragstart', (e) => {
-          draggedElement = e.target;
-          e.target.classList.add('dragging');
-        });
-
-        chip.addEventListener('dragend', (e) => {
-          e.target.classList.remove('dragging');
-        });
-
-        chip.addEventListener('click', () => {
-          if (chip.parentElement === wordsPool) {
-            dropZone.appendChild(chip);
-          } else {
-            wordsPool.appendChild(chip);
-          }
-          updateDropZonePlaceholder();
-        });
-      });
-
-      [dropZone, wordsPool].forEach(zone => {
-        zone.addEventListener('dragover', (e) => {
-          e.preventDefault();
-        });
-
-        zone.addEventListener('drop', (e) => {
-          e.preventDefault();
-          if (draggedElement) {
-            zone.appendChild(draggedElement);
-            updateDropZonePlaceholder();
-          }
-        });
-      });
-
-      function updateDropZonePlaceholder() {
-        const placeholder = dropZone.querySelector('div[style*="opacity"]');
-        if (placeholder) {
-          placeholder.style.display = dropZone.querySelectorAll('.word-chip').length > 0 ? 'none' : 'block';
-        }
-      }
-
-      checkBtn.addEventListener('click', () => {
-        const userOrder = Array.from(dropZone.querySelectorAll('.word-chip')).map(chip => chip.dataset.word);
-        const isCorrect = JSON.stringify(userOrder) === JSON.stringify(correctOrder);
-
-        if (isCorrect) {
-          dropZone.style.borderColor = '#00ff88';
-          dropZone.style.background = 'rgba(0, 255, 136, 0.1)';
-          checkBtn.textContent = '✓ Правильно!';
-          checkBtn.style.background = 'linear-gradient(135deg, #00ff88, #00d4ff)';
-        } else {
-          dropZone.style.borderColor = '#ff4444';
-          dropZone.style.background = 'rgba(255, 68, 68, 0.1)';
-          checkBtn.textContent = '�� Попробуйте ещё раз';
-          checkBtn.style.background = 'linear-gradient(135deg, #ff4444, #ff6b6b)';
+            setTimeout(() => {
+                continueToNext();
+            }, 500);
         }
 
-        checkBtn.disabled = true;
-      });
-    }
+        function storeAnswer(task, answer) {
+            const isCorrect = answer === task.correct;
+            
+            if (isCorrect) {
+                correctAnswers++;
+            } else {
+                if (!incorrectTasks.some(t => t.id === task.id)) {
+                    incorrectTasks.push({...task});
+                }
+            }
+            
+            userAnswers.push({
+                taskId: task.id,
+                userAnswer: answer,
+                correctAnswer: task.correct,
+                isCorrect: isCorrect
+            });
+        }
 
-    initApp();
-  </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a0ad3f6022c4d61',t:'MTc2MzUwNDE0Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+        function continueToNext() {
+            currentTaskIndex++;
+            
+            if (currentTaskIndex >= currentLesson.tasks.length) {
+                if (incorrectTasks.length > 0 && !isReviewMode) {
+                    startReviewMode();
+                } else {
+                    completeLesson();
+                }
+            } else {
+                renderCurrentTask();
+            }
+        }
+
+        function startReviewMode() {
+            isReviewMode = true;
+            currentLesson.tasks = [...incorrectTasks];
+            incorrectTasks = [];
+            currentTaskIndex = 0;
+            
+            showToast('Повторите неправильные ответы');
+            
+            renderCurrentTask();
+        }
+
+        function completeLesson() {
+            const passed = true;
+            userProgress.completedLessons.add(currentLesson.id);
+            
+            if (!learnedWordsPerLesson.has(currentLesson.id)) {
+                learnedWordsPerLesson.set(currentLesson.id, new Set());
+            }
+            currentLesson.newWords.forEach(word => {
+                learnedWordsPerLesson.get(currentLesson.id).add(word.arabic);
+            });
+            
+            saveProgress();
+            showResults(passed);
+        }
+
+        function showResults(passed) {
+            document.getElementById('task-container').classList.add('hidden');
+            document.getElementById('results-container').classList.remove('hidden');
+            
+            const resultsTitle = document.getElementById('results-title');
+            resultsTitle.textContent = 'Урок завершён!';
+            resultsTitle.className = 'text-2xl font-bold text-green-400 neon-text mb-4';
+            
+            document.getElementById('correct-answers').textContent = correctAnswers;
+            document.getElementById('total-tasks').textContent = currentLesson.tasks.length;
+            
+            updateOverallProgress();
+            updateHomeProgress();
+        }
+
+        // Dictionary functions
+        function showDictionary() {
+            document.getElementById('home-screen').classList.add('hidden');
+            document.getElementById('lesson-selection').classList.add('hidden');
+            document.getElementById('dictionary-screen').classList.remove('hidden');
+            
+            generateDictionary();
+        }
+
+        function generateDictionary() {
+            const learnedWords = [];
+            
+            userProgress.completedLessons.forEach(lessonId => {
+                const lessonWords = vocabularyData[lessonId];
+                if (lessonWords) {
+                    learnedWords.push(...lessonWords.map(word => ({...word, lessonId})));
+                }
+            });
+            
+            document.getElementById('dict-word-count').textContent = learnedWords.length;
+            renderDictionary(learnedWords);
+            setupDictionaryFilters(learnedWords);
+        }
+
+        function renderDictionary(words) {
+            const container = document.getElementById('dictionary-content');
+            
+            if (words.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-full text-center py-12">
+                        <div class="text-6xl mb-4">📚</div>
+                        <h3 class="text-xl text-white mb-2">Словарь пуст</h3>
+                        <p class="text-gray-400 mb-6">Пройдите урок, чтобы пополнить словарь</p>
+                        <button class="glow-button px-6 py-3 rounded-lg font-semibold" onclick="showLessons()">
+                            Начать изучение
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = words.map((word, index) => `
+                <div class="dictionary-card" onclick="flipCard(${index})">
+                    <div class="card-inner" id="card-${index}">
+                        <div class="card-front">
+                            <div class="arabic-text text-2xl text-white mb-2">${word.arabic}</div>
+                            <div class="text-xs text-gray-400">${getTypeTranslation(word.type)}</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="text-lg text-white mb-2">${word.translation}</div>
+                            <div class="text-xs text-cyan-400">Корень: ${word.root}</div>
+                            <div class="text-xs text-gray-400 mt-1">Урок ${word.lessonId}</div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function flipCard(index) {
+            const card = document.getElementById(`card-${index}`).parentElement;
+            card.classList.toggle('flipped');
+        }
+
+        function setupDictionaryFilters(allWords) {
+            const searchInput = document.getElementById('search-input');
+            const typeFilter = document.getElementById('type-filter');
+            
+            function filterWords() {
+                const searchTerm = searchInput.value.toLowerCase();
+                const selectedType = typeFilter.value;
+                
+                let filteredWords = allWords;
+                
+                if (searchTerm) {
+                    filteredWords = filteredWords.filter(word => 
+                        word.arabic.includes(searchTerm) || 
+                        word.translation.toLowerCase().includes(searchTerm)
+                    );
+                }
+                
+                if (selectedType) {
+                    filteredWords = filteredWords.filter(word => word.type === selectedType);
+                }
+                
+                renderDictionary(filteredWords);
+            }
+            
+            searchInput.addEventListener('input', filterWords);
+            typeFilter.addEventListener('change', filterWords);
+        }
+
+        // Navigation functions
+        function showHome() {
+            document.getElementById('home-screen').classList.remove('hidden');
+            document.getElementById('lesson-selection').classList.add('hidden');
+            document.getElementById('practice-screen').classList.add('hidden');
+            document.getElementById('dictionary-screen').classList.add('hidden');
+            document.getElementById('lesson-screen').classList.add('hidden');
+            document.getElementById('results-container').classList.add('hidden');
+            
+            updateHomeProgress();
+        }
+
+        function showLessons() {
+            document.getElementById('home-screen').classList.add('hidden');
+            document.getElementById('lesson-selection').classList.remove('hidden');
+            document.getElementById('dictionary-screen').classList.add('hidden');
+            document.getElementById('practice-screen').classList.add('hidden');
+        }
+
+        function backToLessons() {
+            document.getElementById('lesson-screen').classList.add('hidden');
+            document.getElementById('lesson-selection').classList.remove('hidden');
+            document.getElementById('results-container').classList.add('hidden');
+            document.getElementById('task-container').classList.remove('hidden');
+        }
+
+        function updateOverallProgress() {
+            const completed = userProgress.completedLessons.size;
+            const total = 1;
+            const percentage = (completed / total) * 100;
+            
+            document.getElementById('overall-progress').textContent = `${completed}/${total}`;
+            document.getElementById('overall-progress-bar').style.width = `${percentage}%`;
+        }
+
+        function updateHomeProgress() {
+            const completed = userProgress.completedLessons.size;
+            document.getElementById('home-progress').textContent = `${completed}/1`;
+            
+            const learnedWords = getLearnedWordsCount();
+            document.getElementById('words-learned').textContent = learnedWords;
+        }
+
+        function getLearnedWordsCount() {
+            let count = 0;
+            userProgress.completedLessons.forEach(lessonId => {
+                const lessonWords = vocabularyData[lessonId];
+                if (lessonWords) {
+                    count += lessonWords.length;
+                }
+            });
+            return count;
+        }
+
+        // Initialize app
+        function initializeApp() {
+            loadProgress();
+            updateOverallProgress();
+            updateHomeProgress();
+        }
+
+        initializeApp();
+    </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a91b5ef964ad2eb',t:'MTc2NDkxODQ4OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
