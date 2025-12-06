@@ -250,14 +250,10 @@
   <div class="min-h-full flex flex-col"><!-- Header -->
    <header class="bg-gradient-to-r from-gray-800 to-gray-900 shadow-lg border-b border-green-400 neon-border">
     <div class="max-w-6xl mx-auto px-4 py-4">
-     <div class="flex items-center justify-between">
-      <div>
-       <h1 id="course-title" class="text-2xl font-bold text-white neon-text">Арабский для Корана</h1>
-       <p class="text-green-300">Изучайте коранический арабский</p>
-      </div>
-      <div class="text-right">
+     <div class="flex items-center justify-center">
+      <div class="text-center">
        <div class="text-sm text-green-300 mb-1">
-        Прогресс: <span id="overall-progress">0/1</span>
+        <span id="overall-progress">0/5</span>
        </div>
        <div class="w-48 bg-gray-700 rounded-full h-3 border border-gray-600">
         <div id="overall-progress-bar" class="progress-bar h-3 rounded-full" style="width: 0%"></div>
@@ -279,15 +275,15 @@
       <div class="grid grid-cols-1 gap-4"><button class="bg-gradient-to-br from-purple-600 to-purple-800 text-white rounded-xl p-6 text-left transition-all hover:from-purple-500 hover:to-purple-700" onclick="showLessons()">
         <div class="text-3xl mb-3">
          📚
-        </div><h3 class="text-lg font-bold mb-2">Урок 1</h3><p class="text-sm text-purple-200">12 базовых слов коранической лексики</p>
+        </div><h3 class="text-lg font-bold mb-2">Уроки</h3><p class="text-sm text-purple-200">5 уроков коранической лексики</p>
         <div class="mt-3 text-sm text-purple-300">
-         Прогресс: <span id="home-progress">0/1</span>
+         Прогресс: <span id="home-progress">0/5</span>
         </div></button> <button class="bg-gradient-to-br from-cyan-600 to-cyan-800 text-white rounded-xl p-6 text-left transition-all hover:from-cyan-500 hover:to-cyan-700" onclick="showPractice()">
         <div class="text-3xl mb-3">
          🎮
         </div><h3 class="text-lg font-bold mb-2">Практика</h3><p class="text-sm text-cyan-200">Собирайте предложения на арабском</p>
         <div class="mt-3 text-sm text-cyan-300">
-         10 предложений для практики
+         7 предложений для практики
         </div></button> <button class="bg-gradient-to-br from-purple-600 to-purple-800 text-white rounded-xl p-6 text-left transition-all hover:from-purple-500 hover:to-purple-700" onclick="showDictionary()">
         <div class="text-3xl mb-3">
          📖
@@ -309,17 +305,58 @@
     </div><!-- Lesson Selection Screen -->
     <div id="lesson-selection" class="hidden max-w-6xl mx-auto">
      <div class="flex items-center justify-between mb-6"><button class="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors flex items-center gap-2" onclick="showHome()"> ← Главная </button>
-      <h2 class="text-2xl font-bold text-white neon-text">Урок 1</h2>
+      <h2 class="text-2xl font-bold text-white neon-text">Уроки</h2>
       <div></div>
      </div>
-     <div class="grid grid-cols-1 gap-3 max-w-md mx-auto">
-      <div class="lesson-card rounded-lg p-6 cursor-pointer" onclick="startLesson(1)">
+     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-4xl mx-auto">
+      <div id="lesson-1" class="lesson-card rounded-lg p-6 cursor-pointer" onclick="startLesson(1)">
        <div class="text-center">
         <div class="text-3xl mb-3">
          📖
         </div>
-        <h3 class="font-bold text-white mb-2">Начать урок</h3>
-        <p class="text-sm text-gray-300">12 новых слов</p>
+        <h3 class="font-bold text-white mb-2">Урок 1</h3>
+        <p class="text-sm text-gray-300">Базовая лексика</p>
+        <p class="text-xs text-gray-400 mt-2">12 слов</p>
+       </div>
+      </div>
+      <div id="lesson-2" class="lesson-card rounded-lg p-6 cursor-pointer" onclick="startLesson(2)">
+       <div class="text-center">
+        <div class="text-3xl mb-3">
+         🌍
+        </div>
+        <h3 class="font-bold text-white mb-2">Урок 2</h3>
+        <p class="text-sm text-gray-300">Природа</p>
+        <p class="text-xs text-gray-400 mt-2">12 слов</p>
+       </div>
+      </div>
+      <div id="lesson-3" class="lesson-card rounded-lg p-6 cursor-pointer" onclick="startLesson(3)">
+       <div class="text-center">
+        <div class="text-3xl mb-3">
+         🕌
+        </div>
+        <h3 class="font-bold text-white mb-2">Урок 3</h3>
+        <p class="text-sm text-gray-300">Религиозные термины</p>
+        <p class="text-xs text-gray-400 mt-2">12 слов</p>
+       </div>
+      </div>
+      <div id="lesson-4" class="lesson-card rounded-lg p-6 cursor-pointer" onclick="startLesson(4)">
+       <div class="text-center">
+        <div class="text-3xl mb-3">
+         👤
+        </div>
+        <h3 class="font-bold text-white mb-2">Урок 4</h3>
+        <p class="text-sm text-gray-300">Части тела и глаголы</p>
+        <p class="text-xs text-gray-400 mt-2">12 слов</p>
+       </div>
+      </div>
+      <div id="lesson-5" class="lesson-card rounded-lg p-6 cursor-pointer" onclick="startLesson(5)">
+       <div class="text-center">
+        <div class="text-3xl mb-3">
+         ⭐
+        </div>
+        <h3 class="font-bold text-white mb-2">Урок 5</h3>
+        <p class="text-sm text-gray-300">Понятия веры</p>
+        <p class="text-xs text-gray-400 mt-2">12 слов</p>
        </div>
       </div>
      </div>
@@ -327,7 +364,7 @@
     <div id="practice-screen" class="hidden max-w-4xl mx-auto">
      <div class="flex items-center justify-between mb-6"><button class="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors flex items-center gap-2" onclick="showHome()"> ← Главная </button>
       <h2 class="text-2xl font-bold text-white neon-text">Практика</h2>
-      <div class="text-sm text-green-300"><span id="practice-progress">0/10</span>
+      <div class="text-sm text-green-300"><span id="practice-progress">0/7</span>
       </div>
      </div>
      <div id="practice-task" class="task-card rounded-xl shadow-lg p-8"><!-- Practice task will be rendered here -->
@@ -375,7 +412,7 @@
    </main><!-- Hidden file input for import --> <input type="file" id="import-file" accept=".json" style="display: none;" onchange="handleFileImport(event)">
   </div>
   <script>
-        // Vocabulary data - только урок 1
+        // Vocabulary data - все 5 уроков
         const vocabularyData = {
             1: [
                 {arabic: "كِتَابٌ", translation: "книга", type: "noun", root: "ك-ت-ب"},
@@ -390,60 +427,101 @@
                 {arabic: "مَعَ", translation: "с", type: "preposition", root: "م-ع"},
                 {arabic: "الْيَوْمَ", translation: "сегодня", type: "noun", root: "ي-و-م"},
                 {arabic: "أَكَلْتُ", translation: "я ел", type: "verb", root: "ا-ك-ل"}
+            ],
+            2: [
+                {arabic: "مَاءٌ", translation: "вода", type: "noun", root: "م-و-ء"},
+                {arabic: "سَمَاءٌ", translation: "небо", type: "noun", root: "س-م-و"},
+                {arabic: "أَرْضٌ", translation: "земля", type: "noun", root: "ا-ر-ض"},
+                {arabic: "شَمْسٌ", translation: "солнце", type: "noun", root: "ش-م-س"},
+                {arabic: "قَمَرٌ", translation: "луна", type: "noun", root: "ق-م-ر"},
+                {arabic: "نَهَارٌ", translation: "день", type: "noun", root: "ن-ه-ر"},
+                {arabic: "لَيْلٌ", translation: "ночь", type: "noun", root: "ل-ي-ل"},
+                {arabic: "نَجْمٌ", translation: "звезда", type: "noun", root: "ن-ج-م"},
+                {arabic: "رِيحٌ", translation: "ветер", type: "noun", root: "ر-و-ح"},
+                {arabic: "شَجَرَةٌ", translation: "дерево", type: "noun", root: "ش-ج-ر"},
+                {arabic: "جَبَلٌ", translation: "гора", type: "noun", root: "ج-ب-ل"},
+                {arabic: "بَحْرٌ", translation: "море", type: "noun", root: "ب-ح-ر"}
+            ],
+            3: [
+                {arabic: "اللهُ", translation: "Аллах", type: "noun", root: "ا-ل-ه"},
+                {arabic: "نَبِيٌّ", translation: "пророк", type: "noun", root: "ن-ب-ا"},
+                {arabic: "صَلاَةٌ", translation: "молитва", type: "noun", root: "ص-ل-و"},
+                {arabic: "قُرْآنٌ", translation: "Коран", type: "noun", root: "ق-ر-ا"},
+                {arabic: "إِيمَانٌ", translation: "вера", type: "noun", root: "ا-م-ن"},
+                {arabic: "رَسُولٌ", translation: "посланник", type: "noun", root: "ر-س-ل"},
+                {arabic: "مَلَكٌ", translation: "ангел", type: "noun", root: "م-ل-ك"},
+                {arabic: "كَافِرٌ", translation: "неверующий", type: "noun", root: "ك-ف-ر"},
+                {arabic: "مُؤْمِنٌ", translation: "верующий", type: "noun", root: "ا-م-ن"},
+                {arabic: "عِبَادَةٌ", translation: "поклонение", type: "noun", root: "ع-б-д"},
+                {arabic: "رَحْمَةٌ", translation: "милость", type: "noun", root: "ر-ح-م"},
+                {arabic: "عَذَابٌ", translation: "наказание", type: "noun", root: "ع-ذ-ب"}
+            ],
+            4: [
+                {arabic: "قَلْبٌ", translation: "сердце", type: "noun", root: "ق-ل-ب"},
+                {arabic: "عَيْنٌ", translation: "глаз", type: "noun", root: "ع-ي-ن"},
+                {arabic: "يَدٌ", translation: "рука", type: "noun", root: "ي-د"},
+                {arabic: "وَجْهٌ", translation: "лицо", type: "noun", root: "و-ج-ه"},
+                {arabic: "نَفْسٌ", translation: "душа", type: "noun", root: "ن-ف-س"},
+                {arabic: "قَالَ", translation: "он сказал", type: "verb", root: "ق-و-ل"},
+                {arabic: "فَعَلَ", translation: "он сделал", type: "verb", root: "ف-ع-ل"},
+                {arabic: "جَاءَ", translation: "он пришел", type: "verb", root: "ج-ي-ء"},
+                {arabic: "ذَهَبَ", translation: "он ушел", type: "verb", root: "ذ-ه-ب"},
+                {arabic: "عَلِمَ", translation: "он знал", type: "verb", root: "ع-ل-م"},
+                {arabic: "كَتَبَ", translation: "он писал", type: "verb", root: "ك-ت-ب"},
+                {arabic: "قَرَأَ", translation: "он читал", type: "verb", root: "ق-ر-ا"}
+            ],
+            5: [
+                {arabic: "حَقٌّ", translation: "истина", type: "noun", root: "ح-ق-ق"},
+                {arabic: "بَاطِلٌ", translation: "ложь", type: "noun", root: "ب-ط-ل"},
+                {arabic: "خَيْرٌ", translation: "добро", type: "noun", root: "خ-ي-ر"},
+                {arabic: "شَرٌّ", translation: "зло", type: "noun", root: "ش-ر-ر"},
+                {arabic: "جَنَّةٌ", translation: "рай", type: "noun", root: "ج-ن-ن"},
+                {arabic: "نَارٌ", translation: "огонь/ад", type: "noun", root: "ن-و-ر"},
+                {arabic: "تَوْبَةٌ", translation: "покаяние", type: "noun", root: "ت-و-ب"},
+                {arabic: "صَبْرٌ", translation: "терпение", type: "noun", root: "ص-ب-ر"},
+                {arabic: "شُكْرٌ", translation: "благодарность", type: "noun", root: "ش-ك-ر"},
+                {arabic: "ذِكْرٌ", translation: "поминание", type: "noun", root: "ذ-ك-ر"},
+                {arabic: "نُورٌ", translation: "свет", type: "noun", root: "ن-و-ر"},
+                {arabic: "هُدًى", translation: "руководство", type: "noun", root: "ه-د-ي"}
             ]
         };
 
         // Practice sentences data
         const practiceSentences = [
             {
-                russian: "Я обедал сегодня с моим другом в школе",
-                arabic: ["أَنَا", "أَكَلْتُ", "الْيَوْمَ", "مَعَ", "صَدِيقٌ", "فِي", "مَدْرَسَةٌ"],
-                correctOrder: ["أَنَا", "أَكَلْتُ", "الْيَوْمَ", "مَعَ", "صَدِيقٌ", "فِي", "مَدْرَسَةٌ"]
+                russian: "Меня зовут Шамиль, я приехал из Дагестана",
+                arabic: ["اِسْمِي", "شَامِلٌ", "جِئْتُ", "مِنْ", "دَاغِسْتَانَ"],
+                correctOrder: ["اِسْمِي", "شَامِلٌ", "جِئْتُ", "مِنْ", "دَاغِسْتَانَ"]
             },
             {
-                russian: "Книга в доме",
-                arabic: ["كِتَابٌ", "فِي", "بَيْتٌ"],
-                correctOrder: ["كِتَابٌ", "فِي", "بَيْتٌ"]
+                russian: "Где я могу пообедать поблизости?",
+                arabic: ["أَيْنَ", "يُمْكِنُنِي", "تَنَاوُلُ", "الغَدَاءِ", "قَرِيبًا", "مِنْ", "هُنَا"],
+                correctOrder: ["أَيْنَ", "يُمْكِنُنِي", "تَنَاوُلُ", "الغَدَاءِ", "قَرِيبًا", "مِنْ", "هُنَا"]
             },
             {
-                russian: "Он с другом",
-                arabic: ["هُوَ", "مَعَ", "صَدِيقٌ"],
-                correctOrder: ["هُوَ", "مَعَ", "صَدِيقٌ"]
+                russian: "Я потерялся, не могли бы вы мне помочь?",
+                arabic: ["أَنَا", "ضَائِعٌ", "هَلْ", "يُمْكِنُكُم", "مُسَاعَدَتِي"],
+                correctOrder: ["أَنَا", "ضَائِعٌ", "هَلْ", "يُمْكِنُكُم", "مُسَاعَدَتِي"]
             },
             {
-                russian: "Она в школе",
-                arabic: ["هِيَ", "فِي", "مَدْرَسَةٌ"],
-                correctOrder: ["هِيَ", "فِي", "مَدْرَسَةٌ"]
+                russian: "Мы с моим братом любим купаться в холодной горной реке и лазить по горам",
+                arabic: ["أَنَا", "وَأَخِي", "نُحِبُّ", "السِّبَاحَةَ", "فِي", "النَّهْرِ", "البَارِدِ", "فِي", "الجِبَالِ", "وَالتَّجَوُّلَ", "فِيهَا"],
+                correctOrder: ["أَنَا", "وَأَخِي", "نُحِبُّ", "السِّبَاحَةَ", "فِي", "النَّهْرِ", "البَارِدِ", "فِي", "الجِبَالِ", "وَالتَّجَوُّلَ", "فِيهَا"]
             },
             {
-                russian: "Еда в доме",
-                arabic: ["طَعَامٌ", "فِي", "بَيْتٌ"],
-                correctOrder: ["طَعَامٌ", "فِي", "بَيْتٌ"]
+                russian: "Вчера я пил кофе и забыл, где я его покупал",
+                arabic: ["أَمْسِ", "شَرِبْتُ", "القَهْوَةَ", "وَنَسِيتُ", "أَيْنَ", "شَرَيْتُهَا"],
+                correctOrder: ["أَمْسِ", "شَرِبْتُ", "القَهْوَةَ", "وَنَسِيتُ", "أَيْنَ", "شَرَيْتُهَا"]
             },
             {
-                russian: "Я с другом сегодня",
-                arabic: ["أَنَا", "مَعَ", "صَدِيقٌ", "الْيَوْمَ"],
-                correctOrder: ["أَنَا", "مَعَ", "صَدِيقٌ", "الْيَوْمَ"]
+                russian: "Я уезжаю завтра домой, спасибо вам за гостеприимство",
+                arabic: ["أَنَا", "سَأُسَافِرُ", "غَدًا", "إِلَى", "بَيْتِي", "شُكْرًا", "عَلَى", "حُسْنِ", "الاسْتِقْبَالِ"],
+                correctOrder: ["أَنَا", "سَأُسَافِرُ", "غَدًا", "إِلَى", "بَيْتِي", "شُكْرًا", "عَلَى", "حُسْنِ", "الاسْتِقْبَالِ"]
             },
             {
-                russian: "Книга с другом",
-                arabic: ["كِتَابٌ", "مَعَ", "صَدِيقٌ"],
-                correctOrder: ["كِتَابٌ", "مَعَ", "صَدِيقٌ"]
-            },
-            {
-                russian: "Он в доме сегодня",
-                arabic: ["هُوَ", "فِي", "بَيْتٌ", "الْيَوْمَ"],
-                correctOrder: ["هُوَ", "فِي", "بَيْتٌ", "الْيَوْمَ"]
-            },
-            {
-                russian: "Она с едой",
-                arabic: ["هِيَ", "مَعَ", "طَعَامٌ"],
-                correctOrder: ["هِيَ", "مَعَ", "طَعَامٌ"]
-            },
-            {
-                russian: "Я ел в школе",
-                arabic: ["أَنَا", "أَكَلْتُ", "فِي", "مَدْرَسَةٌ"],
-                correctOrder: ["أَنَا", "أَكَلْتُ", "فِي", "مَدْرَسَةٌ"]
+                russian: "Эй, ты, отдай мою сумку, я спортсмен, имей в виду",
+                arabic: ["هَيَّا", "أَنْتَ", "أَعِدْ", "حَقِيبَتِي", "أَنَا", "رِيَاضِيّ", "فَتَذَكَّرْ", "ذَلِكَ"],
+                correctOrder: ["هَيَّا", "أَنْتَ", "أَعِدْ", "حَقِيبَتِي", "أَنَا", "رِيَاضِيّ", "فَتَذَكَّرْ", "ذَلِكَ"]
             }
         ];
 
@@ -500,6 +578,7 @@
                     
                     updateOverallProgress();
                     updateHomeProgress();
+                    updateLessonCards();
                 }
             } catch (error) {
                 showToast('Ошибка загрузки прогресса', 'error');
@@ -553,6 +632,7 @@
                         saveProgress();
                         updateOverallProgress();
                         updateHomeProgress();
+                        updateLessonCards();
                         
                         showToast('Прогресс импортирован!');
                     } else {
@@ -603,7 +683,7 @@
             selectedWords = [];
             availableWords = [...sentence.arabic].sort(() => Math.random() - 0.5);
             
-            document.getElementById('practice-progress').textContent = `${currentPracticeSentence + 1}/10`;
+            document.getElementById('practice-progress').textContent = `${currentPracticeSentence + 1}/7`;
             
             const container = document.getElementById('practice-task');
             container.innerHTML = `
@@ -722,7 +802,7 @@
                     <div class="text-6xl mb-4">🎉</div>
                     <h2 class="text-2xl font-bold text-white neon-text mb-4">Практика завершена!</h2>
                     <div class="text-green-300 mb-6">
-                        <p>Правильных ответов: <span class="font-semibold text-white">${practiceCorrectAnswers}</span> из <span class="font-semibold text-white">10</span></p>
+                        <p>Правильных ответов: <span class="font-semibold text-white">${practiceCorrectAnswers}</span> из <span class="font-semibold text-white">7</span></p>
                     </div>
                     <div class="bg-gray-800 border border-cyan-400 rounded-lg p-4 mb-6">
                         <h3 class="font-semibold text-cyan-300 mb-2">Отличная работа!</h3>
@@ -979,6 +1059,7 @@
             
             updateOverallProgress();
             updateHomeProgress();
+            updateLessonCards();
         }
 
         // Dictionary functions
@@ -1072,6 +1153,20 @@
             typeFilter.addEventListener('change', filterWords);
         }
 
+        // Update lesson cards to show completion status
+        function updateLessonCards() {
+            for (let i = 1; i <= 5; i++) {
+                const card = document.getElementById(`lesson-${i}`);
+                if (card) {
+                    if (userProgress.completedLessons.has(i)) {
+                        card.classList.add('completed');
+                    } else {
+                        card.classList.remove('completed');
+                    }
+                }
+            }
+        }
+
         // Navigation functions
         function showHome() {
             document.getElementById('home-screen').classList.remove('hidden');
@@ -1089,6 +1184,8 @@
             document.getElementById('lesson-selection').classList.remove('hidden');
             document.getElementById('dictionary-screen').classList.add('hidden');
             document.getElementById('practice-screen').classList.add('hidden');
+            
+            updateLessonCards();
         }
 
         function backToLessons() {
@@ -1096,11 +1193,13 @@
             document.getElementById('lesson-selection').classList.remove('hidden');
             document.getElementById('results-container').classList.add('hidden');
             document.getElementById('task-container').classList.remove('hidden');
+            
+            updateLessonCards();
         }
 
         function updateOverallProgress() {
             const completed = userProgress.completedLessons.size;
-            const total = 1;
+            const total = 5;
             const percentage = (completed / total) * 100;
             
             document.getElementById('overall-progress').textContent = `${completed}/${total}`;
@@ -1109,7 +1208,7 @@
 
         function updateHomeProgress() {
             const completed = userProgress.completedLessons.size;
-            document.getElementById('home-progress').textContent = `${completed}/1`;
+            document.getElementById('home-progress').textContent = `${completed}/5`;
             
             const learnedWords = getLearnedWordsCount();
             document.getElementById('words-learned').textContent = learnedWords;
@@ -1131,9 +1230,10 @@
             loadProgress();
             updateOverallProgress();
             updateHomeProgress();
+            updateLessonCards();
         }
 
         initializeApp();
     </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a91b5ef964ad2eb',t:'MTc2NDkxODQ4OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a9b5ab19345dcc9',t:'MTc2NTAxOTYxMC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
