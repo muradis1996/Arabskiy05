@@ -282,8 +282,7 @@
         <div class="text-3xl mb-3">
          🎮
         </div><h3 class="text-lg font-bold mb-2">Практика</h3><p class="text-sm text-cyan-200">Собирайте предложения на арабском</p>
-        <div class="mt-3 text-sm text-cyan-300">
-         7 предложений для практики
+        <div class="mt-3 text-sm text-cyan-300"><span id="practice-available-count">0</span> предложений доступно
         </div></button> <button class="bg-gradient-to-br from-purple-600 to-purple-800 text-white rounded-xl p-6 text-left transition-all hover:from-purple-500 hover:to-purple-700" onclick="showDictionary()">
         <div class="text-3xl mb-3">
          📖
@@ -315,8 +314,8 @@
          📖
         </div>
         <h3 class="font-bold text-white mb-2">Урок 1</h3>
-        <p class="text-sm text-gray-300">Базовая лексика</p>
-        <p class="text-xs text-gray-400 mt-2">12 слов</p>
+        <p class="text-sm text-gray-300">Основы веры</p>
+        <p class="text-xs text-gray-400 mt-2">15 слов</p>
        </div>
       </div>
       <div id="lesson-2" class="lesson-card rounded-lg p-6 cursor-pointer" onclick="startLesson(2)">
@@ -325,8 +324,8 @@
          🌍
         </div>
         <h3 class="font-bold text-white mb-2">Урок 2</h3>
-        <p class="text-sm text-gray-300">Природа</p>
-        <p class="text-xs text-gray-400 mt-2">12 слов</p>
+        <p class="text-sm text-gray-300">Творение</p>
+        <p class="text-xs text-gray-400 mt-2">15 слов</p>
        </div>
       </div>
       <div id="lesson-3" class="lesson-card rounded-lg p-6 cursor-pointer" onclick="startLesson(3)">
@@ -335,8 +334,8 @@
          🕌
         </div>
         <h3 class="font-bold text-white mb-2">Урок 3</h3>
-        <p class="text-sm text-gray-300">Религиозные термины</p>
-        <p class="text-xs text-gray-400 mt-2">12 слов</p>
+        <p class="text-sm text-gray-300">Духовный мир</p>
+        <p class="text-xs text-gray-400 mt-2">15 слов</p>
        </div>
       </div>
       <div id="lesson-4" class="lesson-card rounded-lg p-6 cursor-pointer" onclick="startLesson(4)">
@@ -345,18 +344,18 @@
          👤
         </div>
         <h3 class="font-bold text-white mb-2">Урок 4</h3>
-        <p class="text-sm text-gray-300">Части тела и глаголы</p>
-        <p class="text-xs text-gray-400 mt-2">12 слов</p>
+        <p class="text-sm text-gray-300">Ангелы и рабы</p>
+        <p class="text-xs text-gray-400 mt-2">16 слов</p>
        </div>
       </div>
       <div id="lesson-5" class="lesson-card rounded-lg p-6 cursor-pointer" onclick="startLesson(5)">
        <div class="text-center">
         <div class="text-3xl mb-3">
-         ⭐
+         ✨
         </div>
         <h3 class="font-bold text-white mb-2">Урок 5</h3>
-        <p class="text-sm text-gray-300">Понятия веры</p>
-        <p class="text-xs text-gray-400 mt-2">12 слов</p>
+        <p class="text-sm text-gray-300">Качества и пути</p>
+        <p class="text-xs text-gray-400 mt-2">16 слов</p>
        </div>
       </div>
      </div>
@@ -364,7 +363,7 @@
     <div id="practice-screen" class="hidden max-w-4xl mx-auto">
      <div class="flex items-center justify-between mb-6"><button class="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors flex items-center gap-2" onclick="showHome()"> ← Главная </button>
       <h2 class="text-2xl font-bold text-white neon-text">Практика</h2>
-      <div class="text-sm text-green-300"><span id="practice-progress">0/7</span>
+      <div class="text-sm text-green-300"><span id="practice-progress">0/0</span>
       </div>
      </div>
      <div id="practice-task" class="task-card rounded-xl shadow-lg p-8"><!-- Practice task will be rendered here -->
@@ -377,7 +376,7 @@
       </div>
      </div><!-- Search and Filter -->
      <div class="bg-gradient-to-r from-gray-800 to-gray-700 border border-green-400 rounded-lg p-4 mb-6">
-      <div class="flex flex-col md:flex-row gap-4"><input type="text" id="search-input" placeholder="Поиск по арабскому тексту или переводу..." class="flex-1 bg-gray-900 border border-gray-600 rounded-lg px-4 py-2 text-white placeholder-gray-400 focus:border-green-400 focus:outline-none"> <select id="type-filter" class="bg-gray-900 border border-gray-600 rounded-lg px-4 py-2 text-white focus:border-green-400 focus:outline-none"> <option value="">Все типы</option> <option value="noun">Существительные</option> <option value="verb">Глаголы</option> <option value="preposition">Предлоги</option> <option value="pronoun">Местоимения</option> <option value="particle">Частицы</option> <option value="interrogative">Вопросительные</option> </select>
+      <div class="flex flex-col md:flex-row gap-4"><input type="text" id="search-input" placeholder="Поиск по арабскому тексту или переводу..." class="flex-1 bg-gray-900 border border-gray-600 rounded-lg px-4 py-2 text-white placeholder-gray-400 focus:border-green-400 focus:outline-none"> <select id="type-filter" class="bg-gray-900 border border-gray-600 rounded-lg px-4 py-2 text-white focus:border-green-400 focus:outline-none"> <option value="">Все типы</option> <option value="noun">Существительные</option> <option value="verb">Глаголы</option> <option value="preposition">Предлоги</option> <option value="pronoun">Местоимения</option> <option value="particle">Частицы</option> </select>
       </div>
      </div><!-- Dictionary Content -->
      <div id="dictionary-content" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"><!-- Dictionary words will be generated here -->
@@ -398,12 +397,12 @@
        </div>
        <h2 id="results-title" class="text-2xl font-bold text-white neon-text mb-4">Урок завершён!</h2>
        <div id="results-stats" class="text-green-300 mb-6">
-        <p>Правильных ответов: <span id="correct-answers" class="font-semibold text-white">0</span> из <span id="total-tasks" class="font-semibold text-white">24</span></p>
+        <p>Правильных ответов: <span id="correct-answers" class="font-semibold text-white">0</span> из <span id="total-tasks" class="font-semibold text-white">0</span></p>
        </div>
        <div class="bg-gray-800 border border-cyan-400 rounded-lg p-4 mb-6">
         <h3 class="font-semibold text-cyan-300 mb-2">Отличная работа!</h3>
-        <div class="text-sm text-gray-300">
-         Вы изучили 12 новых слов
+        <div class="text-sm text-gray-300" id="words-learned-text">
+         Вы изучили новые слова
         </div>
        </div><button id="back-to-lessons" class="glow-button px-8 py-3 rounded-lg font-semibold transition-all" onclick="backToLessons()"> К урокам </button>
       </div>
@@ -415,115 +414,257 @@
         // Vocabulary data - все 5 уроков
         const vocabularyData = {
             1: [
-                {arabic: "كِتَابٌ", translation: "книга", type: "noun", root: "ك-ت-ب"},
-                {arabic: "بَيْتٌ", translation: "дом", type: "noun", root: "ب-ي-ت"},
-                {arabic: "مَدْرَسَةٌ", translation: "школа", type: "noun", root: "د-ر-س"},
-                {arabic: "صَدِيقٌ", translation: "друг", type: "noun", root: "ص-د-ق"},
-                {arabic: "طَعَامٌ", translation: "еда", type: "noun", root: "ط-ع-م"},
-                {arabic: "أَنَا", translation: "я", type: "pronoun", root: "ا-ن-ا"},
-                {arabic: "هُوَ", translation: "он", type: "pronoun", root: "ه-و"},
-                {arabic: "هِيَ", translation: "она", type: "pronoun", root: "ه-ي"},
-                {arabic: "فِي", translation: "в", type: "preposition", root: "ف-ي"},
-                {arabic: "مَعَ", translation: "с", type: "preposition", root: "م-ع"},
-                {arabic: "الْيَوْمَ", translation: "сегодня", type: "noun", root: "ي-و-م"},
-                {arabic: "أَكَلْتُ", translation: "я ел", type: "verb", root: "ا-ك-ل"}
+                {arabic: "اللهُ", translation: "Аллах", type: "noun", root: "ا-ل-ه"},
+                {arabic: "رَبٌّ", translation: "Господь", type: "noun", root: "ر-ب-ب"},
+                {arabic: "إِنسانٌ", translation: "человек", type: "noun", root: "ا-ن-س"},
+                {arabic: "سَبيلٌ", translation: "дорога, путь", type: "noun", root: "س-ب-ل"},
+                {arabic: "آيَةٌ", translation: "знамение", type: "noun", root: "ا-ي-ي"},
+                {arabic: "حَقٌّ", translation: "истина", type: "noun", root: "ح-ق-ق"},
+                {arabic: "قالَ", translation: "сказал", type: "verb", root: "ق-و-ل"},
+                {arabic: "عَمِلَ", translation: "делал/совершал", type: "verb", root: "ع-م-ل"},
+                {arabic: "آمَنَ", translation: "веровал", type: "verb", root: "ا-م-ن"},
+                {arabic: "عَلِمَ", translation: "знал", type: "verb", root: "ع-ل-م"},
+                {arabic: "رَأى", translation: "видел", type: "verb", root: "ر-ا-ي"},
+                {arabic: "في", translation: "в", type: "preposition", root: "ف-ي"},
+                {arabic: "إِلىٰ", translation: "к", type: "preposition", root: "ا-ل-ي"},
+                {arabic: "مِنْ", translation: "от", type: "preposition", root: "م-ن"},
+                {arabic: "مَعَ", translation: "с/вместе", type: "preposition", root: "м-ع"}
             ],
             2: [
-                {arabic: "مَاءٌ", translation: "вода", type: "noun", root: "م-و-ء"},
-                {arabic: "سَمَاءٌ", translation: "небо", type: "noun", root: "س-م-و"},
-                {arabic: "أَرْضٌ", translation: "земля", type: "noun", root: "ا-ر-ض"},
-                {arabic: "شَمْسٌ", translation: "солнце", type: "noun", root: "ش-م-س"},
-                {arabic: "قَمَرٌ", translation: "луна", type: "noun", root: "ق-م-ر"},
-                {arabic: "نَهَارٌ", translation: "день", type: "noun", root: "ن-ه-ر"},
+                {arabic: "كِتابٌ", translation: "книга", type: "noun", root: "ك-ت-ب"},
+                {arabic: "كَلِمَةٌ", translation: "слово", type: "noun", root: "ك-ل-м"},
                 {arabic: "لَيْلٌ", translation: "ночь", type: "noun", root: "ل-ي-ل"},
-                {arabic: "نَجْمٌ", translation: "звезда", type: "noun", root: "ن-ج-م"},
-                {arabic: "رِيحٌ", translation: "ветер", type: "noun", root: "ر-و-ح"},
-                {arabic: "شَجَرَةٌ", translation: "дерево", type: "noun", root: "ش-ج-ر"},
-                {arabic: "جَبَلٌ", translation: "гора", type: "noun", root: "ج-ب-ل"},
-                {arabic: "بَحْرٌ", translation: "море", type: "noun", root: "ب-ح-ر"}
+                {arabic: "نَهارٌ", translation: "день", type: "noun", root: "ن-ه-ر"},
+                {arabic: "أَرْضٌ", translation: "земля", type: "noun", root: "ا-ر-ض"},
+                {arabic: "سَماءٌ", translation: "небо", type: "noun", root: "س-م-و"},
+                {arabic: "جاءَ", translation: "пришёл", type: "verb", root: "ج-ي-ء"},
+                {arabic: "ذَهَبَ", translation: "ушёл", type: "verb", root: "ذ-ه-ب"},
+                {arabic: "خَلَقَ", translation: "создал", type: "verb", root: "خ-ل-ق"},
+                {arabic: "آتَى", translation: "даровал", type: "verb", root: "ا-ت-ي"},
+                {arabic: "فَتَحَ", translation: "открыл/раскрыл", type: "verb", root: "ف-ت-ح"},
+                {arabic: "عَلىٰ", translation: "на", type: "preposition", root: "ع-ل-ي"},
+                {arabic: "تَحْتَ", translation: "под", type: "preposition", root: "ت-ح-т"},
+                {arabic: "بَيْنَ", translation: "среди", type: "preposition", root: "ب-ي-ن"},
+                {arabic: "بَعْدَ", translation: "после", type: "preposition", root: "ب-ع-د"}
             ],
             3: [
-                {arabic: "اللهُ", translation: "Аллах", type: "noun", root: "ا-ل-ه"},
-                {arabic: "نَبِيٌّ", translation: "пророк", type: "noun", root: "ن-ب-ا"},
-                {arabic: "صَلاَةٌ", translation: "молитва", type: "noun", root: "ص-ل-و"},
-                {arabic: "قُرْآنٌ", translation: "Коран", type: "noun", root: "ق-ر-ا"},
-                {arabic: "إِيمَانٌ", translation: "вера", type: "noun", root: "ا-م-ن"},
-                {arabic: "رَسُولٌ", translation: "посланник", type: "noun", root: "ر-س-ل"},
-                {arabic: "مَلَكٌ", translation: "ангел", type: "noun", root: "م-ل-ك"},
-                {arabic: "كَافِرٌ", translation: "неверующий", type: "noun", root: "ك-ف-ر"},
-                {arabic: "مُؤْمِنٌ", translation: "верующий", type: "noun", root: "ا-م-ن"},
-                {arabic: "عِبَادَةٌ", translation: "поклонение", type: "noun", root: "ع-б-д"},
-                {arabic: "رَحْمَةٌ", translation: "милость", type: "noun", root: "ر-ح-م"},
-                {arabic: "عَذَابٌ", translation: "наказание", type: "noun", root: "ع-ذ-ب"}
+                {arabic: "قَلْبٌ", translation: "сердце", type: "noun", root: "ق-ل-ب"},
+                {arabic: "بَيْتٌ", translation: "дом", type: "noun", root: "ب-ي-ت"},
+                {arabic: "ماءٌ", translation: "вода", type: "noun", root: "م-و-ء"},
+                {arabic: "نارٌ", translation: "огонь", type: "noun", root: "ن-و-ر"},
+                {arabic: "جَنَّةٌ", translation: "рай", type: "noun", root: "ج-ن-ن"},
+                {arabic: "نارُ جَهَنَّمَ", translation: "ад", type: "noun", root: "ج-ه-ن-م"},
+                {arabic: "رَجَعَ", translation: "вернулся", type: "verb", root: "ر-ج-ع"},
+                {arabic: "كانَ", translation: "жил/пребывал", type: "verb", root: "ك-و-ن"},
+                {arabic: "سَمِعَ", translation: "услышал", type: "verb", root: "س-م-ع"},
+                {arabic: "بَدَأَ", translation: "начал", type: "verb", root: "ب-د-ا"},
+                {arabic: "أَعْطىٰ", translation: "дал/даровал", type: "verb", root: "ع-ط-ي"},
+                {arabic: "بِـ", translation: "с", type: "preposition", root: "ب"},
+                {arabic: "لِـ", translation: "для", type: "preposition", root: "ل"},
+                {arabic: "عَنْ", translation: "о/про", type: "preposition", root: "ع-ن"},
+                {arabic: "قَبْلَ", translation: "перед", type: "preposition", root: "ق-б-ل"}
             ],
             4: [
-                {arabic: "قَلْبٌ", translation: "сердце", type: "noun", root: "ق-ل-ب"},
-                {arabic: "عَيْنٌ", translation: "глаз", type: "noun", root: "ع-ي-ن"},
-                {arabic: "يَدٌ", translation: "рука", type: "noun", root: "ي-د"},
-                {arabic: "وَجْهٌ", translation: "лицо", type: "noun", root: "و-ج-ه"},
-                {arabic: "نَفْسٌ", translation: "душа", type: "noun", root: "ن-ف-س"},
-                {arabic: "قَالَ", translation: "он сказал", type: "verb", root: "ق-و-ل"},
-                {arabic: "فَعَلَ", translation: "он сделал", type: "verb", root: "ف-ع-ل"},
-                {arabic: "جَاءَ", translation: "он пришел", type: "verb", root: "ج-ي-ء"},
-                {arabic: "ذَهَبَ", translation: "он ушел", type: "verb", root: "ذ-ه-ب"},
-                {arabic: "عَلِمَ", translation: "он знал", type: "verb", root: "ع-ل-م"},
-                {arabic: "كَتَبَ", translation: "он писал", type: "verb", root: "ك-ت-ب"},
-                {arabic: "قَرَأَ", translation: "он читал", type: "verb", root: "ق-ر-ا"}
+                {arabic: "عالَمٌ", translation: "мир", type: "noun", root: "ع-ل-م"},
+                {arabic: "مَلَكٌ", translation: "ангел", type: "noun", root: "م-ل-ك"},
+                {arabic: "عَبْدٌ", translation: "раб/слуга", type: "noun", root: "ع-ب-د"},
+                {arabic: "خُشوعٌ", translation: "смирение", type: "noun", root: "خ-ش-ع"},
+                {arabic: "رَحْمَةٌ", translation: "милость", type: "noun", root: "ر-ح-м"},
+                {arabic: "عِلْمٌ", translation: "знание", type: "noun", root: "ع-ل-م"},
+                {arabic: "أَرَىٰ", translation: "показал", type: "verb", root: "ر-ا-ي"},
+                {arabic: "رَفَعَ", translation: "поднял", type: "verb", root: "ر-ف-ع"},
+                {arabic: "قَرَّبَ", translation: "приблизил", type: "verb", root: "ق-р-ب"},
+                {arabic: "نَجَّىٰ", translation: "спас", type: "verb", root: "ن-ج-و"},
+                {arabic: "أَعْلَمَ", translation: "дал знать", type: "verb", root: "ع-ل-м"},
+                {arabic: "هُناكَ", translation: "там", type: "particle", root: "ه-ن-ك"},
+                {arabic: "هُنا", translation: "здесь", type: "particle", root: "ه-ن"},
+                {arabic: "إِذْ", translation: "когда", type: "particle", root: "ا-ذ"},
+                {arabic: "إِنْ", translation: "если", type: "particle", root: "ا-ن"},
+                {arabic: "حَتّىٰ", translation: "пока", type: "particle", root: "ح-ت-ي"}
             ],
             5: [
-                {arabic: "حَقٌّ", translation: "истина", type: "noun", root: "ح-ق-ق"},
-                {arabic: "بَاطِلٌ", translation: "ложь", type: "noun", root: "ب-ط-ل"},
-                {arabic: "خَيْرٌ", translation: "добро", type: "noun", root: "خ-ي-ر"},
-                {arabic: "شَرٌّ", translation: "зло", type: "noun", root: "ش-ر-ر"},
-                {arabic: "جَنَّةٌ", translation: "рай", type: "noun", root: "ج-ن-ن"},
-                {arabic: "نَارٌ", translation: "огонь/ад", type: "noun", root: "ن-و-ر"},
-                {arabic: "تَوْبَةٌ", translation: "покаяние", type: "noun", root: "ت-و-ب"},
-                {arabic: "صَبْرٌ", translation: "терпение", type: "noun", root: "ص-ب-ر"},
-                {arabic: "شُكْرٌ", translation: "благодарность", type: "noun", root: "ش-ك-ر"},
-                {arabic: "ذِكْرٌ", translation: "поминание", type: "noun", root: "ذ-ك-ر"},
-                {arabic: "نُورٌ", translation: "свет", type: "noun", root: "ن-و-ر"},
-                {arabic: "هُدًى", translation: "руководство", type: "noun", root: "ه-د-ي"}
+                {arabic: "صِدْقٌ", translation: "правда/верность", type: "noun", root: "ص-د-ق"},
+                {arabic: "كِذْبٌ", translation: "ложь", type: "noun", root: "ك-ذ-ب"},
+                {arabic: "حِكْمَةٌ", translation: "мудрость", type: "noun", root: "ح-ك-م"},
+                {arabic: "حُكْمٌ", translation: "решение/суд", type: "noun", root: "ح-ك-م"},
+                {arabic: "طَريقٌ", translation: "дорога/путь", type: "noun", root: "ط-ر-ق"},
+                {arabic: "قُلُوبٌ", translation: "сердца (мн.)", type: "noun", root: "ق-ل-ب"},
+                {arabic: "وَعَدَ", translation: "дал слово/пообещал", type: "verb", root: "و-ع-د"},
+                {arabic: "نَصَرَ", translation: "помог", type: "verb", root: "ن-ص-ر"},
+                {arabic: "حَفِظَ", translation: "защитил", type: "verb", root: "ح-ف-ظ"},
+                {arabic: "غَفَرَ", translation: "простил", type: "verb", root: "غ-ف-ر"},
+                {arabic: "هَدَىٰ", translation: "показал/повёл", type: "verb", root: "ه-د-ي"},
+                {arabic: "خَلْفَ", translation: "за", type: "preposition", root: "خ-ل-ف"},
+                {arabic: "أَمامَ", translation: "перед", type: "preposition", root: "ا-م-م"},
+                {arabic: "داخِلَ", translation: "внутри", type: "preposition", root: "د-خ-ل"},
+                {arabic: "خارِجَ", translation: "вне", type: "preposition", root: "خ-ر-ج"},
+                {arabic: "مِنْ خِلالِ", translation: "через/посредством", type: "preposition", root: "خ-ل-ل"}
             ]
         };
 
-        // Practice sentences data
-        const practiceSentences = [
-            {
-                russian: "Меня зовут Шамиль, я приехал из Дагестана",
-                arabic: ["اِسْمِي", "شَامِلٌ", "جِئْتُ", "مِنْ", "دَاغِسْتَانَ"],
-                correctOrder: ["اِسْمِي", "شَامِلٌ", "جِئْتُ", "مِنْ", "دَاغِسْتَانَ"]
-            },
-            {
-                russian: "Где я могу пообедать поблизости?",
-                arabic: ["أَيْنَ", "يُمْكِنُنِي", "تَنَاوُلُ", "الغَدَاءِ", "قَرِيبًا", "مِنْ", "هُنَا"],
-                correctOrder: ["أَيْنَ", "يُمْكِنُنِي", "تَنَاوُلُ", "الغَدَاءِ", "قَرِيبًا", "مِنْ", "هُنَا"]
-            },
-            {
-                russian: "Я потерялся, не могли бы вы мне помочь?",
-                arabic: ["أَنَا", "ضَائِعٌ", "هَلْ", "يُمْكِنُكُم", "مُسَاعَدَتِي"],
-                correctOrder: ["أَنَا", "ضَائِعٌ", "هَلْ", "يُمْكِنُكُم", "مُسَاعَدَتِي"]
-            },
-            {
-                russian: "Мы с моим братом любим купаться в холодной горной реке и лазить по горам",
-                arabic: ["أَنَا", "وَأَخِي", "نُحِبُّ", "السِّبَاحَةَ", "فِي", "النَّهْرِ", "البَارِدِ", "فِي", "الجِبَالِ", "وَالتَّجَوُّلَ", "فِيهَا"],
-                correctOrder: ["أَنَا", "وَأَخِي", "نُحِبُّ", "السِّبَاحَةَ", "فِي", "النَّهْرِ", "البَارِدِ", "فِي", "الجِبَالِ", "وَالتَّجَوُّلَ", "فِيهَا"]
-            },
-            {
-                russian: "Вчера я пил кофе и забыл, где я его покупал",
-                arabic: ["أَمْسِ", "شَرِبْتُ", "القَهْوَةَ", "وَنَسِيتُ", "أَيْنَ", "شَرَيْتُهَا"],
-                correctOrder: ["أَمْسِ", "شَرِبْتُ", "القَهْوَةَ", "وَنَسِيتُ", "أَيْنَ", "شَرَيْتُهَا"]
-            },
-            {
-                russian: "Я уезжаю завтра домой, спасибо вам за гостеприимство",
-                arabic: ["أَنَا", "سَأُسَافِرُ", "غَدًا", "إِلَى", "بَيْتِي", "شُكْرًا", "عَلَى", "حُسْنِ", "الاسْتِقْبَالِ"],
-                correctOrder: ["أَنَا", "سَأُسَافِرُ", "غَدًا", "إِلَى", "بَيْتِي", "شُكْرًا", "عَلَى", "حُسْنِ", "الاسْتِقْبَالِ"]
-            },
-            {
-                russian: "Эй, ты, отдай мою сумку, я спортсмен, имей в виду",
-                arabic: ["هَيَّا", "أَنْتَ", "أَعِدْ", "حَقِيبَتِي", "أَنَا", "رِيَاضِيّ", "فَتَذَكَّرْ", "ذَلِكَ"],
-                correctOrder: ["هَيَّا", "أَنْتَ", "أَعِدْ", "حَقِيبَتِي", "أَنَا", "رِيَاضِيّ", "فَتَذَكَّرْ", "ذَلِكَ"]
-            }
-        ];
+        // Practice sentences data - предложения привязаны к урокам
+        const practiceSentences = {
+            1: [
+                {
+                    russian: "Человек веровал в Аллаха",
+                    arabic: ["آمَنَ", "الإنسانُ", "باللهِ"],
+                    correctOrder: ["آمَنَ", "الإنسانُ", "باللهِ"],
+                    requiredLesson: 1
+                },
+                {
+                    russian: "Господь сказал истину",
+                    arabic: ["قالَ", "الربُّ", "حَقًّا"],
+                    correctOrder: ["قالَ", "الربُّ", "حَقًّا"],
+                    requiredLesson: 1
+                },
+                {
+                    russian: "Совершал (дело) на пути Аллаха",
+                    arabic: ["عَمِلَ", "في", "سبيلِ", "اللهِ"],
+                    correctOrder: ["عَمِلَ", "في", "سبيلِ", "اللهِ"],
+                    requiredLesson: 1
+                },
+                {
+                    russian: "Видел знамение от своего Господа",
+                    arabic: ["رَأى", "آيَةً", "مِنْ", "رَبِّهِ"],
+                    correctOrder: ["رَأى", "آيَةً", "مِنْ", "رَبِّهِ"],
+                    requiredLesson: 1
+                },
+                {
+                    russian: "Знал вместе с человеком",
+                    arabic: ["عَلِمَ", "مَعَ", "الإنسانِ"],
+                    correctOrder: ["عَلِمَ", "مَعَ", "الإنسانِ"],
+                    requiredLesson: 1
+                }
+            ],
+            2: [
+                {
+                    russian: "Аллах создал небо",
+                    arabic: ["خَلَقَ", "اللهُ", "السَّماءَ"],
+                    correctOrder: ["خَلَقَ", "اللهُ", "السَّماءَ"],
+                    requiredLesson: 2
+                },
+                {
+                    russian: "Человек пришёл к пути",
+                    arabic: ["جاءَ", "الإنسانُ", "إِلىٰ", "السَّبيلِ"],
+                    correctOrder: ["جاءَ", "الإنسانُ", "إِلىٰ", "السَّبيلِ"],
+                    requiredLesson: 2
+                },
+                {
+                    russian: "Господь открыл книгу",
+                    arabic: ["فَتَحَ", "الرَّبُّ", "كِتابًا"],
+                    correctOrder: ["فَتَحَ", "الرَّبُّ", "كِتابًا"],
+                    requiredLesson: 2
+                },
+                {
+                    russian: "Сказал слово истины",
+                    arabic: ["قالَ", "كَلِمَةً", "حَقًّا"],
+                    correctOrder: ["قالَ", "كَلِمَةً", "حَقًّا"],
+                    requiredLesson: 2
+                },
+                {
+                    russian: "Ушёл в ночи среди знамений",
+                    arabic: ["ذَهَبَ", "في", "لَيْلٍ", "بَيْنَ", "آيَاتٍ"],
+                    correctOrder: ["ذَهَبَ", "في", "لَيْلٍ", "بَيْنَ", "آيَاتٍ"],
+                    requiredLesson: 2
+                }
+            ],
+            3: [
+                {
+                    russian: "Сердце человека услышало слово Аллаха",
+                    arabic: ["سَمِعَ", "قَلْبُ", "الإنسانِ", "كَلِمَةَ", "اللهِ"],
+                    correctOrder: ["سَمِعَ", "قَلْبُ", "الإنسانِ", "كَلِمَةَ", "اللهِ"],
+                    requiredLesson: 3
+                },
+                {
+                    russian: "Вернулся в свой дом после дня",
+                    arabic: ["رَجَعَ", "إِلىٰ", "بَيْتِهِ", "بَعْدَ", "النَّهارِ"],
+                    correctOrder: ["رَجَعَ", "إِلىٰ", "بَيْتِهِ", "بَعْدَ", "النَّهارِ"],
+                    requiredLesson: 3
+                },
+                {
+                    russian: "Был в раю с истиной",
+                    arabic: ["كانَ", "في", "جَنَّةٍ", "مَعَ", "حَقٍّ"],
+                    correctOrder: ["كانَ", "في", "جَنَّةٍ", "مَعَ", "حَقٍّ"],
+                    requiredLesson: 3
+                },
+                {
+                    russian: "Господь дал воду человеку",
+                    arabic: ["أَعْطىٰ", "الرَّبُّ", "ماءً", "لِلإنسانِ"],
+                    correctOrder: ["أَعْطىٰ", "الرَّبُّ", "ماءً", "لِلإنسانِ"],
+                    requiredLesson: 3
+                },
+                {
+                    russian: "Начал дело на пути Аллаха",
+                    arabic: ["بَدَأَ", "عَمَلًا", "في", "سَبيلِ", "اللهِ"],
+                    correctOrder: ["بَدَأَ", "عَمَلًا", "في", "سَبيلِ", "اللهِ"],
+                    requiredLesson: 3
+                }
+            ],
+            4: [
+                {
+                    russian: "Аллах показал знамение человеку",
+                    arabic: ["أَرَىٰ", "اللهُ", "آيَةً", "لِلإنسانِ"],
+                    correctOrder: ["أَرَىٰ", "اللهُ", "آيَةً", "لِلإنسانِ"],
+                    requiredLesson: 4
+                },
+                {
+                    russian: "Господь поднял знание в мире",
+                    arabic: ["رَفَعَ", "الرَّبُّ", "العِلْمَ", "في", "العالَمِ"],
+                    correctOrder: ["رَفَعَ", "الرَّبُّ", "العِلْمَ", "في", "العالَمِ"],
+                    requiredLesson: 4
+                },
+                {
+                    russian: "Аллах спас раба от огня",
+                    arabic: ["نَجَّىٰ", "اللهُ", "عَبْدًا", "مِنْ", "نارٍ"],
+                    correctOrder: ["نَجَّىٰ", "اللهُ", "عَبْدًا", "مِنْ", "نارٍ"],
+                    requiredLesson: 4
+                },
+                {
+                    russian: "Приблизил ангела к раю",
+                    arabic: ["قَرَّبَ", "مَلَكًا", "إِلىٰ", "جَنَّةٍ"],
+                    correctOrder: ["قَرَّبَ", "مَلَكًا", "إِلىٰ", "جَنَّةٍ"],
+                    requiredLesson: 4
+                },
+                {
+                    russian: "Был здесь до ночи",
+                    arabic: ["كانَ", "هُنا", "حَتّىٰ", "لَيْلٍ"],
+                    correctOrder: ["كانَ", "هُنا", "حَتّىٰ", "لَيْلٍ"],
+                    requiredLesson: 4
+                }
+            ],
+            5: [
+                {
+                    russian: "Аллах повёл человека на пути истины",
+                    arabic: ["هَدَىٰ", "اللهُ", "الإنسانَ", "في", "طَريقِ", "الحَقِّ"],
+                    correctOrder: ["هَدَىٰ", "اللهُ", "الإنسانَ", "في", "طَريقِ", "الحَقِّ"],
+                    requiredLesson: 5
+                },
+                {
+                    russian: "Господь простил ложь",
+                    arabic: ["غَفَرَ", "الرَّبُّ", "كِذْبًا"],
+                    correctOrder: ["غَفَرَ", "الرَّبُّ", "كِذْبًا"],
+                    requiredLesson: 5
+                },
+                {
+                    russian: "Ангел помог рабу внутри пути",
+                    arabic: ["نَصَرَ", "مَلَكٌ", "عَبْدًا", "داخِلَ", "الطَّريقِ"],
+                    correctOrder: ["نَصَرَ", "مَلَكٌ", "عَبْدًا", "داخِلَ", "الطَّريقِ"],
+                    requiredLesson: 5
+                },
+                {
+                    russian: "Аллах дал слово правды для сердец",
+                    arabic: ["وَعَدَ", "اللهُ", "صِدْقًا", "لِلْقُلُوبِ"],
+                    correctOrder: ["وَعَدَ", "اللهُ", "صِدْقًا", "لِلْقُلُوبِ"],
+                    requiredLesson: 5
+                },
+                {
+                    russian: "Господь защитил человека через Свою милость",
+                    arabic: ["حَفِظَ", "الرَّبُّ", "الإنسانَ", "مِنْ", "خِلالِ", "رَحْمَتِهِ"],
+                    correctOrder: ["حَفِظَ", "الرَّبُّ", "الإنسانَ", "مِنْ", "خِلالِ", "رَحْمَتِهِ"],
+                    requiredLesson: 5
+                }
+            ]
+        };
 
         // State
         let currentLesson = null;
@@ -540,6 +681,7 @@
         let isReviewMode = false;
 
         // Practice state
+        let currentPracticeSentences = [];
         let currentPracticeSentence = 0;
         let practiceCorrectAnswers = 0;
         let selectedWords = [];
@@ -662,8 +804,38 @@
             }, 3000);
         }
 
+        // Get available practice sentences based on completed lessons
+        function getAvailablePracticeSentences() {
+            const available = [];
+            userProgress.completedLessons.forEach(lessonId => {
+                if (practiceSentences[lessonId]) {
+                    available.push(...practiceSentences[lessonId]);
+                }
+            });
+            return available;
+        }
+
         // Practice functions
         function showPractice() {
+            currentPracticeSentences = getAvailablePracticeSentences();
+            
+            if (currentPracticeSentences.length === 0) {
+                const container = document.getElementById('practice-task');
+                container.innerHTML = `
+                    <div class="text-center">
+                        <div class="text-6xl mb-4">📚</div>
+                        <h2 class="text-2xl font-bold text-white neon-text mb-4">Пройдите уроки</h2>
+                        <p class="text-gray-300 mb-6">Сначала нужно пройти уроки, чтобы открыть предложения для практики</p>
+                        <button class="glow-button px-8 py-3 rounded-lg font-semibold transition-all" onclick="showLessons()">
+                            К урокам
+                        </button>
+                    </div>
+                `;
+                document.getElementById('home-screen').classList.add('hidden');
+                document.getElementById('practice-screen').classList.remove('hidden');
+                return;
+            }
+            
             currentPracticeSentence = 0;
             practiceCorrectAnswers = 0;
             
@@ -674,16 +846,16 @@
         }
 
         function renderPracticeTask() {
-            if (currentPracticeSentence >= practiceSentences.length) {
+            if (currentPracticeSentence >= currentPracticeSentences.length) {
                 showPracticeResults();
                 return;
             }
             
-            const sentence = practiceSentences[currentPracticeSentence];
+            const sentence = currentPracticeSentences[currentPracticeSentence];
             selectedWords = [];
             availableWords = [...sentence.arabic].sort(() => Math.random() - 0.5);
             
-            document.getElementById('practice-progress').textContent = `${currentPracticeSentence + 1}/7`;
+            document.getElementById('practice-progress').textContent = `${currentPracticeSentence + 1}/${currentPracticeSentences.length}`;
             
             const container = document.getElementById('practice-task');
             container.innerHTML = `
@@ -775,7 +947,7 @@
         }
 
         function checkPracticeAnswer() {
-            const sentence = practiceSentences[currentPracticeSentence];
+            const sentence = currentPracticeSentences[currentPracticeSentence];
             const isCorrect = JSON.stringify(selectedWords) === JSON.stringify(sentence.correctOrder);
             
             const answerArea = document.getElementById('answer-area');
@@ -802,7 +974,7 @@
                     <div class="text-6xl mb-4">🎉</div>
                     <h2 class="text-2xl font-bold text-white neon-text mb-4">Практика завершена!</h2>
                     <div class="text-green-300 mb-6">
-                        <p>Правильных ответов: <span class="font-semibold text-white">${practiceCorrectAnswers}</span> из <span class="font-semibold text-white">7</span></p>
+                        <p>Правильных ответов: <span class="font-semibold text-white">${practiceCorrectAnswers}</span> из <span class="font-semibold text-white">${currentPracticeSentences.length}</span></p>
                     </div>
                     <div class="bg-gray-800 border border-cyan-400 rounded-lg p-4 mb-6">
                         <h3 class="font-semibold text-cyan-300 mb-2">Отличная работа!</h3>
@@ -1056,6 +1228,7 @@
             
             document.getElementById('correct-answers').textContent = correctAnswers;
             document.getElementById('total-tasks').textContent = currentLesson.tasks.length;
+            document.getElementById('words-learned-text').textContent = `Вы изучили ${currentLesson.newWords.length} новых слов`;
             
             updateOverallProgress();
             updateHomeProgress();
@@ -1212,6 +1385,9 @@
             
             const learnedWords = getLearnedWordsCount();
             document.getElementById('words-learned').textContent = learnedWords;
+            
+            const availableSentences = getAvailablePracticeSentences().length;
+            document.getElementById('practice-available-count').textContent = availableSentences;
         }
 
         function getLearnedWordsCount() {
@@ -1235,5 +1411,5 @@
 
         initializeApp();
     </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a9b5ab19345dcc9',t:'MTc2NTAxOTYxMC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a9ccc341350fc05',t:'MTc2NTAzNDc0NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
